@@ -1,7 +1,7 @@
-# List Routines DSL
+# Wave 1 Concepts
 
 - [Overview](#overview)
-- [Types](#types)
+- [Functions](#functions)
 
 ## Overview
 
