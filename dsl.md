@@ -71,7 +71,7 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Constants for integers between 0 and 99, inclusive.</td>
 </tr>
 <tr class="even">
-<td>nil</td>
+<td>empty</td>
 <td>[t1]</td>
 <td>Constant: an empty list.</td>
 </tr>
@@ -321,10 +321,9 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Always return the first argument of type t1, regardless of the second argument.</td>
 </tr>
 <tr class="odd">
-<td>list</td>
+<td>singleton</td>
 <td>t1 → [t1]</td>
-<td><p>Returns the input argument as a list. (e.g. 7 → [7], 3 → [3]). This is useful in cases where a function would otherwise return a single value instead of a list, because the sampled <a href="https://docs.google.com/document/d/1QQdlrCzgszRwlfGYaHQRL310hGKUcZ7H0QR6m8gDrvg/edit"><span class="underline">concepts</span></a> need to have type:</p>
-<p>[int] → [int].</p></td>
+<td>Returns the input argument as a list. (e.g. 7 → [7], 3 → [3]). This is useful in cases where a function would otherwise return a single value instead of a list, because the sampled concepts need to have type [int] → [int].</td>
 </tr>
 <tr class="even">
 <td>zip</td>
