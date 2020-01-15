@@ -9,153 +9,154 @@ This is a list of concepts used during Wave 1 of our human experiments. Inputs a
 
 ## Functions
 
-1. [`(lambda (singleton (length $0)))`](json/c001.json)
-2. [`(lambda (singleton (max $0)))`](json/c002.json)
-3. [`(lambda (reverse $0))`](json/c003.json)
-4. [`(lambda (sort $0))`](json/c004.json)
-5. `(lambda (unique $0))`
-6. `(lambda (singleton (sum $0)))`
-7. `(lambda (singleton (product $0)))`
-8. `(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))`
-9. `(lambda (repeat (head $0) (nth 2 $0)))`
-10. `(lambda (repeat (max $0) (min $0)))`
-11. `(lambda (range 1 1 (head $0)))`
-12. `(lambda (range (last $0) -2 0))`
-13. `(lambda (cons (last $0) $0))`
-14. `(lambda (append (nth 2 $0) $0))`
-15. `(lambda (concat (reverse (drop 1 $0)) $0))`
-16. `(lambda (concat (drop 3) (take 3) $0))`
-17. `(lambda (concat (drop (last $0)) (take (last $0)) $0))`
-18. `(lambda ((lambda (concat ($0 head) (concat $1 ($0 last)))) (lambda (if (== (f $1) 8) (singleton 8) empty))))`
-19. `(lambda (singleton (head $0)))`
-20. `(lambda (singleton (last $0)))`
-21. `(lambda (singleton (nth 2 $0)))`
-22. `(lambda (singleton (nth (last $0) $0)))`
-23. `(lambda (singleton (nth (nth (head $0) $0) $0)))`
-24. `(lambda (singleton (nth (% (head $0) (len $0)) $0)))`
-25. `(lambda (drop 1 $0))`
-26. `(lambda (reverse (drop 1 (reverse $0))))`
-27. `(lambda (drop 2 $0))`
-28. `(lambda (slice (head $0) (nth 2 $0) (drop 2 $0)))`
-29. `(lambda (take (head $0) (drop 1 $0)))`
-30. `(lambda (drop (last $0) (reverse $0)))`
-31. `(lambda (cut_idx 3 $0))`
-32. `(lambda (cut 2 5 $0))`
-33. `(lambda (cut (head $0) (nth 2 $0) $0))`
-34. `(lambda (remove 7 $0))`
-35. `(lambda (remove (max $0) $0))`
-36. `(lambda (remove_all 3 $0))`
-37. `(lambda (remove_all (nth 1 $0) $0))`
-38. `(lambda (remove_all (max $0) $0))`
-39. `(lambda (replace 2 9 $0))`
-40. `(lambda (replace (head $0) (nth 2 $0) (drop 2 $0)))`
-41. `(lambda (replace (nth (head $0) $0) (nth 2 $0) $0))`
-42. `(lambda (map (if (== x (max $0)) (min $0) x) $0))`
-43. `(lambda (map (if (or (== x (max $0)) (== x (min $0))) (- (max $0) (min $0)) x) $0))`
-44. `(lambda (map (lambda (head $1)) $0))`
-45. `(lambda (map (lambda (abs (- (first $0) (second $0))) (zip (reverse (drop 1 (reverse $0))) (drop 1 $0)))))`
-46. `(lambda (flatten (mapi (lambda (lambda (cons $0 (singleton $1)))) $0)))`
-47. `(lambda (flatten (map (range 1 1) $0)))`
-48. `(lambda (flatten (map (lambda (range $0 -2 1)) $0)))`
-49. `(lambda (flatten (map (lambda (if (> $0 (head $1)) (range (head $1) 1 $0) $0)) $0)))`
-50. `(lambda (flatten (map (lambda (repeat $0 $0)) $0)))`
-51. `(lambda (flatten (map (lambda (cons $0 (singleton (last $1)))) $0)))`
-52. `(lambda (flatten (map (lambda (cons (head $0) (singleton (len $0)))) (group (lambda $0) $0))))`
-53. `(lambda (map (lambda (if (even? $0) (* 3 $0) $0)) $0))`
-54. `(lambda (mapi (lambda (lambda ($0*$1))) $0))`
-55. `(lambda (mapi (lambda (lambda ($0+$1))) (reverse $0)))`
-56. `(lambda (flatten (map (lambda (cons $0 (cons (is_odd $0) empty))) $0)))`
-57. `(lambda (mapi (lambda (lambda (== $0 $1))) $0))`
-58. `(lambda (count is_even $0))`
-59. `(lambda (count (lambda (== 3 $0)) $0))`
-60. `(lambda (count (lambda (== (head $1) $0)) (drop 1 $0)))`
-61. `(lambda (map (lambda (count (lambda (== $1 $0)) $1)) (range 1 1 (max $0))))`
-62. `(lambda (map (lambda (+ (max $1) $0)) $0))`
-63. `(lambda (map (lambda (- (head $1 $0))) $0))`
-64. `(lambda (map (lambda (+ 7 (* 3 $0))) $0))`
-65. `(lambda (map (lambda (- (* 2 $0) 10)) $0))`
-66. `(lambda (map (lambda (+ (/ $0 4) 5)) $0))`
-67. `(lambda (filter is_even (reverse $0)))`
-68. `(lambda (sort (unique $0)))`
-69. `(lambda (sort (unique (filter (lambda (< 6 $0)) $0))))`
-70. `(lambda (reverse (sort (unique (filter (lambda (< 6 $0)) $0)))))`
-71. `(lambda (max (drop 2 $0)))`
-72. `(lambda (cons (head $0) (singleton (last $0))))`
-73. `(lambda (drop 1 (fold (lambda (lambda (append $0 (+ (last $0) $1)))) (singleton 0) $0)))`
-74. `(lambda (drop 1 (fold (lambda (lambda (append $0 (* (last $0) $1)))) (singleton 1) $0)))`
-75. `(lambda (max (max $0) (len $0)))`
-76. `(lambda (max (max $0) (len $0)))`
-77. `(lambda (take (len (unique $0)) $0))`
-78. `(lambda (fold (lambda (lambda (if (> $1 (last $0)) (append $0 $1) ($0)))) (take 1 $0) (drop 1 $0)))`
-79. `(lambda (flatten (zip $0 (reverse $0))))`
-80. `(lambda (fold (lambda (lambda (if (is_even (nth 2 $0)) (append $0 (head $1) $0)))) empty (zip (take (- (len $0 1) $0)) (drop 1 $0))))`
-81. `(lambda (fold (lambda (lambda (append (reverse $0) $1))) empty (reverse (sort $0))))`
-82. `(lambda (fold (lambda (lambda (append (reverse $0) $1))) empty (sort $0)))`
-83. `(lambda (flatten (zip (filteri (lambda (lambda (is_odd $1)))) (reverse (filteri (lambda (lambda (is_even $1))))))))`
-84. `(lambda (filteri (lambda (lambda (== (% $1 4) 0))) $0))`
-85. `(lambda (filteri (lambda (lambda (not (== (% $1 3) 0)))) $0))`
-86. `(lambda (filteri (lambda (lambda (and (== (% $1 2) 0) (is_odd $0)))) $0))`
-87. `(lambda (filteri (lambda (lambda (or (== (% $1 3) 0) (> 9 $0)))) $0))`
-88. `(lambda (filter (lambda (or (== (% $0 5) 1) (> 9 $0))) $0))`
-89. `(lambda (head (reverse (fold (lambda (lambda (if (== $1 0) (cons empty $0) (cons (append (head $0) $1) (drop 1 $0))))) (singleton empty) $0))))`
-90. `(lambda (head (fold (lambda (lambda (if (== $1 0) (cons empty $0) (cons (append (head $0) $1) (drop 1 $0))))) (singleton empty) $0)))`
-91. `(lambda (map head (reverse (fold (lambda (lambda (if (== $1 0) (cons empty $0) (cons (append (head $0) $1) (drop 1 $0))))) (singleton empty) $0))))`
-92. `lambda (concat $0 (concat 0 $0))`
-93. `(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $1 0) (cons empty $0) (cons (append (head $0) $1) (drop 1 $0))))) (singleton empty) $0)))))`
-94. `(lambda (map (lambda (if (== (% $0 3) 0) 1 0)) $0))`
-95. `(lambda (range (min $0) 1 (max $0)))`
-96. `(lambda (range (head $0) 2 (last $0)))`
-97. `(lambda (range (head $0) 2 (last $0)))`
-98. `(lambda (flatten (map (lambda (repeat $0 (/ $0 7))) $0)))`
-99. `(lambda (map (lambda (if (< $0 50) 99 (/ $0 8))) $0))`
-100. `(lambda (count (len $0) (drop 1 $0)))`
-101. `(lambda (count (len (unique $0)) $0))`
-102. `(lambda (count (last $0) (take (head $0) $0)))`
-103. `(lambda $0)`
-104. `(lambda (if (< (len $0) 5) $0 (drop 5 (sort $0))))`
-105. `(lambda (filter (lambda (is_in $1 $0)) (range (min $0) 2 (max $0))))`
-106. `(lambda (flatten (group (% 4) $0)))`
-107. `(lambda (concat (cons 17 (cons 38 (cons 82 nil)) (concat $0 (cons 1 (cons 55 (cons 27 (cons 0 nil))))))))`
-108. `(lambda (filter (lambda (and (< 50 $0) (> (- $0 (min $1)) 10))) $0))`
-109. `(lambda (map (lambda (% $0 7)) $0))`
-110. `(lambda (map (lambda (% $0 7)) (sort $0)))`
-111. `(lambda (sort (map (lambda (% $0 7)) $0)))`
-112. `(lambda (unique (sort (map (lambda (% $0 7)) $0))))`
-113. `(lambda (sort (map (lambda (% $0 7)) (unique $0))))`
-114. `(lambda (find is_even $0))`
-115. `(lambda (find (lambda (and (> $0 17) (< $0 53))) $0))`
-116. `(lambda (sum (find (< 20) $0)))`
-117. `(lambda (product (filter (lambda (== (% $0 4) 1)) $0)))`
-118. `(lambda (filter (lambda (< (% $0 5) 3)) $0))`
-119. `(lambda (map sum (zip $0 (reverse $0))))`
-120. `(lambda (map (abs (- (head $0) (nth 2 $0))) (zip $0 (reverse $0))))`
-121. `(lambda (insert (+ (max $0) (min $0)) (nth 4 $0) (sort $0)))`
-122. `(lambda (insert (last $0) (head $0) (unique $0)))`
-123. `(lambda (splice (slice 4 5 $0) (- (len $0) 2) (reverse $0)))`
-124. `(lambda (splice (cons 3 (cons 91 (cons 17 nil))) 3 $0))`
-125. `(lambda (cut (head $0) (nth 2 $0) (drop 2 $0)))`
-126. `(lambda (cut_idx (head $0) (drop 1 $0)))`
-127. `(lambda (product (slice 3 6 $0)))`
-128. `(lambda (flatten (reverse (sort (group (lambda (/ $0 10)) $0)))))`
-129. `(lambda (flatten (sort (group (lambda (% $0 10)) $0)))))`
-130. `(lambda (mapi (lambda (lambda (if (> $1 $0) $1 $0))) $0))`
-131. `(lambda (filteri (lambda (lambda (is_even (+ $1 $0)))) (unique $0)))`
-132. `(lambda (map (lambda (/ $0 (if (is_even (len $1)) 7 5))) $0))`
-133. `(lambda (max (cons (sum (filteri (lambda (lambda (is_even $1))) $0)) (singleton (sum (filteri (lambda (lambda (is_odd $1))) $0))))))`
-134. `(lambda (abs (- (sum (filteri (lambda (lambda (is_even $1))) $0)) (sum (filteri (lambda (lambda (is_odd $1))) $0)))))`
-135. `(lambda (map (lambda (sum (filter (lambda (== (% $0 $1) 0)) $1))) (range 0 1 9)))`
-136. `(lambda (fold (lambda (lambda (cons $1 (reverse $0)))) nil $0))`
-137. `(lambda (slice 2 (- (len $0) 2) $0))`
-138. `(lambda (slice (/ (head $0) 10) (- (len $0) (% (last $0) 10)) $0))`
-139. `(lambda (unique (flatten (zip $0 (reverse $0)))))`
-140. `(lambda (map (lambda (index (% $0 10) $1)) $0))`
-141. `(lambda (foldi (lambda (lambda (lambda (append $0 (if (is_even $2) + *) (last $0) $1)))) (take 1 $0) (drop 1 $0))`
-142. `(lambda (if (> (min $0) (- (max $0) (min $0))) (range (min $0) 2 (max $0)) (range 0 2 (min $0))))`
-143. `(lambda (singleton (- (len $0) (len (unique $0)))))`
-144. `(lambda (sort (map len (group (lambda $0) $0))))`
-145. `(lambda (/ (sum $0) (len $0)))`
-146. `(lambda (count (lambda (> (len $0) 1)) (group (lambda $0) $0)))`
-147. `(lambda (map head (lambda (== (len $0) 1)) (group (lambda $0) $0)))`
-148. `(lambda (map head (group (lambda $0) $0)))`
-149. `(lambda (fold (lambda (lambda (concat $0 (range (last $0) (if (> $1 (last $0)) 1 -1) $1)))) nil (zip (reverse (drop 1 (reverse $0))) (drop 1 $0))))`
-150. `(lambda (map (lambda (/ $0 2) (filter is_even $0))))`
+1. [`(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))`](json/c001.json)
+2. [`(lambda $0)`](json/c002.json)
+3. [`(lambda (singleton (length $0)))`](json/c003.json)
+4. [`(lambda (singleton (max $0)))`](json/c004.json)
+5. [`(lambda (reverse $0))`](json/c005.json)
+6. [`(lambda (sort $0))`](json/c006.json)
+7. [`(lambda (unique $0))`](json/c007.json)
+8. [`(lambda (singleton (sum $0)))`](json/c008.json)
+9. [`(lambda (singleton (product $0)))`](json/c009.json)
+10. [`(lambda (repeat (head $0) (nth 2 $0)))`](json/c010.json)
+11. [`(lambda (repeat (max $0) (min $0)))`](json/c011.json)
+12. [`(lambda (range 1 1 (head $0)))`](json/c012.json)
+13. [`(lambda (range (last $0) -2 0))`](json/c013.json)
+14. [`(lambda (cons (last $0) $0))`](json/c014.json)
+15. [`(lambda (append $0 (nth 2 $0)))`](json/c015.json)
+16. [`(lambda (concat (reverse (drop 1 $0)) $0))`](json/c016.json)
+17. [`(lambda (concat (drop 3 $0) (take 3 $0)))`](json/c017.json)
+18. [`(lambda (concat (drop (last $0) $0) (take (last $0) $0)))`](json/c018.json)
+19. [`(lambda ((lambda (concat ($0 head) (concat $1 ($0 last)))) (lambda (if (== ($0 $1) 8) empty (singleton 8)))))`](json/c019.json)
+20. [`(lambda (singleton (head $0)))`](json/c020.json)
+21. [`(lambda (singleton (last $0)))`](json/c021.json)
+22. [`(lambda (singleton (nth 2 $0)))`](json/c022.json)
+23. [`(lambda (singleton (nth (last $0) $0)))`](json/c023.json)
+24. [`(lambda (singleton (nth (nth (head $0) $0) $0)))`](json/c024.json)
+25. [`(lambda (singleton (nth (% (head $0) (length $0)) $0)))`](json/c025.json)
+26. [`(lambda (drop 1 $0))`](json/c026.json)
+27. [`(lambda (droplast 1 $0))`](json/c027.json)
+28. [`(lambda (drop 2 $0))`](json/c028.json)
+29. [`(lambda (slice (head $0) (nth 2 $0) (drop 2 $0)))`](json/c029.json)
+30. [`(lambda (take (head $0) (drop 1 $0)))`](json/c030.json)
+31. [`(lambda (drop (last $0) (reverse $0)))`](json/c031.json)
+32. [`(lambda (cut_idx 3 $0))`](json/c032.json)
+33. [`(lambda (cut_slice 2 5 $0))`](json/c033.json)
+34. [`(lambda (cut_slice (head $0) (nth 2 $0) $0))`](json/c034.json)
+35. [`(lambda (cut_val 7 $0))`](json/c035.json)
+36. [`(lambda (cut_val (max $0) $0))`](json/c036.json)
+37. [`(lambda (cut_vals 3 $0))`](json/c037.json)
+38. [`(lambda (cut_vals (head $0) $0))`](json/c038.json)
+39. [`(lambda (cut_vals (max $0) $0))`](json/c039.json)
+40. [`(lambda (replace 2 9 $0))`](json/c040.json)
+41. [`(lambda (replace (head $0) (nth 2 $0) (drop 2 $0)))`](json/c041.json)
+42. [`(lambda (replace (nth (head $0) $0) (nth 2 $0) $0))`](json/c042.json)
+43. [`(lambda (map (lambda (if (== $0 (max $1)) (min $1) $0)) $0))`](json/c043.json)
+44. [`(lambda (map (lambda (if (or (== $0 (max $1)) (== $0 (min $1))) (- (max $1) (min $1)) $0)) $0))`](json/c044.json)
+45. [`(lambda (map (lambda (head $1)) $0))`](json/c045.json)
+46. [`(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))`](json/c046.json)
+47. [`(lambda (flatten (mapi (lambda (lambda (cons $0 (singleton $1)))) $0)))`](json/c047.json)
+48. [`(lambda (flatten (map (range 1 1) $0)))`](json/c048.json)
+49. [`(lambda (flatten (map (lambda (range $0 -2 1)) $0)))`](json/c049.json)
+50. [`(lambda (flatten (map (lambda (if (> $0 (head $1)) (range (head $1) 1 $0) (singleton $0))) $0)))`](json/c050.json)
+51. [`(lambda (flatten (map (lambda (repeat $0 $0)) $0)))`](json/c051.json)
+52. [`(lambda (flatten (map (lambda (cons $0 (singleton (last $1)))) $0)))`](json/c052.json)
+53. [`(lambda (flatten (map (lambda (cons (head $0) (singleton (length $0)))) (group (lambda $0) $0))))`](json/c053.json)
+54. [`(lambda (map (lambda (if (is_even $0) (* 3 $0) $0)) $0))`](json/c054.json)
+55. [`(lambda (mapi (lambda (lambda (* $0 $1))) $0))`](json/c055.json)
+56. [`(lambda (mapi (lambda (lambda (+ $0 $1))) (reverse $0)))`](json/c056.json)
+57. [`(lambda (flatten (map (lambda (cons $0 (cons (is_odd $0) empty))) $0)))`](json/c057.json)
+58. [`(lambda (mapi (lambda (lambda (== $0 $1))) $0))`](json/c058.json)
+59. [`(lambda (map (lambda (count (lambda (== $1 $0)) $1)) (range 1 1 (max $0))))`](json/c059.json)
+60. [`(lambda (map (lambda (+ (max $1) $0)) $0))`](json/c060.json)
+61. [`(lambda (map (lambda (- (head $1) $0)) $0))`](json/c061.json)
+62. [`(lambda (map (lambda (+ 7 (* 3 $0))) $0))`](json/c062.json)
+63. [`(lambda (map (lambda (- (* 2 $0) 10)) $0))`](json/c063.json)
+64. [`(lambda (map (lambda (+ (/ $0 4) 5)) $0))`](json/c064.json)
+65. [`(lambda (filter is_even (reverse $0)))`](json/c065.json)
+66. [`(lambda (sort (unique $0)))`](json/c066.json)
+67. [`(lambda (sort (unique (filter (lambda (< 6 $0)) $0))))`](json/c067.json)
+68. [`(lambda (reverse (sort (unique (filter (lambda (< 6 $0)) $0)))))`](json/c068.json)
+69. [`(lambda (singleton (max (drop 2 $0))))`](json/c069.json)
+70. [`(lambda (cons (head $0) (singleton (last $0))))`](json/c070.json)
+71. [`(lambda (drop 1 (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (singleton 0) $0)))`](json/c071.json)
+72. [`(lambda (drop 1 (fold (lambda (lambda (append $1 (* (last $1) $0)))) (singleton 1) $0)))`](json/c072.json)
+73. [`(lambda (singleton (max (append $0 (length $0)))))`](json/c073.json)
+74. [`(lambda (take (length (unique $0)) $0))`](json/c074.json)
+75. [`(lambda (fold (lambda (lambda (if (> $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))`](json/c075.json)
+76. [`(lambda (fold (lambda (lambda (if (< $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))`](json/c076.json)
+77. [`(lambda (flatten (zip $0 (reverse $0))))`](json/c077.json)
+78. [`(lambda (fold (lambda (lambda (if (is_even (nth 2 $0)) (append $1 (head $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0))))`](json/c078.json)
+79. [`(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort $0))))`](json/c079.json)
+80. [`(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (sort $0)))`](json/c080.json)
+81. [`(lambda (flatten (zip (filteri (lambda (lambda (is_odd $1))) $0) (reverse (filteri (lambda (lambda (is_even $1))) $0)))))`](json/c081.json)
+82. [`(lambda (filteri (lambda (lambda (== (% $1 4) 0))) $0))`](json/c082.json)
+83. [`(lambda (filteri (lambda (lambda (not (== (% $1 3) 0)))) $0))`](json/c083.json)
+84. [`(lambda (filteri (lambda (lambda (and (== (% $1 2) 0) (is_odd $0)))) $0))`](json/c084.json)
+85. [`(lambda (filteri (lambda (lambda (or (== (% $1 3) 0) (> 9 $0)))) $0))`](json/c085.json)
+86. [`(lambda (filter (lambda (or (== (% $0 5) 1) (> 9 $0))) $0))`](json/c086.json)
+87. [`(lambda (concat $0 (cons 0 $0)))`](json/c087.json)
+88. [`(lambda (map (lambda (if (== (% $0 3) 0) 1 0)) $0))`](json/c088.json)
+89. [`(lambda (range (min $0) 1 (max $0)))`](json/c089.json)
+90. [`(lambda (range (head $0) 2 (last $0)))`](json/c090.json)
+91. [`(lambda (flatten (map (lambda (repeat $0 (/ $0 7))) $0)))`](json/c091.json)
+92. [`(lambda (map (lambda (if (< $0 50) 99 (/ $0 8))) $0))`](json/c092.json)
+93. [`(lambda (if (< (length $0) 5) $0 (drop 5 (sort $0))))`](json/c093.json)
+94. [`(lambda (filter (lambda (is_in $1 $0)) (range (min $0) 2 (max $0))))`](json/c094.json)
+95. [`(lambda (flatten (group (lambda (% $0 4)) $0)))`](json/c095.json)
+96. [`(lambda (concat (cons 17 (cons 38 (cons 82 empty))) (concat $0 (cons 1 (cons 55 (cons 27 (cons 0 empty)))))))`](json/c096.json)
+97. [`(lambda (filter (lambda (and (< 50 $0) (> (- $0 (min $1)) 10))) $0))`](json/c097.json)
+98. [`(lambda (map (lambda (% $0 7)) $0))`](json/c098.json)
+99. [`(lambda (map (lambda (% $0 7)) (sort $0)))`](json/c099.json)
+100. [`(lambda (sort (map (lambda (% $0 7)) $0)))`](json/c100.json)
+101. [`(lambda (unique (sort (map (lambda (% $0 7)) $0))))`](json/c101.json)
+102. [`(lambda (sort (map (lambda (% $0 7)) (unique $0))))`](json/c102.json)
+103. [`(lambda (find is_even $0))`](json/c103.json)
+104. [`(lambda (find (lambda (and (> $0 17) (< $0 53))) $0))`](json/c104.json)
+105. [`(lambda (singleton (sum (find (< 20) $0))))`](json/c105.json)
+106. [`(lambda (singleton (product (filter (lambda (== (% $0 4) 1)) $0))))`](json/c106.json)
+107. [`(lambda (filter (lambda (< (% $0 5) 3)) $0))`](json/c107.json)
+108. [`(lambda (map sum (zip $0 (reverse $0))))`](json/c108.json)
+109. [`(lambda (map (lambda (- (max $0) (min $0))) (zip $0 (reverse $0))))`](json/c109.json)
+110. [`(lambda (insert (+ (max $0) (min $0)) (nth 4 $0) (sort $0)))`](json/c110.json)
+111. [`(lambda (insert (last $0) (head $0) (unique $0)))`](json/c111.json)
+112. [`(lambda (splice (slice 4 5 $0) (- (length $0) 2) (reverse $0)))`](json/c112.json)
+113. [`(lambda (splice (cons 3 (cons 91 (cons 17 empty))) 3 $0))`](json/c113.json)
+114. [`(lambda (cut_slice (head $0) (nth 2 $0) (drop 2 $0)))`](json/c114.json)
+115. [`(lambda (cut_idx (head $0) (drop 1 $0)))`](json/c115.json)
+116. [`(lambda (singleton (product (slice 3 6 $0))))`](json/c116.json)
+117. [`(lambda (flatten (reverse (sort (group (lambda (/ $0 10)) $0)))))`](json/c117.json)
+118. [`(lambda (flatten (sort (group (lambda (% $0 10)) $0))))`](json/c118.json)
+119. [`(lambda (mapi (lambda (lambda (if (> $1 $0) $1 $0))) $0))`](json/c119.json)
+120. [`(lambda (filteri (lambda (lambda (is_even (+ $1 $0)))) (unique $0)))`](json/c120.json)
+121. [`(lambda (map (lambda (/ $0 (if (is_even (length $1)) 7 5))) $0))`](json/c121.json)
+122. [`(lambda (singleton (max (cons (sum (filteri (lambda (lambda (is_even $1))) $0)) (singleton (sum (filteri (lambda (lambda (is_odd $1))) $0)))))))`](json/c122.json)
+123. [`(lambda (singleton (sum (filteri (lambda (lambda (is_odd $1))) (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0)))))))`](json/c123.json)
+124. [`(lambda (map (lambda (sum (filter (lambda (== (% $0 $1) 0)) $1))) (range 1 1 10)))`](json/c124.json)
+125. [`(lambda (fold (lambda (lambda (cons $0 (reverse $1)))) empty $0))`](json/c125.json)
+126. [`(lambda (slice 2 (- (length $0) 2) $0))`](json/c126.json)
+127. [`(lambda (slice (/ (head $0) 10) (- (length $0) (% (last $0) 10)) $0))`](json/c127.json)
+128. [`(lambda (unique (flatten (zip $0 (reverse $0)))))`](json/c128.json)
+129. [`(lambda (map (lambda (nth (% $0 10) $1)) $0))`](json/c129.json)
+130. [`(lambda (foldi (lambda (lambda (lambda (append $1 ((if (is_even $2) + *) (last $1) $0))))) (take 1 $0) (drop 1 $0)))`](json/c130.json)
+131. [`(lambda (if (> (min $0) (- (max $0) (min $0))) (range (min $0) 2 (max $0)) (range 0 2 (min $0))))`](json/c131.json)
+132. [`(lambda (sort (map length (group (lambda $0) $0))))`](json/c132.json)
+133. [`(lambda (singleton (/ (sum $0) (length $0))))`](json/c133.json)
+134. [`(lambda (map (lambda (- (length $0) 1)) (group (lambda $0) $0)))`](json/c134.json)
+135. [`(lambda (flatten (map (lambda (drop 1 $0)) (group (lambda $0) $0))))`](json/c135.json)
+136. [`(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0)))`](json/c136.json)
+137. [`(lambda (map (lambda (/ $0 2)) (filter is_even $0)))`](json/c137.json)
+138. [`(lambda (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (take 1 (unique $0)) (drop 1 (unique $0))))`](json/c138.json)
+139. [`(lambda (singleton (sum (filter (== 1) (map length (group (lambda $0) $0))))))`](json/c139.json)
+140. [`(lambda (singleton (sum (filter (< 1) (map length (group (lambda $0) $0))))))`](json/c140.json)
+141. [`(lambda (singleton (count (== (length $0)) (drop 1 $0))))`](json/c141.json)
+142. [`(lambda (singleton (count (== (length (unique $0))) $0)))`](json/c142.json)
+143. [`(lambda (singleton (count (== (last $0)) (take (head $0) $0))))`](json/c143.json)
+144. [`(lambda (singleton (count is_even $0)))`](json/c144.json)
+145. [`(lambda (singleton (count (lambda (== 3 $0)) $0)))`](json/c145.json)
+146. [`(lambda (singleton (count (lambda (== (head $1) $0)) (drop 1 $0))))`](json/c146.json)
+147. [`(lambda (singleton (length (unique $0))))`](json/c147.json)
+148. [`(lambda (head (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (head $1) $0) (drop 1 $1))))) (singleton empty) $0))))`](json/c148.json)
+149. [`(lambda (head (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (head $1) $0) (drop 1 $1))))) (singleton empty) $0)))`](json/c149.json)
+150. [`(lambda (map head (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (head $1) $0) (drop 1 $1))))) (singleton empty) $0))))`](json/c150.json)
+151. [`(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (head $1) $0) (drop 1 $1))))) (singleton empty) $0)))))`](json/c151.json)
