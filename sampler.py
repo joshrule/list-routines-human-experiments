@@ -3,15 +3,16 @@ try:
 except ModuleNotFoundError:
     import bin.binutil  # alt import if called as module
 
-import difflib
 import json
 import random
 import itertools
 import math
-from functools import reduce
+import subprocess
 from dreamcoder.program import Program, Primitive
 from dreamcoder.type import *
 from dreamcoder.grammar import Grammar
+from functools import reduce
+from joblib import Parallel, delayed
 
 # set the seed first thing
 random.seed(1)
@@ -59,9 +60,6 @@ def _cut_val(v):
         return result
     return helper
 def _cut_vals(v): return lambda xs: [x for x in xs if x != v]
-# def _replace(f): return lambda lnew: lambda lin: _flatten(
-#     lnew if f(i)(x) else [x] for i, x in enumerate(lin))
-# TODO: adopt the above as a replacement for cut and replace
 def _replace(idx): return lambda y: lambda xs: [y if i == idx else x for i, x in enumerate(xs)]
 def _flatten(l): return [x for xs in l for x in xs]
 def _map(f): return lambda l: list(map(f, l))
@@ -121,7 +119,7 @@ def primitives():
         Primitive(">", arrow(tint, tint, tbool), _gt),
         Primitive("abs", arrow(tint, tint), abs),
         Primitive("and", arrow(tbool, tbool, tbool), _and),
-        Primitive("append", arrow(tlist(t0), tlist(t0), tlist(t0)), _append),
+        Primitive("append", arrow(tlist(t0), t0, tlist(t0)), _append),
         Primitive("concat", arrow(tlist(t0), tlist(t0), tlist(t0)), _concat),
         Primitive("cons", arrow(t0, tlist(t0), tlist(t0)), _cons),
         Primitive("count", arrow(arrow(t0, tbool), tlist(t0), tint), _count),
@@ -170,10 +168,6 @@ def primitives():
         Primitive("find", arrow(arrow(t0, tbool), tlist(t0), tlist(tint)), _find),
         Primitive("insert", arrow(t0, tint, tlist(t0), tlist(t0)), _insert),
         Primitive("splice", arrow(tlist(t0), tint, tlist(t0), tlist(t0)), _splice),
-
-        # Primitive("all", arrow(arrow(t0, tbool), tlist(t0), tbool), _all),
-        # Primitive("any", arrow(arrow(t0, tbool), tlist(t0), tbool), _any),
-        # Primitive("replace", arrow(arrow(tint, t0, tbool), tlist(t0), tlist(t0), tlist(t0)), _replace),
     ]
 
 def wave_1():
@@ -331,36 +325,127 @@ def wave_1():
         '(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (head $1) $0) (drop 1 $1))))) (singleton empty) $0)))))',
     ]
 
-# simple rejection sampler
-def sample_examples(p,n=20,max_attempts=400,max_resets=10,entropy=True):
-    examples = []
-    attempts = 0
-    resets = 0
-    while len(examples) < n:
-        # print(f"attempt {resets}.{attempts} {len(examples)}")
-        attempts += 1
-        i = sample_input()
-        # print(f"input {i}")
-        try:
-            o = p.runWithArguments([i])
-        except(IndexError, ValueError):
-            continue
-        # print(f"output {o}")
-        # print(f"{i} = {o}")
-        examples.append((i,o))
-        # print("appended example")
-        if not test_examples(examples, entropy):
-            # print("popping")
-            examples.pop()
-            #print("popped")
-        if attempts > max_attempts:
-            attempts = 0
-            examples = []
-            resets += 1
-            if resets % 50 == 0:
-                print(f"  {resets}")
-    print(f"  {resets} resets")
+def sample_examples2(p,n=20,n_pools=3, n_tries=10,n_sets=10,verbose=True):
+    best_score = 0.0
+    best_s = None
+    scanned = 0
+    for _ in range(n_pools):
+        span = 0
+        pool = build_pool(p, n_tries, verbose)
+        while span < n_sets:
+            span += 1
+            scanned += 1
+            s = make_example_set(pool, n)
+            score = score_set(s)
+            if score > best_score:
+                if verbose:
+                    print(f"  {scanned}: {score}")
+                best_score = score
+                best_s = s
+                span = 0
+    return best_s
+
+def build_pool(p, n_tries, verbose):
+    if verbose:
+        print("building pool", end="", flush=True)
+    try:
+        pool = [[[([], p.runWithArguments([[]]))]]]
+    except(IndexError, ValueError):
+        pool = [[]]
+    for length in range(1,11):
+        if verbose:
+            print(".", end="", flush=True)
+        subpool = []
+        for repetitions in range(length):
+            subsubpool = []
+            os = []
+            tries = 0
+            while len(subsubpool) < n_tries and tries < n_tries**3:
+                tries += 1
+                i = sample_input(length, repetitions)
+                try:
+                    o = p.runWithArguments([i])
+                    if valid_output(o) and (i, o) not in subsubpool and o not in os:
+                        os.append(o)
+                        subsubpool.append((i,o))
+                except(IndexError, ValueError):
+                    continue
+            subpool.append(subsubpool)
+        pool.append(subpool)
+    if verbose:
+        print("done")
+    return pool
+
+def make_example_set(pool, n):
+    def helper():
+        examples = []
+        ls = set()
+        outputs = []
+        while len(examples) < n:
+            if len(ls) == len(pool):
+                return
+            length = random.randint(0, len(pool)-1)
+            ls.add(length)
+            if len(pool[length]) == 0:
+                continue
+            subpool = random.choice(pool[length])
+            for i, o in subpool:
+                if (i,o) not in examples and o not in outputs:
+                    examples.append((i,o))
+                    outputs.append(o)
+                    ls = set()
+                    break
+            if len(ls) == 0:
+                continue
+            grouped_outputs = dict((lambda xs: (tuple(xs[0]), len(list(xs[1]))))(xs)
+                                for xs in itertools.groupby(sorted(outputs)))
+            least_common = [list(k) for k,v in grouped_outputs.items()
+                            if v == min(grouped_outputs.values())]
+            for i, o in subpool:
+                if o in least_common and (i, o) not in examples:
+                    examples.append((i,o))
+                    outputs.append(o)
+                    ls = set()
+                    break
+        return examples
+    examples = None
+    while not examples:
+        examples = helper()
     return examples
+
+def valid_output(xs):
+    return len(xs) <= 15 and max(xs) < 100
+
+def score_set(s):
+    (inputs, outputs) = zip(*s)
+    n = len(s)
+
+    # Measure the distribution of input lengths
+    in_ws = [sum(len(i) == l for i in inputs) for l in range(11)]
+    foil = [len(s)//11 + (1 if x < len(s) % 11 else 0) for x in range(11)]
+    in_len = simple_entropy(in_ws)/simple_entropy(foil)
+
+    # Measure the distribution of output lengths
+    out_ws = [sum(len(o) == l for o in outputs) for l in range(11)]
+    out_len = simple_entropy(out_ws)/simple_entropy(foil)
+
+    # Inputs are unique by construction.
+    # Measure the proportion of unique outputs
+    unique = len(list(itertools.groupby(outputs)))/n
+
+    # Measure the proportion of non-trivial i/o pairs
+    nontrivial = sum(i != o for i,o in s)/n
+
+    all_items = _flatten(_flatten(s))
+    ws = [sum(i == j for i in all_items) for j in range(100)]
+    foil = [len(all_items)//100 + (1 if x < len(all_items) % 100 else 0) for x in range(100)]
+    span = simple_entropy(ws)/simple_entropy(foil)
+
+    lrs = [(len(i), len(i)-len(set(i))) for i in inputs]
+    lr_ws = [len(list(x)) for x in itertools.groupby(sorted(lrs))]
+    foil = [len(lrs)//46 + (1 if x < len(lrs) % 46 else 0) for x in range(46)]
+    combos = simple_entropy(lr_ws)/simple_entropy(foil)
+    return out_len + unique + nontrivial + 4*span + 4*combos
 
 def flip(p=0.5):
     return random.random() < p
@@ -370,67 +455,20 @@ def sample_element():
         return random.randint(0, 10)
     return random.randint(0, 99)
 
-def sample_input():
-    xs = []
-    length = random.randint(0, 10)
-    repetitions = random.randint(0, length-1) if length > 1 else 0
-    while len(xs) < length:
-        if len(xs) > 0 and flip(repetitions/(length-len(xs))):
-            xs.append(random.choice(xs))
-        else:
-            xs.append(sample_element())
+def sample_input(l=None, r=None):
+    length = random.randint(0, 10) if l is None else l
+    repetitions = random.randint(0, length-1) if r is None else r if length > 1 else 0
+    xs = set()
+    while len(xs) < length-repetitions:
+        xs.add(sample_element())
+    xs = list(xs)
+    xs.extend([random.choice(xs) for _ in range(repetitions)])
     random.shuffle(xs)
     return xs
 
-def test_examples(xs, entropy=True):
-    (inputs, outputs) = zip(*xs)
-    unique_inputs = [list(x) for x in set(tuple(x) for x in inputs)]
-    unique_outputs = [list(x) for x in set(tuple(x) for x in outputs)]
-    grouped_outputs = {}
-    grouped_lens = {}
-    for x in outputs:
-        if tuple(x) in grouped_outputs:
-            grouped_outputs[tuple(x)] += 1
-        else:
-            grouped_outputs[tuple(x)] = 1
-    for x in inputs:
-        if len(x) in grouped_lens:
-            grouped_lens[len(x)] += 1
-        else:
-            grouped_lens[len(x)] = 1
-    identical = float(sum(i == o for i, o in xs))/float(len(xs))
-    max_length = max([len(i) for i in unique_inputs] + [len(o) for o in unique_outputs] + [0])
-    max_element = max(_flatten(unique_inputs) + _flatten(unique_outputs) + [0])
-    outs = sorted(outputs)
-    ws = [len(list(v)) for k,v in itertools.groupby(outs)]
-    # print(f"{len(unique_inputs) == len(inputs)} {(not entropy or simple_entropy(ws) >= math.log2(len(xs))-1)} {identical <= 0.25} {max_length <= 20} {max_element < 100} {max(grouped_outputs.values()) <= 3} {max(grouped_lens.values()) <= 4}")
-    return (
-        len(unique_inputs) == len(inputs) and
-        # (not entropy or simple_entropy(ws) >= math.log2(len(xs))-1) and
-        (not entropy or identical <= 0.25) and
-        max_length <= 20 and
-        max_element < 100 and
-        (not entropy or max(grouped_outputs.values()) <= 3) and
-        max(grouped_lens.values()) <= 4
-    )
-
 def simple_entropy(ws):
     z = sum(ws)
-    return -sum(w/z*math.log2(w/z) for w in ws)
-
-def score_examples(xs):
-    io_scores = [difflib.SequenceMatcher(None,i,o).ratio()
-                 for i, o in xs]
-    (inputs, outputs) = zip(*xs)
-    score = 0.0
-    z = 0.0
-    for i1, i2 in itertools.combinations(inputs, 2):
-        score += difflib.SequenceMatcher(None,i1,i2).ratio()
-        z += 1.0
-    for o1, o2 in itertools.combinations(outputs, 2):
-        score += difflib.SequenceMatcher(None,o1,o2).ratio()
-        z += 1.0
-    return (score/z) + sum(io_scores)/len(xs) + 1.0/(max(io_scores)-min(io_scores))
+    return -sum(w/z*math.log2(w/z) for w in ws if w > 0)
 
 def list_primitives():
     print("Primitives:")
@@ -446,24 +484,28 @@ def test_p_with_i(e, i):
     print(f"f = {p}")
     print(f"f {i} = {o}")
 
-# construct a grammar
-Primitive.GLOBALS.clear()
-grammar = Grammar.uniform(primitives())
-list_primitives()
-
-# gather all our expressions
-es = wave_1()
-
-for i, e in enumerate(es):
+def process(i, e, verbose=True):
+    Primitive.GLOBALS.clear()
+    grammar = Grammar.uniform(primitives())
     p = Program.parse(e)
-    print(f"{i}. {p}")
-    exampless = [sample_examples(p, n=20, max_attempts=1600, entropy=(i > 1))
-                 for _ in range(1)]
-    # examples = min(exampless, key=score_examples)
-    examples = exampless[0]
+    if verbose:
+        print(f"{i}. {p}")
+    examples = sample_examples2(p, n=20, n_pools=5, n_tries=20, n_sets=500, verbose=verbose)
+    if verbose:
+        for inp, out in examples:
+            print(f"f {inp} = {out}")
     data = {
         "concept": e,
         "examples": [{"i": e[0], "o": e[1]} for e in examples]
         }
-    with open(f"../../list-routine-human-experiments/waves/1/json/c{i+1:03}.json", "w") as fd:
-        json.dump(data, fd)
+    out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
+    filename = f"../../list-routine-human-experiments/waves/1/json/c{i+1:03}.json"
+    with open(filename, "w") as fd:
+        fd.write(out.stdout)
+    if verbose:
+        print()
+
+if __name__ == "__main__":
+    # for i, e in enumerate(wave_1()[], 1):
+    #     process(i,e,True)
+    Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, False) for i, e in enumerate(wave_1()))
