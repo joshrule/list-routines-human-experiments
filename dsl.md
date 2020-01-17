@@ -1,9 +1,10 @@
 # List Routines DSL
 
 - [Overview](#overview)
-- [Types](#types)
+- [Types](#type-system)
 - [Symbols](#symbols)
 - [Lambdas](#lambdas)
+- [Ideas for the Future](#ideas-for-the-future)
 
 ## Overview
 
@@ -66,9 +67,14 @@ This section contains a table of symbols in the DSL, along with their type signa
 </thead>
 <tbody>
 <tr>
+<td>lambda</td>
+<td></td>
+<td>Opens a lambda expression.</td>
+</tr>
+<tr>
 <td>0..99</td>
 <td>int</td>
-<td>Constants for integers between 0 and 99, inclusive.</td>
+<td>Constant: integers between 0 and 99, inclusive.</td>
 </tr>
 <tr>
 <td>empty</td>
@@ -76,199 +82,19 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Constant: an empty list.</td>
 </tr>
 <tr>
-<td><p>true</p>
-<p style="margin-bottom: 0;">false</p></td>
+<td>true false</td>
 <td>bool</td>
-<td>Boolean literals.</td>
+<td>Constant: Boolean literals.</td>
 </tr>
 <tr>
-<td>max</td>
-<td>[int] → int</td>
-<td>Returns the maximum value of the list.</td>
+<td>%</td>
+<td>int → int → int</td>
+<td>Binary remainder operator. Might be low in people's prior.</td>
 </tr>
 <tr>
-<td>min</td>
-<td>[int] → int</td>
-<td>Returns the minimum value of the list.</td>
-</tr>
-<tr>
-<td>reverse</td>
-<td>[t1] → [t1]</td>
-<td>Reverses the list.</td>
-</tr>
-<tr>
-<td>sort</td>
-<td>[int] → [int]</td>
-<td>Sorts a list of integers in ascending order.</td>
-</tr>
-<tr>
-<td>unique<sup>✝</sup></td>
-<td>[t1] → [t1]</td>
-<td>Removes duplicates in the list, returning a list of unique values in the same order.</td>
-</tr>
-<tr>
-<td><p>cons</p>
-<p>prepend</p></td>
-<td>t1 → [t1] → [t1]</td>
-<td>Prepends a given item to the beginning of a list, returning a single list. See: <a href="https://en.wikipedia.org/wiki/Cons"><span class="underline">Wikipedia</span></a>.</td>
-</tr>
-<tr>
-<td>append</td>
-<td>t1 → [t1] → [t1]</td>
-<td>Appends a given item at the end of a list, returning a single list.</td>
-</tr>
-<tr>
-<td>concat</td>
-<td>[t1] → [t1] → [t1]</td>
-<td>Concatenates two lists, returning a single list.</td>
-</tr>
-<tr>
-<td>head</td>
-<td>[t1] → t1</td>
-<td>Returns the head (first element) of a list.</td>
-</tr>
-<tr>
-<td>tail<sup>✝</sup></td>
-<td>[t1] → [t1]</td>
-<td>Returns the tail of a list (elements 1 through end).</td>
-</tr>
-<tr>
-<td>last</td>
-<td>[t1] → t1</td>
-<td>Returns the last element of a list.</td>
-</tr>
-<tr>
-<td>drop</td>
-<td>int → [t1] → [t1]</td>
-<td>Drops the first N values in an input list, returning the rest.</td>
-</tr>
-<tr>
-<td>take</td>
-<td>int → [t1] → [t1]</td>
-<td>Takes the first N values in an input list, dropping the rest.</td>
-</tr>
-<tr>
-<td>slice<sup>✝</sup></td>
-<td>[t1] → int → int → [t1]</td>
-<td><p>Returns all values between two indices (values for indices above or equal to first index and below second index) within a list as a new list.</p>
-<p>slice([1,2,3,4], 1, 3) = [2,3]</p></td>
-</tr>
-<tr>
-<td>nth</td>
-<td>int → [t1] → t1</td>
-<td>Returns the nth value in a list.</td>
-</tr>
-<tr>
-<td>insert</td>
-<td>t1 → int → [t1] → [t1]</td>
-<td>Insert a value (first argument) into a list (third argument) at a given index (second argument), returning the list with the inserted value.</td>
-</tr>
-<tr>
-<td>splice</td>
-<td>[t1] → int → [t1] → [t1]</td>
-<td>Insert a list (first argument) into another list (third argument) at a given index (second argument).</td>
-</tr>
-<tr>
-<td>cut_idx</td>
-<td>int → [t1] → [t1]</td>
-<td>Removes a value at a given index in a given list, returning the list with the value removed.</td>
-</tr>
-<tr>
-<td>cut</td>
-<td>int → int → [t1] → [t1]</td>
-<td>Removes all values (inclusive) between a given index (first argument) and another index (second argument) in a given list (third argument), returning the list with the sublist removed.</td>
-</tr>
-<tr>
-<td>remove</td>
-<td>t1 → [t1] → [t1]</td>
-<td>Removes the first instance of a given value (first argument) in the input list (second argument), returning a list with the value removed.</td>
-</tr>
-<tr>
-<td>remove_all</td>
-<td>t1 → [t1] → [t1]</td>
-<td>Removes all values matching a given value (first argument) in the input list (second argument), returning a list with values removed.</td>
-</tr>
-<tr>
-<td>find</td>
-<td>(t1 → bool) → [t1] → [int]</td>
-<td>Returns the indices of the elements that pass the predicate.</td>
-</tr>
-<tr>
-<td>replace</td>
-<td>int → t1 → [t1] → [t1]</td>
-<td>Replace a value in an input list, returning the list with replacements. First argument is the index of the value to replace, and the second argument is the value to replace it with.</td>
-</tr>
-<tr>
-<td>replace_all</td>
-<td>t1 → t1 → [t1] → [t1]</td>
-<td>Replace all the values in an input list, returning the list with replacements.</td>
-</tr>
-<tr>
-<td>count</td>
-<td>(t1 → bool) → [t1] → int</td>
-<td>Counts the number of values in an input list matching a function of type (t1 → bool). Essentially, length(filter(func → xs)).</td>
-</tr>
-<tr>
-<td>range</td>
-<td>int → int → int → [int]</td>
-<td>Range takes a start position, end position, and step value. The returned range is inclusive with respect to the start and end position, and each value in the returned list differs by the step value.</td>
-</tr>
-<tr>
-<td>map</td>
-<td>(t1 → t2) → [t1] → [t2]</td>
-<td>Higher-order function that applies an input function (t1 → t2) to each value of type t1 in a list [t1]. E.g. map(x^2, xs). Since the input function is applied to each value of the input list, and the return type of the input function is of type t2, the return value of the call to map is a new list of type [t2].</td>
-</tr>
-<tr>
-<td>mapi</td>
-<td>(int → t1 → t2) → [t1] → [t2]</td>
-<td>Same as map except the input function is also passed the index in addition to the value for each value in the input list of type [t1].</td>
-</tr>
-<tr>
-<td>filter</td>
-<td>(t1 → bool) → [t1] → [t1]</td>
-<td>Higher-order function that returns a filtered list of values from a list, filtering by an input function. The input function should have a return value of 0 or 1 (“boolean” ints).</td>
-</tr>
-<tr>
-<td>filteri</td>
-<td>(int → t1 → bool) → [t1] → [t1]</td>
-<td>Same as filter except the input function is passed the index and value for each value in the list.</td>
-</tr>
-<tr>
-<td><p>fold</p>
-<p>(reduce)</p></td>
-<td>(t1 → t2 → t2) → t2 → [t1] → t2</td>
-<td>Higher-order function that returns a single value after repeatedly applying a function to an input list [t1] and accumulating results in a value of type t2 (initialized in main second argument). Return value could be a list (e.g. in the case of dedupe) or an int (e.g. in the case of cumulative sum). The first input value to the input function is the value of type t1 at a given index in the list, and the second value is the accumulator of type t2. The accumulator t2 is returned after processing all elements in the input list [t1].</td>
-</tr>
-<tr>
-<td>foldi</td>
-<td>(int → t1 → t2 → t2) → t2 → [t1] → t2</td>
-<td>Same as fold except the input function is passed the index, item, and accumulator for each value in the list. The first input value to the input function is the index, the second is the value at a given index in the list, and the last value is the accumulator.</td>
-</tr>
-<tr>
-<td>unfold</td>
-<td>(t1 → t2) → (t1 → t1) → (t1 → bool) → t1 → [t2]</td>
-<td>Higher-order function that returns a [t2] by applying a function of type (t1 → t2) to values of type t1 generated by repeated application of a function of type (t1 → t1) to some seed. Terminates if some predicate function with type signature (t1 → bool) evaluates to false. Effectively the opposite of fold, can be used to construct lists.</td>
-</tr>
-<tr>
-<td>group</td>
-<td>(t1 → t2) → [t1] → [[t1]]</td>
-<td>Higher-order function that takes an input list and returns a list of lists grouped by an input function of type (t1 → t2).</td>
-</tr>
-<tr>
-<td>flatten</td>
-<td>[[t1]] → [t1]</td>
-<td>Returns a list flattened into a single dimension.</td>
-</tr>
-<tr>
-<td>repeat</td>
-<td>t1 → int → [t1]</td>
-<td>Returns a list of an input value repeated N times. First argument is the input value to repeat, and second argument is number of times to repeat.</td>
-</tr>
-<tr>
-<td>if</td>
-<td>(t1 → bool) → t2 → t2 → t2</td>
-<td><p>If a predicate function evaluates to &gt; 0, the next expression is evaluated to return a value of type t2. Otherwise, the last expression is evaluated and its result is returned. Standard:</p>
-<p>if X then Y else Z</p></td>
+<td>*</td>
+<td>int → int → int</td>
+<td>Binary multiplication operator.</td>
 </tr>
 <tr>
 <td>+</td>
@@ -281,59 +107,14 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Binary subtraction operator.</td>
 </tr>
 <tr>
-<td>*</td>
-<td>int → int → int</td>
-<td>Binary multiplication operator.</td>
-</tr>
-<tr>
 <td>/</td>
 <td>int → int → int</td>
 <td>Binary quotient operator.</td>
 </tr>
 <tr>
-<td>%<sup>✝</sup></td>
-<td>int → int → int</td>
-<td>Binary remainder operator. Could have been used in conjunction with 2 to implement is odd / even. People may not have this concept, or it might be very low in the prior.</td>
-</tr>
-<tr>
-<td>sum</td>
-<td>[int] → int</td>
-<td>Returns the sum of all integers in a list.</td>
-</tr>
-<tr>
-<td>product</td>
-<td>[int] → int</td>
-<td>Returns the product of all integers in a list.</td>
-</tr>
-<tr>
-<td>abs</td>
-<td>int → int</td>
-<td>Returns the absolute value of an integer.</td>
-</tr>
-<tr>
-<td>singleton</td>
-<td>t1 → [t1]</td>
-<td>Returns the input argument as a list. (e.g. 7 → [7], 3 → [3]). This is useful in cases where a function would otherwise return a single value instead of a list, because the sampled concepts need to have type [int] → [int].</td>
-</tr>
-<tr>
-<td>zip</td>
-<td>[t1] → [t1] → [[t1]]</td>
-<td>Returns a list of pairs (list of lists of values) where an element at index N of the returned list is the pair of each element at index N of two input lists.</td>
-</tr>
-<tr>
-<td>not</td>
-<td>bool → bool</td>
-<td>NOT boolean operator.</td>
-</tr>
-<tr>
-<td>and</td>
-<td>bool → bool → bool</td>
-<td>AND boolean operator.</td>
-</tr>
-<tr>
-<td>or</td>
-<td>bool → bool → bool</td>
-<td>OR boolean operator.</td>
+<td>&lt;</td>
+<td>int → int → bool</td>
+<td>Binary less than predicate.</td>
 </tr>
 <tr>
 <td>==</td>
@@ -343,22 +124,118 @@ This section contains a table of symbols in the DSL, along with their type signa
 <tr>
 <td>&gt;</td>
 <td>int → int → bool</td>
-<td>Binary greater than predicate. Returns 1 if the first argument is greater than the second argument. Otherwise, returns 0.</td>
+<td>Binary greater than predicate.</td>
 </tr>
 <tr>
-<td>&lt;</td>
-<td>int → int → bool</td>
-<td>Binary less than predicate. Returns 1 if the first argument is less than the second argument. Otherwise, returns 0.</td>
+<tr>
+<td>abs</td>
+<td>int → int</td>
+<td>Returns the absolute value of an integer.</td>
 </tr>
 <tr>
-<td>is_in</td>
-<td>t1 → [t1] → bool</td>
-<td>Returns whether or not the integer exists in a list.</td>
+<td>and</td>
+<td>bool → bool → bool</td>
+<td>Boolean AND operator.</td>
 </tr>
 <tr>
-<td>is_empty</td>
-<td>[t1] → bool</td>
-<td>Predicate that checks if the list is empty.</td>
+<td>append</td>
+<td>[t1] → t1 → [t1]</td>
+<td>Appends a given item at the end of a list, returning a single list.</td>
+</tr>
+<tr>
+<td>concat</td>
+<td>[t1] → [t1] → [t1]</td>
+<td>Concatenates two lists, returning a single list.</td>
+</tr>
+<tr>
+<td><a href="https://en.wikipedia.org/wiki/Cons"><span>cons</span></a></td>
+<td>t1 → [t1] → [t1]</td>
+<td>Prepends a given item to the beginning of a list.</td>
+</tr>
+<tr>
+<td>count</td>
+<td>(t1 → bool) → [t1] → int</td>
+<td>Counts the number of values in an input list matching a function of type (t1 → bool). Essentially, (length (filter f xs)).</td>
+</tr>
+<tr>
+<td>cut_idx</td>
+<td>int → [t1] → [t1]</td>
+<td>Removes a value at a given index in a given list.</td>
+</tr>
+<tr>
+<td>cut_slice</td>
+<td>int → int → [t1] → [t1]</td>
+<td>Removes all values (inclusive) between a given index (first argument) and another index (second argument) in a given list (third argument).</td>
+</tr>
+<tr>
+<td>cut_val</td>
+<td>t1 → [t1] → [t1]</td>
+<td>Removes the first instance of a given value (first argument) in the input list (second argument).</td>
+</tr>
+<tr>
+<td>cut_vals</td>
+<td>t1 → [t1] → [t1]</td>
+<td>Removes all values matching a given value (first argument) in the input list (second argument).</td>
+</tr>
+<tr>
+<td>drop</td>
+<td>int → [t1] → [t1]</td>
+<td>Drops the first N values in an input list, returning the rest.</td>
+</tr>
+<tr>
+<td>droplast</td>
+<td>int → [t1] → [t1]</td>
+<td>Drops the last N values in an input list, returning the rest.</td>
+</tr>
+<tr>
+<td>filter</td>
+<td>(t1 → bool) → [t1] → [t1]</td>
+<td>Higher-order function that returns a filtered list of values from a list, filtering by an input function.</td>
+</tr>
+<tr>
+<td>filteri</td>
+<td>(int → t1 → bool) → [t1] → [t1]</td>
+<td>Same as filter except the input function is passed the index and value for each element in the list.</td>
+</tr>
+<tr>
+<td>find</td>
+<td>(t1 → bool) → [t1] → [int]</td>
+<td>Returns the indices of the elements that pass the predicate.</td>
+</tr>
+<tr>
+<td>flatten</td>
+<td>[[t1]] → [t1]</td>
+<td>Returns a list flattened into a single dimension.</td>
+</tr>
+<tr>
+<td>fold</td>
+<td>(t2 → t1 → t2) → t2 → [t1] → t2</td>
+<td>Higher-order function that returns a single value after repeatedly applying a function to an input list [t1] and accumulating results in a value of type t2 (initialized in main second argument). Return value could be a list (e.g. in the case of dedupe) or an int (e.g. in the case of cumulative sum). The first input value to the input function is the value of type t1 at a given index in the list, and the second value is the accumulator of type t2. The accumulator t2 is returned after processing all elements in the input list [t1].</td>
+</tr>
+<tr>
+<td>foldi</td>
+<td>(int → t2 → t1 → t2) → t2 → [t1] → t2</td>
+<td>Same as fold except the input function is passed the index, item, and accumulator for each value in the list. The first input value to the input function is the index, the second is the value at a given index in the list, and the last value is the accumulator.</td>
+</tr>
+<tr>
+<td>group</td>
+<td>(t1 → t2) → [t1] → [[t1]]</td>
+<td>Higher-order function that takes an input list and returns a list of lists grouped by an input function of type (t1 → t2).</td>
+</tr>
+<tr>
+<td>head</td>
+<td>[t1] → t1</td>
+<td>Returns the head (first element) of a list.</td>
+</tr>
+<tr>
+<td>if</td>
+<td>bool → t2 → t2 → t2</td>
+<td>standard conditional</td>
+</tr>
+<tr>
+<td>insert</td>
+<td>t1 → int → [t1] → [t1]</td>
+<td>Insert a value (first argument) into a list (third argument) at a given index (second argument), returning the list with the inserted value.</td>
 </tr>
 <tr>
 <td>is_even</td>
@@ -366,31 +243,134 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Predicate that checks if an integer is even.</td>
 </tr>
 <tr>
+<td>is_in</td>
+<td>t1 → [t1] → bool</td>
+<td>Returns whether or not the integer exists in a list.</td>
+</tr>
+<tr>
 <td>is_odd</td>
 <td>int → bool</td>
 <td>Predicate that checks if an integer is odd.</td>
 </tr>
 <tr>
-<td>any</td>
-<td>(t1 → bool) → [t1] → bool</td>
-<td>Returns whether or not the input function returns true for any of the values in the input list.</td>
+<td>last</td>
+<td>[t1] → t1</td>
+<td>Returns the last element of a list.</td>
 </tr>
 <tr>
-<td>all</td>
-<td>(t1 → bool) → [t1] → bool</td>
-<td>Returns whether or not the input function returns true for all of the values in the input list.</td>
+<td>length</td>
+<td>[t1] → int</td>
+<td>Returns the length of a list.</td>
 </tr>
 <tr>
-<td>lambda</td>
-<td></td>
-<td>Opens a lambda expression.</td>
+<td>map</td>
+<td>(t1 → t2) → [t1] → [t2]</td>
+<td>Higher-order function that applies an input function (t1 → t2) to each value of type t1 in a list [t1], e.g. (map is_even [0,1,2]).</td>
+</tr>
+<tr>
+<td>mapi</td>
+<td>(int → t1 → t2) → [t1] → [t2]</td>
+<td>Same as map except the input function is also passed the index in addition to the value for each value in the input list of type [t1].</td>
+</tr>
+<td>max</td>
+<td>[int] → int</td>
+<td>Returns the maximum value of the list.</td>
+</tr>
+<tr>
+<td>min</td>
+<td>[int] → int</td>
+<td>Returns the minimum value of the list.</td>
+</tr>
+<tr>
+<td>not</td>
+<td>bool → bool</td>
+<td>Boolean NOT operator.</td>
+</tr>
+<tr>
+<td>nth</td>
+<td>int → [t1] → t1</td>
+<td>Returns the nth value in a list.</td>
+</tr>
+<tr>
+<td>or</td>
+<td>bool → bool → bool</td>
+<td>Boolean OR operator.</td>
+</tr>
+<tr>
+<td>product</td>
+<td>[int] → int</td>
+<td>Returns the product of all integers in a list.</td>
+</tr>
+<tr>
+<td>range</td>
+<td>int → int → int → [int]</td>
+<td>Range takes a start position, end position, and step value. The returned range is inclusive with respect to the start and end position, and each value in the returned list differs by the step value.</td>
+</tr>
+<tr>
+<td>repeat</td>
+<td>t1 → int → [t1]</td>
+<td>Returns a list of an input value repeated N times. First argument is the input value to repeat, and second argument is number of times to repeat.</td>
+</tr>
+<tr>
+<td>replace</td>
+<td>int → t1 → [t1] → [t1]</td>
+<td>Replace a value in an input list, returning the list with replacements. First argument is the index of the value to replace, and the second argument is the value to replace it with.</td>
+</tr>
+<tr>
+<td>reverse</td>
+<td>[t1] → [t1]</td>
+<td>Reverses the list.</td>
+</tr>
+<tr>
+<td>singleton</td>
+<td>t1 → [t1]</td>
+<td>Returns the input argument as a list. (e.g. 7 → [7], 3 → [3]). This is useful in cases where a function would otherwise return a single value instead of a list, because the sampled concepts need to have type [int] → [int].</td>
+</tr>
+<tr>
+<td>slice</td>
+<td>int → int → [t1] → [t1]</td>
+<td><p>Returns all values between two indices (values for indices above or equal to first index and below second index) within a list as a new list.</p>
+<p>slice([1,2,3,4], 1, 3) = [2,3]</p></td>
+</tr>
+<tr>
+<td>sort</td>
+<td>[int] → [int]</td>
+<td>Sorts a list of integers in ascending order.</td>
+</tr>
+<tr>
+<td>splice</td>
+<td>[t1] → int → [t1] → [t1]</td>
+<td>Insert a list (first argument) into another list (third argument) at a given index (second argument).</td>
+</tr>
+<tr>
+<td>sum</td>
+<td>[int] → int</td>
+<td>Returns the sum of all integers in a list.</td>
+</tr>
+<tr>
+<td>take</td>
+<td>int → [t1] → [t1]</td>
+<td>Takes the first N values in an input list, dropping the rest.</td>
+</tr>
+<tr>
+<td>takelast</td>
+<td>int → [t1] → [t1]</td>
+<td>Takes the last N values in an input list, dropping the rest.</td>
+</tr>
+<tr>
+<td>unique</td>
+<td>[t1] → [t1]</td>
+<td>Removes duplicates in the list, returning a list of unique values in the same order.</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>[t1] → [t1] → [[t1]]</td>
+<td>Returns a list of pairs (list of lists of values) where an element at index N of the returned list is the pair of each element at index N of two input lists.</td>
 </tr>
 </tbody>
 </table>
 
 *Table 1.1 - Function Definitions*
-
-<sup>✝</sup>Functions marked with the cross symbol above (i.e. \<func\><sup>✝</sup>) are candidates for rejection. These functions may eventually be removed from the DSL. These concepts might or might not be primitive, so we’ll test them to find out.
 
 ## Lambdas
 
@@ -407,3 +387,23 @@ Some more examples of Lambda functions can be seen below:
 | (lambda (lambda (index $1 $0))) | (int → \[t1\] → t1) | Returns the *N-1*th value of an input list for input value *N*. |
 
 *Table 1.2 - Lambda Examples*
+
+## Ideas for the Future
+
+- more sophisticated `replace` (`(int -> t1 -> bool) -> [t1] -> [t1] -> [t1]`)
+- rename `head` to `first`; add `second` and `third`
+- add `windows` and `chunks`
+- add `tail` (i.e. `(drop 1 xs)`) and `init` (i.e. `(droplast 1 xs)`)
+- add `is_empty`, `any`, and `all`
+- add `unfold`
+- review existing list libraries for ideas
+    - [`dash.el`](https://github.com/magnars/dash.el)
+    - [`rnrs lists`](https://www.gnu.org/software/guile/docs/master/guile.html/rnrs-lists.html)
+    - [`rnrs base`](https://www.gnu.org/software/guile/docs/master/guile.html/rnrs-base.html#rnrs-base)
+    - [Racket pairs & lists](https://docs.racket-lang.org/reference/pairs.html)
+    - [`underscore.js`](http://underscorejs.org/)
+    - [`underscore-contrib`](http://documentcloud.github.io/underscore-contrib/)
+    - [`std::Vec`](https://doc.rust-lang.org/stable/std/vec/struct.Vec.html)
+    - [`std::iter::Iterator`](https://doc.rust-lang.org/stable/std/iter/trait.Iterator.html)
+    - [`itertools::Itertool`](https://docs.rs/itertools/0.8.0/itertools/trait.Itertools.html)
+    - [`Data.List`](http://hackage.haskell.org/package/base-4.9.0.0/docs/Data-List.html)
