@@ -242,6 +242,58 @@ function make_tree(svg, root, width, height, x, y, r, sep, symbols, opacity = "f
     });
 };
 
+var make_iq_pair = function(div, input, disabled) {
+    var row = div.append("div").attr("class", "row text-center align-items-center");
+    var i_div = row.append("div").attr("class", "col-auto");
+    make_list(i_div, input);
+    row.append("div").attr("class", "col-1").style("font-size", "200%").append("div").append("span").attr("class", "fas fa-arrow-right");
+    var q_div = row.append("div").attr("class", "col-5").append("div").attr("class", "input-group");
+    var text = q_div.append("input")
+        .attr("type", "text")
+        .attr("class", "form-control")
+        .attr("placeholder", "Enter the output list")
+        .attr("aria-label", "output list")
+        .attr("aria-describedby", "basic-addon2");
+    var button = q_div.append("div")
+        .attr("class", "input-group-append")
+        .append("button")
+        .attr("class", "btn btn-outline-secondary")
+        .attr("type", "button")
+        .text("Submit");
+    if(disabled) {
+        text.attr("disabled", disabled);
+        button.attr("disabled", disabled);
+    }
+};
+
+var make_io_pair = function(div, input, output) {
+    var row = div.append("div").attr("class", "row text-center align-items-center");
+    var i_div = row.append("div").attr("class", "col-auto");
+    make_list(i_div, input);
+    row.append("div").attr("class", "col-1").style("font-size", "200%").append("div").append("span").attr("class", "fas fa-arrow-right");
+    var o_div = row.append("div").attr("class", "col-auto");
+    make_list(o_div, output);
+};
+
+var make_list = function(div, input) {
+    var list = input.list;
+    var div = div.append("div").attr("class","list_stimulus");
+    // add the list itself
+    div.selectAll("text")
+        .data([list])
+        .enter().append("text")
+        .style("pointer-events", "none")
+        .text(function(d){return pretty_list(d);})
+        .style("font-family", "SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace")
+        .style("font-size", "200%")
+        .attr("dy","1em");
+
+};
+
+var pretty_list = function(xs) {
+    return "[" + _.map(xs, x => x.toString()).join(" ") + "]"
+}
+
 var make_lock = function(div, challenge, response_1, response_2, domain, width = 11, r = 12, sep = 7, gap = 3) {
     var get_item = function(treeP, word) {return treeP ? d3.hierarchy(convert_string_to_tree(word)) : word;};
     var stroke_width = 1.0;
@@ -1009,8 +1061,8 @@ var PreQuiz = function(attempt) {
 
         // Collect the data
         $('#prequiz input[type=radio]:checked').each(function() {
-            if ((this.name==="prequiz-q1" && this.value!=="2AFC") ||
-                (this.name==="prequiz-q2" && this.value!=="harder") ||
+            if ((this.name==="prequiz-q1" && this.value!=="learn") ||
+                (this.name==="prequiz-q2" && this.value!=="50") ||
                 (this.name==="prequiz-q3" && this.value!=="report")) {
                 passed = false;
             }
