@@ -1,1 +1,10 @@
+# local code which doesn't install well by itself
 ec/
+
+# sensitive information
+*.psiturk_history
+*db
+*server.log
+
+# no need to track
+*pyc

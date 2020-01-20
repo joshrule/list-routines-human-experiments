@@ -1,0 +1,995 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item font-weight-bold">
+                            <span class="nav-link">Instructions</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" id="page1-tab" href="#page1" role="tab" aria-controls="page1" aria-selected="true">1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" id="page2-tab" href="#page2" role="tab" aria-controls="page2" aria-selected="false">2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" data-toggle="tab" id="page3-tab" href="#page3" role="tab" aria-controls="page3" aria-selected="false">3</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" data-toggle="tab" id="page4-tab" href="#page4" role="tab" aria-controls="page4" aria-selected="false">4</a>
+                        </li>
+                    </ul>
+                    <script>
+                     if (!counterbalance) {
+                         d3.selectAll(".nav-link").classed("disabled", false);
+                     }
+                    </script>
+                </div>
+	              <div class="instructions card-body bg-light">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="page1" role="tabpanel" aria-labelledby="page1-tab">
+                            <p>
+                                A team of scientists want your help studying locked doors in a labyrinth
+                                discovered among the ruins of an ancient alien civilization.
+                            </p>
+                            <div class="row mb-3 justify-content-around align-items-center text-center">
+                                <div id="example_labeled" class="col-auto"> </div>
+                            </div>
+                            <p class="last">
+                                The face of each lock contains three patterns of colorful dots.
+                                The top pattern is called the challenge, and the bottom two are
+                                called responses.
+                            </p>
+                            <script>
+                             if (condition > 6) {
+                                 // .2, B0 (Babc -> cba), P0 (Pab -> b(ab)), Y0 (Yab -> b)
+                                 d3.select('#example_labeled').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0B0P0Y0'},
+                                     {word: '.2.2Y0P0B0', label: "correct"},
+                                     {word: '.2.2Y0Y0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7, 3);
+                                 var svg = d3.select('#example_labeled svg');
+                                 // hack!
+                                 svg.attr('width', 222);
+                                 // vertical alignment: https://bost.ocks.org/mike/d3/workshop/#114
+                                 svg.append('text').attr('x',140).attr('y',51.5).attr('dy','0.35em').text('Challenge');
+                                 svg.append('text').attr('x',140).attr('y',154.5).attr('dy','0.35em').text('Response 1');
+                                 svg.append('text').attr('x',140).attr('y',250.5).attr('dy','0.35em').text('Response 2');
+                             } else {
+                                 d3.select('#example_labeled').call(
+                                     make_lock,
+                                     {word: 'BPYYYB'},
+                                     {word: 'BYYB', label: "correct"},
+                                     {word: 'BYPYYB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7, 3);
+                                 var svg = d3.select('#example_labeled svg');
+                                 // hack!
+                                 svg.attr('width', 220);
+                                 // vertical alignment: https://bost.ocks.org/mike/d3/workshop/#114
+                                 svg.append('text').attr('x',140).attr('y',17).attr('dy','0.35em').text('Challenge');
+                                 svg.append('text').attr('x',140).attr('y',51).attr('dy','0.35em').text('Response 1');
+                                 svg.append('text').attr('x',140).attr('y',78).attr('dy','0.35em').text('Response 2');
+                             }
+                             //d3.select('#example_labeled').append("br");
+                             //d3.select('#example_labeled').append("small").text("A lock face contains a challenge and two responses.");
+                            </script>
+                        </div>
+                        <div class="tab-pane fade" id="page2" role="tabpanel" aria-labelledby="page2-tab">
+                            <p>
+                                Each lock face has one correct response and one
+                                incorrect response. To unlock a door, you must
+                                choose the correct response, which turns green:
+                            </p>
+                            <script>
+                             if (condition > 6) {
+                                 // .2, B0 (Babc -> cba), P0 (Pab -> b(ab)), Y0 (Yab -> b)
+                                 d3.select('#example_correct_1').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0B0P0Y0'},
+                                     {word: '.2.2Y0P0B0', label: "correct"},
+                                     {word: '.2.2Y0Y0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7);
+                                 d3.select('#example_correct_2').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0B0P0Y0'},
+                                     {word: '.2.2Y0P0B0', label: "correct"},
+                                     {word: '.2.2Y0Y0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                             } else {
+                                 d3.select('#example_correct_1').call(
+                                     make_lock,
+                                     {word: 'BPYYYB'},
+                                     {word: 'BYYB', label: "correct"},
+                                     {word: 'BYPYYB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7);
+                                 var alignment = [
+                                     {
+                                         string: 'B',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[1,2]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[2,3]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'YYB',
+                                         input: [[3,6]],
+                                         output: [[1,4]],
+                                     },
+                                 ];
+                                 d3.select('#example_correct_2').call(
+                                     make_lock,
+                                     {word: 'BPYYYB'},
+                                     {word: 'BYYB', label: "correct"},
+                                     {word: 'BYPYYB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {if (counterbalance) {
+                                       d3.selectAll(".nav-link").classed('disabled', false);
+                                       d3.select("#example_correct_2 svg")
+                                         .call(animate_mechanism, alignment, 'EXAMPLE', 'string', 10, 3, 7);
+                                   }});
+                             }
+                            </script>
+                            <div class="row align-items-center justify-content-around text-center">
+                                <div class="col"></div>
+                                <div id="example_correct_1" class="col-2"></div>
+                                <div class="col-1" style="font-size: 2rem;">
+                                    <span class="fas fa-arrow-right"></span>
+                                </div>
+                                <div id="example_correct_2" class="col-2"></div>
+                                <div class="col-1" style="font-size: 2rem;">
+                                    <span class="fas fa-arrow-right"></span>
+                                </div>
+                                <div class="col-2">
+                                    <span class="fas fa-door-open" style="font-size: 5rem;"></span>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row caption align-items-start justify-content-around text-center mb-3">
+                                <div class="col-2"></div>
+                                <div class="col-2">
+                                    <small>The initial lock face.</small>
+                                </div>
+                                <div class="col">
+                                </div>
+                                <div class="col-3">
+                                    <small>Correct responses turn green.</small>
+                                </div>
+                                <div class="col">
+                                </div>
+                                <div class="col-2">
+                                    <small>The door unlocks.</small>
+                                </div>
+                                <div class="col-2"></div>
+                            </div>
+                            <p>
+                                If you respond incorrectly, the response turns red, the door remains locked, and a new lock
+                                face appears after a short delay:
+                            </p>
+                            <script>
+                             if (condition > 6) {
+                                 // .2, B0 (Babc -> cba), P0 (Pab -> b(ab)), Y0 (Yab -> b)
+                                 d3.select('#example_incorrect_1').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0B0P0Y0'},
+                                     {word: '.2.2Y0P0B0', label: "correct"},
+                                     {word: '.2.2Y0Y0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7);
+                                 d3.select('#example_incorrect_2').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0B0P0Y0'},
+                                     {word: '.2.2Y0P0B0', label: "correct"},
+                                     {word: '.2.2Y0Y0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, false);
+                                 d3.select('#example_incorrect_3').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0P0B0.2P0B0'},
+                                     {word: '.2.2.2P0B0B0P0', label: "incorrect"},
+                                     {word: '.2.2P0B0.2B0P0', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7);
+                             } else {
+                                 d3.select('#example_incorrect_1').call(
+                                     make_lock,
+                                     {word: 'BPYYYB'},
+                                     {word: 'BYYB', label: "correct"},
+                                     {word: 'BYPYYB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7);
+                                 var alignment = [
+                                     {
+                                         string: 'B',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[1,2]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[2,3]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'YYB',
+                                         input: [[3,6]],
+                                         output: [[1,4]],
+                                     },
+                                 ];
+                                 d3.select('#example_incorrect_2').call(
+                                     make_lock,
+                                     {word: 'BPYYYB'},
+                                     {word: 'BYYB', label: "correct"},
+                                     {word: 'BYPYYB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, false)
+                                   .select("svg")
+                                   .on("click", () => {if (counterbalance) {
+                                       d3.selectAll(".nav-link").classed('disabled', false);
+                                       d3.select("#example_incorrect_2 svg")
+                                         .call(animate_mechanism, alignment, 'EXAMPLE', 'string', 10, 3, 7);
+                                   }});
+                                 d3.select('#example_incorrect_3').call(
+                                     make_lock,
+                                     {word: 'YPYY'},
+                                     {word: 'YBBY', label: "incorrect"},
+                                     {word: 'YY', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7);
+                             }
+                            </script>
+                            <div class="row align-items-center justify-content-around text-center">
+                                <div class="col"></div>
+                                <div id="example_incorrect_1" class="col-2"></div>
+                                <div class="col-1" style="font-size: 2rem;">
+                                    <span class="fas fa-arrow-right"></span>
+                                </div>
+                                <div id="example_incorrect_2" class="col-2"></div>
+                                <div class="col-1" style="font-size: 2rem;">
+                                    <span class="fas fa-stopwatch"></span>
+                                </div>
+                                <div id="example_incorrect_3" class="col-2"></div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row caption align-items-start justify-content-around text-center">
+                                <div class="col-2"></div>
+                                <div class="col-2">
+                                    <small>The initial lock face.</small>
+                                </div>
+                                <div class="col"></div>
+                                <div class="col-3">
+                                    <p>
+                                        <small>Incorrect responses turn red.</small>
+                                    </p>
+                                </div>
+                                <div class="col"></div>
+                                <div class="col-2">
+                                    <small>A new lock face appears.</small>
+                                </div>
+                                <div class="col-2"></div>
+                            </div>
+                            <p>
+                                The correct response is created from the
+                                challenge by one of several mechanisms inside
+                                the lock. Mechanisms are never random, rigged,
+                                or deceptive; by learning how each mechanism
+                                works, you can learn to identify the correct
+                                response.
+                            </p>
+                            <script>
+                             if (counterbalance) {
+                                 d3.select("#page2")
+                                   .append("p")
+                                   .html("After you respond, you can click anywhere on the lock to see an animation showing how the mechanism created the correct response (i.e. which dots it added, removed, or copied). Pay special attention to how the mechanism groups the dots <span id=\"grouping\"></span>");
+                                 d3.select("#page2")
+                                   .append("p")
+                                   .attr("class", "font-weight-bold")
+                                   .html("Before continuing, click one of the two lock faces above marked with red or green to watch the replay. Then go to tab <span class=\"font-italic\">3</span>.");
+
+                                 if (condition < 6) {
+                                     d3.select("#grouping").html("(i.e. where it puts spaces).");
+                                 } else {
+                                     d3.select("#grouping").html("(i.e. which lines fade? which remain?).");
+                                 }
+                             }
+                            </script>
+                        </div>
+                        <div class="tab-pane fade" id="page3" role="tabpanel" aria-labelledby="page3-tab">
+                            <p>
+                                When you start the HIT, every lock face will use
+                                the same mechanism (call it Mechanism 1).
+                            </p>
+                            <script>
+                             if (condition > 6) {
+                                 // .2, B0 (Babc -> cba), P0 (Pab -> b(ab)), Y0 (Yab -> b)
+                                 d3.select('#example_single_1').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0B0P0Y0'},
+                                     {word: '.2.2Y0P0B0', label: "correct"},
+                                     {word: '.2.2Y0Y0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_single_2').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0P0.2Y0Y0B0'},
+                                     {word: '.2.2B0.2Y0Y0P0', label: "correct"},
+                                     {word: '.2B0.2P0.2Y0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_single_3').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0Y0Y0Y0'},
+                                     {word: '.2.2B0Y0Y0', label: "incorrect"},
+                                     {word: '.2.2Y0Y0Y0', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_single_4').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0P0B0.2P0B0'},
+                                     {word: '.2.2P0B0.2B0P0', label: "correct"},
+                                     {word: '.2.2.2P0B0B0P0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                             } else {
+                                 var alignment1 = [
+                                     {
+                                         string: 'B',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[1,2]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[2,3]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'YYB',
+                                         input: [[3,6]],
+                                         output: [[1,4]],
+                                     },
+                                 ];
+                                 d3.select('#example_single_1').call(
+                                     make_lock,
+                                     {word: 'BPYYYB'},
+                                     {word: 'BYYB', label: "correct"},
+                                     {word: 'BYPYYB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_single_1 svg")
+                                             .call(animate_mechanism, alignment1, 'EXAMPLE', 'string', 10, 3, 7);}});
+                                 var alignment2 = [
+                                     {
+                                         string: 'PYY',
+                                         input: [[0,3]],
+                                         output: [[0,3]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[3,4]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[4,5]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'B',
+                                         input: [[5,6]],
+                                         output: [[3,4]],
+                                     },
+                                 ];
+                                 d3.select('#example_single_2').call(
+                                     make_lock,
+                                     {word: 'PYYPYB'},
+                                     {word: 'PYYB', label: "correct"},
+                                     {word: 'PPB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_single_2 svg")
+                                             .call(animate_mechanism, alignment2, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment3 = [
+                                     {
+                                         string: 'PP',
+                                         input: [[0,2]],
+                                         output: [[0,2]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[2,3]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[3,4]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'YY',
+                                         input: [[4,6]],
+                                         output: [[2,4]],
+                                     },
+                                 ];
+                                 d3.select('#example_single_3').call(
+                                     make_lock,
+                                     {word: 'PPPYYY'},
+                                     {word: 'PBBY', label: "incorrect"},
+                                     {word: 'PPYY', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_single_3 svg")
+                                             .call(animate_mechanism, alignment3, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment4 = [
+                                     {
+                                         string: 'Y',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[1,2]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[2,3]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[3,4]],
+                                         output: [[1,2]],
+                                     },
+                                 ];
+                                 d3.select('#example_single_4').call(
+                                     make_lock,
+                                     {word: 'YPYY'},
+                                     {word: 'YY', label: "correct"},
+                                     {word: 'YBBY', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_single_4 svg")
+                                             .call(animate_mechanism, alignment4, 'EXAMPLE', 'string', 10, 3, 7)}});
+                             }
+                            </script>
+                            <div class="row align-items-center justify-content-around text-center">
+                                <div class="col"></div>
+                                <div id="example_single_1" class="col-2"></div>
+                                <div id="example_single_2" class="col-2"></div>
+                                <div id="example_single_3" class="col-2"></div>
+                                <div id="example_single_4" class="col-2"></div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row caption align-items-start justify-content-around text-center mb-3">
+                                <div class="col-8">
+                                    <small>
+                                        All of these lock faces use Mechanism 1 from this
+                                        lock. Can you see how Mechanism 1 creates the
+                                        correct response?
+                                    </small>
+                                </div>
+                            </div>
+                            <p>
+                                After a while, a new mechanism (call it Mechanism 2) will
+                                activate. Some lock faces will use Mechanism 1 and others
+                                will use Mechanism 2. You will be told when a new mechanism
+                                activates but not which mechanism a lock faces uses.
+                            </p>
+                            <script>
+                             if (condition > 6) {
+                                 // .2, B0 (Babc -> cba), P0 (Pab -> b(ab)), Y0 (Yab -> b)
+                                 d3.select('#example_double_1').call(
+                                     make_lock,
+                                     {word: '.2P0.2.2P0B0Y0'},
+                                     {word: '.2P0.2Y0.2B0Y0', label: "correct"},
+                                     {word: '.2P0.2.2Y0B0Y0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_double_2').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0P0Y0Y0'},
+                                     {word: '.2Y0P0', label: "incorrect"},
+                                     {word: '.2.2Y0Y0P0', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_double_3').call(
+                                     make_lock,
+                                     {word: '.2.2P0.2Y0Y0B0'},
+                                     {word: '.2.2Y0B0P0', label: "incorrect"},
+                                     {word: '.2B0.2.2Y0Y0B0', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_double_4').call(
+                                     make_lock,
+                                     {word: '.2.2.2P0B0B0Y0'},
+                                     {word: '.2.2B0.2B0B0Y0', label: "correct"},
+                                     {word: '.2Y0.2B0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                             } else {
+                                 var alignment5 = [
+                                     {
+                                         string: 'Y',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[1,2]],
+                                         output: [[1,2]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [],
+                                         output: [[2,3]],
+                                     },
+                                     {
+                                         string: 'BB',
+                                         input: [[2,4]],
+                                         output: [[3,5]],
+                                     },
+                                 ];
+                                 d3.select('#example_double_1').call(
+                                     make_lock,
+                                     {word: 'YYBB'},
+                                     {word: 'YYYBB', label: "correct"},
+                                     {word: 'YYBBB', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_double_1 svg")
+                                             .call(animate_mechanism, alignment5, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment6 = [
+                                     {
+                                         string: 'PYPY',
+                                         input: [[0,4]],
+                                         output: [[0,4]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[4,5]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[5,6]],
+                                         output: [],
+                                     },
+                                 ];
+                                 d3.select('#example_double_2').call(
+                                     make_lock,
+                                     {word: 'PYPYPY'},
+                                     {word: 'PYYY', label: "incorrect"},
+                                     {word: 'PYPY', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_double_2 svg")
+                                             .call(animate_mechanism, alignment6, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment7 = [
+                                     {
+                                         string: 'B',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[1,2]],
+                                         output: [[1,2]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[2,3]],
+                                         output: [[2,3]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [],
+                                         output: [[3,4]],
+                                     },
+                                     {
+                                         string: 'B',
+                                         input: [[3,4]],
+                                         output: [[4,5]],
+                                     },
+                                 ];
+                                 d3.select('#example_double_3').call(
+                                     make_lock,
+                                     {word: 'BYYB'},
+                                     {word: 'BPPB', label: "incorrect"},
+                                     {word: 'BYYYB', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_double_3 svg")
+                                             .call(animate_mechanism, alignment7, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment8 = [
+                                     {
+                                         string: 'BB',
+                                         input: [[0,2]],
+                                         output: [[0,2]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[2,3]],
+                                         output: [[2,3]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[3,4]],
+                                         output: [[3,4]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [],
+                                         output: [[4,5]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[4,5]],
+                                         output: [[5,6]],
+                                     },
+                                 ];
+                                 d3.select('#example_double_4').call(
+                                     make_lock,
+                                     {word: 'BBYYP'},
+                                     {word: 'BBYYYP', label: "correct"},
+                                     {word: 'BBY', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_double_4 svg")
+                                             .call(animate_mechanism, alignment8, 'EXAMPLE', 'string', 10, 3, 7)}});
+                             }
+                            </script>
+                            <div class="row align-items-center justify-content-around text-center">
+                                <div class="col"></div>
+                                <div id="example_double_1" class="col-2"></div>
+                                <div id="example_double_2" class="col-2"></div>
+                                <div id="example_double_3" class="col-2"></div>
+                                <div id="example_double_4" class="col-2"></div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row caption align-items-start justify-content-around text-center mb-3">
+                                <div class="col"> </div>
+                                <div class="col-8">
+                                    <small>Some of these lock faces uses Mechanism 1 and some use Mechanism 2. Can you tell the difference?</small>
+                                </div>
+                                <div class="col"> </div>
+                            </div>
+                            <p>
+                                This process will repeat a few times, and each new
+                                mechanism will work differently from the previous ones.
+                                Once you figure out all the mechanisms inside the lock,
+                                you will always be able to choose the correct response
+                                and open the lock.
+                            </p>
+                            <script>
+                             if (condition > 6) {
+                                 // .2, B0 (Babc -> cba), P0 (Pab -> b(ab)), Y0 (Yab -> b)
+                                 // mechanism 2
+                                 d3.select('#example_triple_1').call(
+                                     make_lock,
+                                     {word: '.2Y0.2.2P0B0P0'},
+                                     {word: '.2Y0.2.2P0B0P0', label: "incorrect"},
+                                     {word: '.2Y0.2P0.2B0P0', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_triple_2').call(
+                                     make_lock,
+                                     {word: '.2.2.2Y0B0P0Y0'},
+                                     {word: '.2B0Y0', label: "incorrect"},
+                                     {word: '.2P0Y0', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 // mechanism 1
+                                 d3.select('#example_triple_3').call(
+                                     make_lock,
+                                     {word: '.2.2.2B0B0B0Y0'},
+                                     {word: '.2.2Y0B0B0', label: "correct"},
+                                     {word: '.2Y0.2B0B0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                                 d3.select('#example_triple_4').call(
+                                     make_lock,
+                                     {word: '.2.2Y0.2B0P0Y0'},
+                                     {word: 'Y0', label: "correct"},
+                                     {word: '.2Y0.2B0P0', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'tree'},
+                                     5, 10, 7)
+                                   .call(display_feedback, true);
+                             } else {
+                                 var alignment9 = [
+                                     {
+                                         string: 'PB',
+                                         input: [[0,2]],
+                                         output: [[0,2]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[2,3]],
+                                         output: [[2,3]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[3,4]],
+                                         output: [[3,4]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [],
+                                         output: [[4,5]],
+                                     },
+                                 ];
+                                 d3.select('#example_triple_1').call(
+                                     make_lock,
+                                     {word: 'PBYY'},
+                                     {word: 'PBBYY', label: "incorrect"},
+                                     {word: 'PBYYY', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_triple_1 svg")
+                                             .call(animate_mechanism, alignment9, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment10 = [
+                                     {
+                                         string: 'B',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'YP',
+                                         input: [[1,3]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'B',
+                                         input: [[3,4]],
+                                         output: [[1,2]],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[4,5]],
+                                         output: [[2,3]],
+                                     },
+                                 ];
+                                 d3.select('#example_triple_2').call(
+                                     make_lock,
+                                     {word: 'BYPBY'},
+                                     {word: 'YPY', label: "incorrect"},
+                                     {word: 'BBY', label: "correct"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_triple_2 svg")
+                                             .call(animate_mechanism, alignment10, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment11 = [
+                                     {
+                                         string: 'YP',
+                                         input: [[0,2]],
+                                         output: [[0,2]],
+                                     },
+                                     {
+                                         string: 'P',
+                                         input: [[2,3]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'Y',
+                                         input: [[3,4]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'BY',
+                                         input: [[4,6]],
+                                         output: [[2,4]],
+                                     },
+                                 ];
+                                 d3.select('#example_triple_3').call(
+                                     make_lock,
+                                     {word: 'YPPYBY'},
+                                     {word: 'YPBY', label: "correct"},
+                                     {word: 'YPPY', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_triple_3 svg")
+                                             .call(animate_mechanism, alignment11, 'EXAMPLE', 'string', 10, 3, 7)}});
+                                 var alignment12 = [
+                                     {
+                                         string: 'B',
+                                         input: [[0,1]],
+                                         output: [[0,1]],
+                                     },
+                                     {
+                                         string: 'YYY',
+                                         input: [[1,4]],
+                                         output: [],
+                                     },
+                                     {
+                                         string: 'B',
+                                         input: [[4,5]],
+                                         output: [[1,2]],
+                                     },
+                                 ];
+                                 d3.select('#example_triple_4').call(
+                                     make_lock,
+                                     {word: 'BYYYB'},
+                                     {word: 'BB', label: "correct"},
+                                     {word: 'YYY', label: "incorrect"},
+                                     {symbols: 'EXAMPLE', type: 'string'},
+                                     6, 10, 7)
+                                   .call(display_feedback, true)
+                                   .select("svg")
+                                   .on("click", () => {
+                                       if (counterbalance) {
+                                           d3.select("#example_triple_4 svg")
+                                             .call(animate_mechanism, alignment12, 'EXAMPLE', 'string', 10, 3, 7)}});
+                             }
+                            </script>
+                            <div class="row align-items-center justify-content-around text-center">
+                                <div class="col"></div>
+                                <div id="example_triple_1" class="col-2"></div>
+                                <div id="example_triple_2" class="col-2"></div>
+                                <div id="example_triple_3" class="col-2"></div>
+                                <div id="example_triple_4" class="col-2"></div>
+                                <div class="col"></div>
+                            </div>
+                            <div class="row caption align-items-start justify-content-around text-center mb-3">
+                                <div class="col"> </div>
+                                <div class="col-8">
+                                    <small>Three different mechanisms were used to generate these lock faces. Which was used twice?</small>
+                                </div>
+                                <div class="col"> </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="page4" role="tabpanel" aria-labelledby="page4-tab">
+                            <p>
+                                In this HIT, you will study a lock no one else has ever
+                                studied. No one knows how your lock works, so you will
+                                have to learn about it as you complete the HIT. Your
+                                lock will <span class="font-italic">not</span> be the
+                                same as the lock above&mdash;the colors will be
+                                different, you will have a different Mechanism 1,
+                                Mechanism 2, etc.
+                            </p>
+                            <p class="last">
+                                To complete the HIT, you will:
+                            </p>
+                            <ol class="font-weight-bold">
+                                <li>
+                                attempt to unlock different lock faces from your lock&mdash;this will get harder as new mechanisms activate (40min)
+                            </li>
+                                <li>
+                                report what you learn about your lock: how does it work? what does each mechanism do? (5min)
+                            </li>
+                            </ol>
+                            <p class="last">
+                                Here are a few tips:
+                            </p>
+                            <ul class="last">
+                                <li>
+                                    For each lock face, <span class="font-weight-bold">there is always one
+                                    correct answer and one incorrect answer. Choose the
+                                    correct response to open your lock.</span>
+                                </li>
+                                <li>
+                                    <span class="font-weight-bold">Mechanisms inside your lock create the
+                                        correct response based on the challenge.</span> Try
+                                    to figure out how these mechanisms work.
+                                </li>
+                                <li>
+                                    <span class="font-weight-bold">The lock will get more complex over time as
+                                        new mechanisms activate,</span> but only one new
+                                    mechanism activates at a time.
+                                </li>
+                                <li>
+                                    You'll advance immediately if you answer correctly, but <span id="replay" class="font-weight-bold"></span>. Do your best!
+                                </li>
+                                <li>
+                                    <span class="font-weight-bold">The mechanisms inside your lock never
+                                        change,</span> so past questions may help you
+                                    answer future questions.
+                                </li>
+                                <script>
+                                 d3.select("#replay")
+                                   .text(() => {if (counterbalance) {
+                                       return "will have to watch the mechanism replay if you answer incorrectly";
+                                   } else {
+                                       return "you will have to wait a few seconds if you answer incorrectly";
+                                   }});
+                                </script>
+                            </ul>
+                            <div class="row instructionsnav justify-content-end mt-3">
+                                <!-- no previous button on first screen -->
+                                <div class="col-auto">
+                                    <button type="button" id="next" value="next" class="btn btn-primary btn-lg continue">
+                                        Got it - let's go! <span class="fas fa-arrow-right"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

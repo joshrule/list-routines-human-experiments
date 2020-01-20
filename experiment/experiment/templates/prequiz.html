@@ -1,0 +1,114 @@
+<div class="container">
+
+    <div class="modal fade" id="redo_quiz" tabindex="-1" role="dialog" aria-labelledby="incorrectLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="incorrectLabel">Incorrect Response!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        You made at least one incorrect response. Please review
+                        the instructions and try these questions again.
+                    </p>
+                    <button type="button" class="btn btn-primary float-right" data-dismiss="modal" aria-label="Close">
+                        Okay
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+	          <div class="instructions card card-body bg-light">
+                <h4 class="card-title">Pre-Task Survey</h4>
+                <h6 class="card-subtitle text-muted">You will begin the task after answering the questions below.</h6>
+                <form id="prequiz" method="post" class="mt-4">
+                    <fieldset id="q1" class="form-group">
+                        <legend>What task are you about to perform?</legend>
+                        <div class="form-check hidden">
+                            <input class="form-check-input" type="radio" name="prequiz-q1" value="NA" checked/>
+                            <label class="form-check-label" for="NA">NA</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q1" value="not-given"/>
+                            <label class="form-check-label" for="not-given">Not given in HIT instructions</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q1" value="2AFC"/>
+                            <label class="form-check-label" for="2AFC">unlock an alien lock</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q1" value="produce"/>
+                            <label class="form-check-label" for="produce">draw a series of pictures</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q1" value="listen"/>
+                            <label class="form-check-label" for="listen">listen to a lecture about classical music</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q1" value="sort"/>
+                            <label class="form-check-label" for="sort">sort images into categories</label>
+                        </div>
+                    </fieldset>
+                    <fieldset id="q2" class="form-group">
+                        <legend>How will the task change over time?</legend>
+                        <div class="form-check hidden">
+                            <input class="form-check-input" type="radio" name="prequiz-q2" value="NA" checked/>
+                            <label class="form-check-label" for="NA">NA</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q2" value="not-given"/>
+                            <label class="form-check-label" for="not-given">Not given in HIT instructions</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q2" value="harder"/>
+                            <label class="form-check-label" for="harder">it will get harder</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q2" value="same"/>
+                            <label class="form-check-label" for="same">it will stay the same</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q2" value="easier"/>
+                            <label class="form-check-label" for="easier">it will get easier</label>
+                        </div>
+                    </fieldset>
+                    <fieldset id="q3" class="last form-group">
+                        <legend>What will you do at the very end?</legend>
+                        <div class="form-check hidden">
+                            <input class="form-check-input" type="radio" name="prequiz-q3" value="NA" checked/>
+                            <label class="form-check-label" for="NA">NA</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q3" value="not-given"/>
+                            <label class="form-check-label" for="not-given">Not given in HIT instructions</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q3" value="teach"/>
+                            <label class="form-check-label" for="teach">teach someone else to do the task</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q3" value="create"/>
+                            <label class="form-check-label" for="create">create new problems for the task</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="prequiz-q3" value="report"/>
+                            <label class="form-check-label" for="report">report what you learn</label>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="row justify-content-end mt-3">
+                    <div class="col-auto">
+                        <button type="button" id="next" value="next" class="btn btn-primary btn-lg continue">
+                            Begin Experiment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
