@@ -19,14 +19,14 @@ var psiTurk = new PsiTurk(uniqueId, adServerLoc, mode);
 
 // load any necessary pages
 psiTurk.preloadPages([
-    "instructions/instruct.html",
+    "instruct.html",
     "prequiz.html",
     "stage.html",
 ]);
 
 // These pages will be given as instructions before the task
 var instructionPages = [
-    "instructions/instruct.html",
+    "instruct.html",
 ];
 
 /*********************
