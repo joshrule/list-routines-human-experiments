@@ -1,38 +1,57 @@
 <div id="container-exp" class="container">
     <div id="history" class="row"></div>
-    <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="feedbackLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="feedbackLabel">Incorrect Response!</h5>
-                </div>
-                <div class="modal-body">
-                    Please wait while the lock resets.
-                </div>
-            </div>
-        </div>
-    </div>
     <div id="postquiz">
-        <div class="row">
+        <div class="row mt-5">
             <div class="col">
 	              <div class="instructions card card-body bg-light">
                     <h4 class="card-title">Post-Task Survey</h4>
                     <h6 class="card-subtitle text-muted">Thank you for contributing to science. You will be eligible for full payment after answering these questions.</h6>
                     <form id="postquiz" method="post" class="mt-4">
-                        <div id="q1" class="form-group">
-                            <legend>Please describe the mechanisms in this lock. How can a challenge be changed to generate a correct response?</legend>
-                            <textarea class="form-control" name="postquiz-q1" id="postquiz-q1" rows="5" placeholder="How do the mechanisms work?"></textarea>
-                        </div>
+                        <fieldset id="q1" class="form-group">
+                            <legend>How <strong>difficult</strong> did you find the tasks?</legend>
+                            <div class="form-check hidden">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="NA" checked/>
+                                <label class="form-check-label" for="NA">NA</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="7"/>
+                                <label class="form-check-label" for="7">7 - Very difficult</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="6"/>
+                                <label class="form-check-label" for="6">6</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="5"/>
+                                <label class="form-check-label" for="5">5</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="4"/>
+                                <label class="form-check-label" for="4">4 - Moderately difficult</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="3"/>
+                                <label class="form-check-label" for="3">3</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="2"/>
+                                <label class="form-check-label" for="2">2</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="postquiz-q1" value="1"/>
+                                <label class="form-check-label" for="1">1 - Not difficult at all</label>
+                            </div>
+                        </fieldset>
 
                         <fieldset id="q2" class="form-group">
-                            <legend>How <strong>difficult</strong> did you find the tasks?</legend>
+                            <legend>How <strong>engaging</strong> did you find the tasks?</legend>
                             <div class="form-check hidden">
                                 <input class="form-check-input" type="radio" name="postquiz-q2" value="NA" checked/>
                                 <label class="form-check-label" for="NA">NA</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="postquiz-q2" value="7"/>
-                                <label class="form-check-label" for="7">7 - Very difficult</label>
+                                <label class="form-check-label" for="7">7 - Very engaging</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="postquiz-q2" value="6"/>
@@ -44,7 +63,7 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="postquiz-q2" value="4"/>
-                                <label class="form-check-label" for="4">4 - Moderately difficult</label>
+                                <label class="form-check-label" for="4">4 - Moderately engaging</label>
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="postquiz-q2" value="3"/>
@@ -56,74 +75,38 @@
                             </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="postquiz-q2" value="1"/>
-                                <label class="form-check-label" for="1">1 - Not difficult at all</label>
+                                <label class="form-check-label" for="1">1 - Not engaging at all</label>
                             </div>
                         </fieldset>
 
                         <fieldset id="q3" class="form-group">
-                            <legend>How <strong>engaging</strong> did you find the tasks?</legend>
+                            <legend>Please select your gender:</legend>
                             <div class="form-check hidden">
                                 <input class="form-check-input" type="radio" name="postquiz-q3" value="NA" checked/>
                                 <label class="form-check-label" for="NA">NA</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q3" value="7"/>
-                                <label class="form-check-label" for="7">7 - Very engaging</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q3" value="6"/>
-                                <label class="form-check-label" for="6">6</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q3" value="5"/>
-                                <label class="form-check-label" for="5">5</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q3" value="4"/>
-                                <label class="form-check-label" for="4">4 - Moderately engaging</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q3" value="3"/>
-                                <label class="form-check-label" for="3">3</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q3" value="2"/>
-                                <label class="form-check-label" for="2">2</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q3" value="1"/>
-                                <label class="form-check-label" for="1">1 - Not engaging at all</label>
-                            </div>
-                        </fieldset>
-
-                        <fieldset id="q5" class="form-group">
-                            <legend>Please select your gender:</legend>
-                            <div class="form-check hidden">
-                                <input class="form-check-input" type="radio" name="postquiz-q5" value="NA" checked/>
-                                <label class="form-check-label" for="NA">NA</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q5" value="male"/>
+                                <input class="form-check-input" type="radio" name="postquiz-q3" value="male"/>
                                 <label class="form-check-label" for="male">male</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q5" value="female"/>
+                                <input class="form-check-input" type="radio" name="postquiz-q3" value="female"/>
                                 <label class="form-check-label" for="female">female</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="postquiz-q5" value="other"/>
+                                <input class="form-check-input" type="radio" name="postquiz-q3" value="other"/>
                                 <label class="form-check-label" for="other">other</label>
                             </div>
                         </fieldset>
 
-                        <div id="q6" class="form-group last">
+                        <div id="q4" class="form-group last">
                             <legend>Please select your date of birth:</legend>
-                            <input type="text" name="postquiz-q6" id="datepicker" readonly="readonly">
+                            <input type="text" name="postquiz-q4" id="datepicker" readonly="readonly">
                         </div>
 
-                        <div id="q4" class="form-group last">
+                        <div id="q5" class="form-group last">
                             <legend>How was this HIT? Any technical difficulties? Would you recommend it to others? Any other comments?</legend>
-                            <textarea class="form-control" name="postquiz-q4" rows="3" placeholder="Any comments?"></textarea>
+                            <textarea class="form-control" name="postquiz-q5" rows="3" placeholder="Any comments?"></textarea>
                         </div>
                     </form>
                 </div>

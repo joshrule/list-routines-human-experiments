@@ -4,9 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+ipython = "*"
 
 [packages]
-psiturk = "*"
+psiturk = "==2.3.8"
 python-levenshtein = "*"
 
 [requires]
