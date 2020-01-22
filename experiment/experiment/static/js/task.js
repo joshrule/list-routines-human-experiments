@@ -51,7 +51,7 @@ var make_iq_pair = function(div, input, disabled) {
     var button = q_div.append("div")
         .attr("class", "input-group-append")
         .append("button")
-        .attr("class", "btn btn-outline-secondary")
+        .attr("class", "btn btn-outline-primary")
         .attr("type", "button")
         .text("Submit");
     if(disabled) {
@@ -342,7 +342,7 @@ function IOExperiment() {
             .attr("class","attempt last col-12")
             .append("h6")
             .attr("class","mb-0")
-            .text(`Guess ${trial+1}:`);
+            .text(`Question ${trial+1}:`);
     };
 
     function add_trial(div) {
@@ -372,7 +372,7 @@ function IOExperiment() {
                     var list = parse_list(this.value, max_length, max_elt);
                     if (list === undefined) {
                         this.setCustomValidity(this.value);
-                        d3.select('.trial.last .output .invalid-tooltip').html(`\"${this.value}\" isn't a list. Make sure you have 0&ndash;${max_length} numbers 0&ndash;${max_elt} separated by spaces, like this: \"1 2 3 4 5 6 7 8 9 10\".`);
+                        d3.select('.trial.last .output .invalid-tooltip').html(`\"${this.value}\" isn't a list.<br>Make sure you have 0 to ${max_length} numbers from 0 to ${max_elt} separated by spaces.<br>For example: \"1 2 3 4 5 6 7 8 9 10\".`);
                         d3.select('.trial.last .needs-validation').classed("was-validated", true);
                         d3.select('.trial.last .was-validated').on('click', function() {d3.select(this).classed("was-validated", false);});
                     } else {
@@ -388,7 +388,7 @@ function IOExperiment() {
             .attr("class","row query justify-content-center mt-4")
             .append("div")
             .attr("class","col-auto font-weight-bold")
-            .html(`Type in 0&ndash;${max_length} numbers 0&ndash;${max_elt} separated by spaces, then click \"Submit\".`);
+            .html(`Type in 0 to ${max_length} numbers from 0 to ${max_elt} separated by spaces, then click \"Submit\".`);
     }
 
     function add_performance(div) {
@@ -397,7 +397,7 @@ function IOExperiment() {
                 .attr("class","row status-update justify-content-around")
                 .append("div")
                 .attr("class","col-auto")
-                .text(`You have correctly responded ${nCorrect} out of ${progress} times.`);
+                .text(`You have correctly answered ${nCorrect} out of ${progress} questions.`);
         }
     }
 
@@ -436,12 +436,12 @@ function IOExperiment() {
             .attr("data-placement", "top")
             .attr("data-template", `<div class="tooltip trial-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>`)
             .attr("data-trigger", "hover focus")
-            .attr("data-title", `You ${correct ? "" : "in"}correctly guessed<br>${response_list}.`);
+            .attr("data-title", `You ${correct ? "" : "in"}correctly answered<br>${response_list}.`);
         $(".output").tooltip();
 
         // Label the attempt (in)correct.
         d3.select(".attempt.last h6")
-            .text("Guess " + (trial+1) + ": " + (correct ? "Correct!" : "Incorrect"));
+            .text("Question " + (trial+1) + ": " + (correct ? "Correct!" : "Incorrect"));
 
         // Remove chrome from last trial.
         lastTrial.selectAll(".query, .status-update, .prog").remove();
