@@ -170,6 +170,154 @@ def primitives():
         Primitive("splice", arrow(tlist(t0), tint, tlist(t0), tlist(t0)), _splice),
     ]
 
+def wave_pilot():
+    return [
+        '(lambda (unique $0))',
+        '(lambda (repeat (max $0) (min $0)))',
+        '(lambda (concat (drop (last $0) $0) (take (last $0) $0)))',
+        '(lambda (flatten (map (lambda (cons (head $0) (singleton (length $0)))) (group (lambda $0) $0))))',
+        '(lambda (fold (lambda (lambda (if (is_even (nth 2 $0)) (append $1 (head $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0))))',
+    ]
+
+def wave_pilot_human():
+    return [
+        {"concept": '(lambda (unique $0))',
+         "inputs": [
+             [
+                 [3, 8, 3],
+                 [7, 9, 2, 2, 3, 7, 6, 7],
+                 [19, 19],
+                 [66, 3, 89, 4, 66, 66, 4, 37, 0, 3],
+                 [56, 93, 1, 1, 0, 93],
+                 [],
+                 [19, 38, 14, 76, 7, 4, 88],
+                 [16, 25, 8, 8],
+                 [7, 31, 7, 7, 54],
+                 [79],
+             ],
+             [
+                 [4, 4, 27, 4], # 4/2
+                 [36, 36], # 2/1
+                 [53, 96, 38, 30, 57, 20, 3, 61, 79], # 9/9
+                 [8, 6, 6, 44, 3, 38, 7, 3], # 8/6
+                 [5, 19, 49, 7, 62], # 5/5
+                 [13, 71, 8], # 3/3
+                 [58, 32, 43, 58, 58, 46, 27, 47, 58, 32], # 10/6
+                 [5], # 1/1
+                 [12, 1, 12, 12, 1, 2], # 6/3
+                 [98, 72, 83, 72, 98, 98, 59], # 7/4
+             ]
+         ]},
+        {"concept": '(lambda (repeat (max $0) (min $0)))',
+         "inputs": [
+             [
+                 [23, 9, 14, 7, 2, 31, 4, 4, 0, 18], # 0/10
+                 [62, 5], # 5/2
+                 [99, 7, 55], # 7/3
+                 [31, 15, 18, 43, 95, 17, 17, 18], # 15/8
+                 [32, 14, 67, 32, 9, 70, 77], # 9/7
+                 [3, 3, 3, 3], # 3/4
+                 [1], # 1/1
+                 [12, 42, 92, 58, 62, 38], # 12/6
+                 [48, 56, 39, 58, 13], # 13/5
+                 [43, 84, 8, 17, 8, 78, 64, 10], # 8/9
+             ],
+             [
+                 [36, 22, 2, 15, 7], # 2/5
+                 [14, 25], # 14/2
+                 [5, 7, 5, 3, 9, 8], # 3/6
+                 [4, 4, 4], # 4/3
+                 [36, 64, 21, 92, 62, 5, 73, 44, 34, 16], # 5/10
+                 [85, 99, 74, 6, 54, 85, 44], # 6/7
+                 [7], # 7/1
+                 [71, 25, 25, 95, 71, 10, 19, 9, 11], # 9/9
+                 [10, 79, 16, 42], # 10/4
+                 [12, 33, 11, 11, 55, 62, 63, 28], # 11/8
+             ]
+         ]},
+        {"concept": '(lambda (concat (drop (last $0) $0) (take (last $0) $0)))',
+         "inputs": [
+             [
+                 [1, 17, 4, 2],
+                 [20, 14, 66, 2, 68, 46, 93, 5],
+                 [50, 71, 6, 32, 1],
+                 [72, 8, 54, 98, 72, 43, 49, 42, 7, 8],
+                 [46, 69, 70, 4, 20, 5, 42, 41, 22, 6],
+                 [9, 33, 0],
+                 [0, 23, 17, 81, 87, 3],
+                 [53, 22, 57, 37, 59, 66, 26, 21, 4],
+                 [96, 32, 99, 98, 98, 60, 80, 90, 26, 7],
+                 [88, 10, 1, 78, 56, 32],
+             ],
+             [
+                 [42, 55, 15, 80, 10, 10, 91, 3],
+                 [5, 6, 16, 7, 30, 19, 23, 6, 6, 2],
+                 [52, 90, 43, 84, 3, 43, 48, 35, 84, 9],
+                 [8, 5, 30, 9, 8, 1, 49, 9, 7],
+                 [3, 17, 67, 1, 14, 3, 13, 5, 4],
+                 [24, 56, 64, 18, 46, 88, 36, 61, 38, 10],
+                 [12, 5, 83, 5, 0, 1],
+                 [10, 8, 29, 6, 9, 83, 6],
+                 [78, 1, 18, 27],
+                 [2, 77, 3, 10, 86, 97, 0, 5],
+             ]
+         ]},
+        {"concept": '(lambda (flatten (map (lambda (cons (head $0) (singleton (length $0)))) (group (lambda $0) $0))))',
+         "inputs": [
+             [
+                 [2, 2, 2, 19, 2, 2, 25, 2],
+                 [4, 4, 8, 4, 3],
+                 [4, 4, 4, 4, 4, 4, 4],
+                 [79, 79, 8, 79, 7, 7, 7, 79, 8],
+                 [8, 9, 98, 4, 7, 86],
+                 [1, 41, 6, 90],
+                 [33, 24, 0, 0, 1, 7, 33, 10],
+                 [97, 18, 67, 67],
+                 [8, 8, 9, 8, 1, 9, 8],
+                 [0, 45, 7, 37, 94, 94, 7, 7, 45, 45],
+             ],
+             [
+                 [3, 3, 38, 38, 58, 58, 58, 38],
+                 [10, 10, 10, 10, 10, 10, 10, 10],
+                 [5, 5, 1],
+                 [5, 8, 64, 8, 64, 8, 5, 8, 5],
+                 [86, 86, 1, 1, 86, 1],
+                 [25, 61, 7, 9, 7, 10, 10],
+                 [87, 25, 10, 87],
+                 [7, 7, 7, 1, 1, 1, 1, 1, 7, 1],
+                 [86, 10, 7, 89, 99, 2, 2, 13, 86],
+                 [3, 87, 1, 5, 87, 98, 1, 87, 3],
+             ]
+         ]},
+        {"concept": '(lambda (fold (lambda (lambda (if (is_even (nth 2 $0)) (append $1 (head $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0))))',
+         "inputs": [
+             [
+                 [6, 0, 7, 32],
+                 [62, 8, 59, 88, 98, 6],
+                 [1, 96, 1, 13, 86, 77, 6, 10, 7, 0],
+                 [6],
+                 [1, 7],
+                 [43, 4, 64, 5, 0],
+                 [0, 2, 3],
+                 [7, 14, 7, 6, 8, 57, 10],
+                 [4, 10, 6, 8],
+                 [6, 0, 85, 7, 10, 69, 22, 5],
+             ],
+             [
+                 [27, 6, 21, 6, 86, 8, 0],
+                 [37, 14, 51, 4],
+                 [19, 82, 27, 0, 6, 4, 4, 2, 15, 10],
+                 [12, 3, 90],
+                 [9, 16],
+                 [39, 10, 6, 32, 47, 92, 61, 65],
+                 [9, 15],
+                 [35, 5, 0, 58, 12],
+                 [],
+                 [81, 6, 43, 3, 6, 8],
+             ]
+         ]},
+    ]
+
 def wave_1():
     return [
         '(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))',
@@ -484,28 +632,57 @@ def test_p_with_i(e, i):
     print(f"f = {p}")
     print(f"f {i} = {o}")
 
-def process(i, e, verbose=True):
+def process(i, e, n_trials=20, n_orders=2, verbose=True):
     Primitive.GLOBALS.clear()
     grammar = Grammar.uniform(primitives())
     p = Program.parse(e)
     if verbose:
         print(f"{i}. {p}")
-    examples = sample_examples2(p, n=20, n_pools=5, n_tries=20, n_sets=500, verbose=verbose)
+    for i_order in range(n_orders):
+        examples = sample_examples2(p, n=n_trials, n_pools=5, n_tries=20, n_sets=500, verbose=verbose)
+        if verbose:
+            for inp, out in examples:
+                print(f"f {inp} = {out}")
+        data = {
+            "concept": e,
+            "examples": [{"i": e[0], "o": e[1]} for e in examples]
+            }
+        out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
+        filename = f"../../list-routine-human-experiments/waves/pilot/json/c{i+1:03}_{i_order}.json"
+        with open(filename, "w") as fd:
+            fd.write(out.stdout)
+        if verbose:
+            print()
+
+def process_human(i, e, inputss, verbose=True):
+    Primitive.GLOBALS.clear()
+    grammar = Grammar.uniform(primitives())
+    p = Program.parse(e)
     if verbose:
-        for inp, out in examples:
-            print(f"f {inp} = {out}")
-    data = {
-        "concept": e,
-        "examples": [{"i": e[0], "o": e[1]} for e in examples]
-        }
-    out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
-    filename = f"../../list-routine-human-experiments/waves/1/json/c{i+1:03}.json"
-    with open(filename, "w") as fd:
-        fd.write(out.stdout)
-    if verbose:
-        print()
+        print(f"{i}. {p}")
+    for i_order, inputs in enumerate(inputss):
+        examples = [(inp, p.runWithArguments([inp])) for inp in inputs]
+        if verbose:
+            for inp, out in examples:
+                print(f"f {inp} = {out}")
+        data = {
+            "concept": e,
+            "examples": [{"i": e[0], "o": e[1]} for e in examples]
+            }
+        out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
+        filename = f"../../list-routine-human-experiments/waves/pilot/json/human/c{i+1:03}_{i_order}.json"
+        with open(filename, "w") as fd:
+            fd.write(out.stdout)
+        if verbose:
+            print()
 
 if __name__ == "__main__":
     # for i, e in enumerate(wave_1()[], 1):
     #     process(i,e,True)
-    Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, False) for i, e in enumerate(wave_1()))
+
+    # Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, False) for i, e in enumerate(wave_1()))
+
+    #Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, n_trials=10, n_orders=2, verbose=False) for i, e in enumerate(wave_pilot()))
+
+    for (i, c) in enumerate(wave_pilot_human()):
+        process_human(i, c["concept"], c["inputs"], verbose=True)
