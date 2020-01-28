@@ -107,6 +107,7 @@ def _is_in(xs): return lambda x: x in xs
 def _find(p): return lambda xs: [i for i, x in enumerate(xs, 1) if p(x)]
 def _insert(x): return lambda i: lambda xs: xs[:(i-1)] + [x] + xs[(i-1):]
 def _splice(x): return lambda i: lambda xs: xs[:(i-1)] +  x  + xs[(i-1):]
+def _swap(i): return lambda j: lambda xs: xs[:(i-1)] + [xs[(j-1)]] + xs[i:(j-1)] + [xs[(i-1)]] + xs[j:]
 
 # define some primitives
 def primitives():
@@ -172,6 +173,7 @@ def primitives():
         Primitive("find", arrow(arrow(t0, tbool), tlist(t0), tlist(tint)), _find),
         Primitive("insert", arrow(t0, tint, tlist(t0), tlist(t0)), _insert),
         Primitive("splice", arrow(tlist(t0), tint, tlist(t0), tlist(t0)), _splice),
+        Primitive("swap", arrow(tint, tint, tlist(t0), tlist(t0)), _swap),
     ]
 
 def wave_pilot():
