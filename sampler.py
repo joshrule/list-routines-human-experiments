@@ -491,13 +491,13 @@ def model_comparison_wave_3():
          'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
         },
         {'concept': '(lambda (slice 2 4 $0))',
-         'adjust': lambda xs: (sum(2 > len(i)) >= 2) + (sum(4 > len(i) >= 2) >= 2) + (sum(len(i) >= 4) >= 4),
+         'adjust': lambda xs: (sum(2 > len(i) for i,o in xs) >= 2) + (sum(4 > len(i) >= 2 for i,o in xs) >= 2) + (sum(len(i) >= 4 for i,o in xs) >= 4),
         },
         {'concept': '(lambda (slice 3 7 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i, o in xs) else 0,
         },
         {'concept': '(lambda (slice 3 7 $0))',
-         'adjust': lambda xs: (sum(3 > len(i)) >= 2) + (sum(7 > len(i) >= 3) >= 2) + (sum(len(i) >= 7) >= 4)
+         'adjust': lambda xs: (sum(3 > len(i) for i,o in xs) >= 2) + (sum(7 > len(i) >= 3 for i,o in xs) >= 2) + (sum(len(i) >= 7 for i,o in xs) >= 4)
         },
         {'concept': '(lambda (slice (first $0) (second $0) (drop 2 $0)))',
          'adjust': lambda xs: 3.0 if all(len(i) >= i[1] for i, o in xs) else 0,
@@ -548,10 +548,10 @@ def model_comparison_wave_3():
          'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
         },
         {'concept': '(lambda (drop (if (and (== (second $0) (first $0)) (> (length $0) 5)) 2 4) $0))',
-         'adjust': lambda xs: (sum(i[0] != i[1] and 5 >= len(i)) >= 2 + sum(i[0] == i[1] and 5 >= len(i)) >= 2 + sum(i[0] != i[1] and len(i) > 5) >= 2 + sum(i[0] == i[1] and len(i) > 5) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[0] != i[1] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[0] == i[1] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[0] != i[1] and len(i) > 5 for i,o in xs) >= 2 + sum(i[0] == i[1] and len(i) > 5 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (drop (if (and (== (second $0) 0) (> (first $0) 5)) 2 4) $0))',
-         'adjust': lambda xs: (sum(0 != i[1] and 5 >= i[0]) >= 2 + sum(0 == i[1] and 5 >= i[0]) >= 2 + sum(0 != i[1] and i[0] > 5) >= 2 + sum(0 == i[1] and i[0] > 5) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(0 != i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 == i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 != i[1] and i[0] > 5 for i,o in xs) >= 2 + sum(0 == i[1] and i[0] > 5) >= 2 for i,o in xs) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (swap 1 4 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
@@ -560,10 +560,10 @@ def model_comparison_wave_3():
          'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
         },
         {'concept': '(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i)) >= 2 + sum(i[1] == i[3] and 7 >= len(i)) >= 2 + sum(i[1] != i[3] and len(i) > 7) >= 2 + sum(i[1] == i[3] and len(i) > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] == i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] != i[3] and len(i) > 7 for i,o in xs) >= 2 + sum(i[1] == i[3] and len(i) > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3]) >= 2 + sum(i[1] == 7 and 7 >= i[3]) >= 2 + sum(i[1] != 7 and i[3] > 7) >= 2 + sum(i[1] == 7 and i[3] > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] == 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] != 7 and i[3] > 7 for i,o in xs) >= 2 + sum(i[1] == 7 and i[3] > 7) >= 2 for i,o in xs) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (append $0 3))',
          'adjust': lambda xs: 1.0,
@@ -572,10 +572,10 @@ def model_comparison_wave_3():
          'adjust': lambda xs: 1.0,
         },
         {'concept': '(lambda ((lambda (if (> (length $0) 5) (append $0 3) $0)) ((lambda (if (== (second $0) (third $0)) (append $0 9) $0)) $0)))',
-         'adjust': lambda xs: (sum(i[1] != i[2] and 5 >= len(i)) >= 2 + sum(i[1] == i[2] and 5 >= len(i)) >= 2 + sum(i[1] != i[2] and len(i) > 5) >= 2 + sum(i[1] == i[2] and len(i) > 5) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[1] != i[2] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[1] == i[2] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[1] != i[2] and len(i) > 5 for i,o in xs) >= 2 + sum(i[1] == i[2] and len(i) > 5 for i,o in xs) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
         },
         {'concept': '(lambda ((lambda (if (> (third $0) 3) (append $0 3) $0)) ((lambda (if (== (second $0) 9) (append $0 9) $0)) $0)))',
-         'adjust': lambda xs: (sum(i[1] != 9 and 3 >= i[2]) >= 2 + sum(i[1] == 9 and 3 >= i[2]) >= 2 + sum(i[1] != 9 and i[2] > 3) >= 2 + sum(i[1] == 9 and i[2] > 3) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[1] != 9 and 3 >= i[2] for i,o in xs) >= 2 + sum(i[1] == 9 and 3 >= i[2] for i,o in xs) >= 2 + sum(i[1] != 9 and i[2] > 3 for i,o in xs) >= 2 + sum(i[1] == 9 and i[2] > 3 for i,o in xs) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
         },
         {'concept': '(lambda (singleton 9))',
          'adjust': lambda xs: 1.0,
@@ -719,10 +719,10 @@ def model_comparison_wave_3():
          'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
         },
         {'concept': '(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i)) >= 2 + sum(i[1] == i[3] and 7 >= len(i)) >= 2 + sum(i[1] != i[3] and len(i) > 7) >= 2 + sum(i[1] == i[3] and len(i) > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] == i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] != i[3] and len(i) > 7 for i,o in xs) >= 2 + sum(i[1] == i[3] and len(i) > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3]) >= 2 + sum(i[1] == 7 and 7 >= i[3]) >= 2 + sum(i[1] != 7 and i[3] > 7) >= 2 + sum(i[1] == 7 and i[3] > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] == 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] != 7 and i[3] > 7 for i,o in xs) >= 2 + sum(i[1] == 7 and i[3] > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (cons 18 (cons 42 (cons 77 (cons 20 (singleton 36))))))',
          'adjust': lambda xs: 1.0,
@@ -992,27 +992,22 @@ def make_grammar():
     return Grammar.uniform(primitives())
 
 if __name__ == "__main__":
-    # Human Experiments
+    # Human Experiments - Wave Pilot
 
-    ## Pilot Wave
-
+    # Parallel(n_jobs=-1, verbose=20)(
+    #     delayed(process)("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=False, small=False, human=True)
+    #     for i, c in enumerate(wave_pilot(), 1))
     # for i, c in enumerate(wave_pilot(), 1):
-    #    process("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=True)
-    #    process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False)
+    # #   process("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=True)
+    #     process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False, parallel=True)
 
-    Parallel(n_jobs=-1, verbose=20)(
-        delayed(process)("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=False, small=False, human=True)
-        for i, c in enumerate(wave_pilot(), 1))
-    for i, c in enumerate(wave_pilot(), 1):
-        process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False, parallel=True)
-
-    ## Wave 1
+    # Human Experiments - Wave 1
 
     #Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, False) for i, e in enumerate(wave_1()))
 
-    # Model Comparison
+    # Model Comparison - Wave 3
 
-    #dirname = "../../list-routine-model-comparison/waves/3/json"
-    #for i, c in enumerate(model_comparison_wave_3()[:20], 1):
-    #    process(dirname, i, c, n_trials=11, n_orders=5, verbose=True, small=(i <= 80))
+    dirname = "/home/rule/tmp"
+    for i, c in enumerate(model_comparison_wave_3(), 1):
+        process(dirname, i, c, n_trials=11, n_orders=5, verbose=True, small=(i <= 80), human=False, parallel=True)
 
