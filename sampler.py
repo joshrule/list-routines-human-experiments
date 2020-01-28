@@ -12,7 +12,7 @@ from dreamcoder.program import Program, Primitive
 from dreamcoder.type import *
 from dreamcoder.grammar import Grammar
 from functools import reduce
-from joblib import Parallel, delayed
+from joblib import Parallel, delayed, parallel_backend
 
 # set the seed first thing
 random.seed(1)
@@ -193,7 +193,7 @@ def wave_pilot():
                  [79],
                  [5, 19, 49, 7, 62]
          ]},
-        {"concept": '(lambda (singleton (length $0))',
+        {"concept": '(lambda (singleton (length $0)))',
          "adjust": lambda xs: 1.0,
          "inputs": [
              [],
@@ -759,11 +759,25 @@ def model_comparison_wave_3():
         },
     ]
 
+def sample_examples_parallel(p,adjust,n=10,n_pools=1000,n_tries=20,n_sets=1000,small=False):
+    def helper2(pool):
+        s = make_example_set(pool, n)
+        score = score_set(s, adjust)
+        return score, s
+    def helper1():
+        best_score = 0.0
+        best_s = None
+        pool = build_pool(p, n_tries, False, small)
+        return max((helper2(pool) for _ in range(n_sets)), key=lambda x: x[0])
+    bests = Parallel(n_jobs=-1)(delayed(helper1)() for _ in range(n_pools))
+    return max(bests, key=lambda x: x[0])[1]
+
 def sample_examples(p,adjust,n=10,n_pools=1000,n_tries=20,n_sets=1000,verbose=True,small=False):
     best_score = 0.0
     best_s = None
     for i_pool in range(n_pools):
-        print(f"{i_pool}. ", end="")
+        if verbose:
+            print(f"{i_pool}. ", end="")
         pool = build_pool(p, n_tries, verbose, small)
         for scanned in range(n_sets):
             s = make_example_set(pool, n)
@@ -946,7 +960,7 @@ def test_p_with_i(e, i):
     print(f"f = {p}")
     print(f"f {i} = {o}")
 
-def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, human=False):
+def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, human=False, parallel=True):
     Primitive.GLOBALS.clear()
     grammar = Grammar.uniform(primitives())
     tp = arrow(tlist(tint), tlist(tint))
@@ -959,36 +973,46 @@ def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, h
         return
     if human:
         examples = [(inp, p.runWithArguments([inp])) for inp in c['inputs']]
+    elif parallel:
+        examples = sample_examples_parallel(p, c["adjust"], n=n_trials, n_pools=1000, n_tries=20, n_sets=1000, small=small)
     else:
-        examples = sample_examples(p, c["adjust"], n=n_trials, n_pools=500, n_tries=20, n_sets=1000, verbose=verbose, small=small)
+        examples = sample_examples(p, c["adjust"], n=n_trials, n_pools=1000, n_tries=20, n_sets=1000, verbose=verbose, small=small)
     for i_order, order in enumerate(order_examples(examples, n_orders, 5000)):
         data = {
             'concept': c['concept'],
             'examples': [{"i": i, "o": o} for i,o in order]
             }
-        out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
-        if verbose:
-            print(out.stdout)
+        #out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
         with open(f"{dirname}/c{i:03}_{i_order}.json", "w") as fd:
-            fd.write(out.stdout)
-        if verbose:
-            print()
+            # fd.write(out.stdout)
+            fd.write(json.dumps(data))
 
 def make_grammar():
     Primitive.GLOBALS.clear()
     return Grammar.uniform(primitives())
 
 if __name__ == "__main__":
+    # Human Experiments
+
+    ## Pilot Wave
+
+    # for i, c in enumerate(wave_pilot(), 1):
+    #    process("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=True)
+    #    process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False)
+
+    Parallel(n_jobs=-1, verbose=20)(
+        delayed(process)("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=False, small=False, human=True)
+        for i, c in enumerate(wave_pilot(), 1))
     for i, c in enumerate(wave_pilot(), 1):
-        process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False)
-        process("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=True)
+        process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False, parallel=True)
 
-    # dirname = "../../list-routine-model-comparison/waves/3/json"
-    # for i, c in enumerate(model_comparison_wave_3()[:20], 1):
-    #     process(dirname, i, c, n_trials=11, n_orders=5, verbose=True, small=(i <= 80))
+    ## Wave 1
 
-    # Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, False) for i, e in enumerate(wave_1()))
+    #Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, False) for i, e in enumerate(wave_1()))
 
-    # dirname = "../waves/pilot/json/machine"
-    # Parallel(n_jobs=4, verbose=20)(delayed(process)(dirname, i, e, n_trials=11, n_orders=5, verbose=False)
-    #                                for i, e in enumerate(wave_pilot()))
+    # Model Comparison
+
+    #dirname = "../../list-routine-model-comparison/waves/3/json"
+    #for i, c in enumerate(model_comparison_wave_3()[:20], 1):
+    #    process(dirname, i, c, n_trials=11, n_orders=5, verbose=True, small=(i <= 80))
+
