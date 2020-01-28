@@ -14,59 +14,74 @@
                             <a class="nav-link" data-toggle="tab" id="page2-tab" href="#page2" role="tab" aria-controls="page2" aria-selected="false">2</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" data-toggle="tab" id="page3-tab" href="#page3" role="tab" aria-controls="page3" aria-selected="false">3</a>
+                            <a class="nav-link" data-toggle="tab" id="page3-tab" href="#page3" role="tab" aria-controls="page3" aria-selected="false">3</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" data-toggle="tab" id="page4-tab" href="#page4" role="tab" aria-controls="page4" aria-selected="false">4</a>
+                            <a class="nav-link" data-toggle="tab" id="page4-tab" href="#page4" role="tab" aria-controls="page4" aria-selected="false">4</a>
                         </li>
                     </ul>
-                    <script>
-                     if (!counterbalance) {
-                         d3.selectAll(".nav-link").classed("disabled", false);
-                     }
-                    </script>
                 </div>
 	              <div class="instructions card-body bg-light">
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="page1" role="tabpanel" aria-labelledby="page1-tab">
                             <p>
-                                You are about to play a game involving lists of numbers like the ones below:
+                                You are about to play a game involving lists of
+                                numbers. <strong>Each list has 0 to 15 numbers, and each
+                                number is from 0 to 99</strong>.
                             </p>
-                            <div class="row">
-                                <div id="example_0_0" class="col-auto"> </div>
-                            </div>
-                            <div class="row">
-                                <div id="example_0_1" class="col-auto"> </div>
-                            </div>
-                            <div class="row">
-                                <div id="example_0_2" class="col-auto"> </div>
-                            </div>
-                            <div class="row">
-                                <div id="example_0_3" class="col-auto"> </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div id="example_0_4" class="col-auto"> </div>
-                            </div>
-                            <p class="last">
-                                Every list in this game has somewhere from 0 to
-                                15 numbers in it. Each number is somewhere from
-                                0 to 99.
+                            <p>
+                                For example:
                             </p>
+                            <ul>
+                                <li class="mb-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            A list with 0 numbers
+                                        </div>
+                                    </div>
+                                    <div id="example_0_0"></div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            A list with the number 99
+                                        </div>
+                                    </div>
+                                    <div id="example_0_1"></div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            A list with the number 0
+                                        </div>
+                                    </div>
+                                    <div id="example_0_2"></div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            A list with 15 numbers
+                                        </div>
+                                    </div>
+                                    <div id="example_0_3"></div>
+                                </li>
+                            </ul>
                             <script>
-                             d3.select('#example_0_0').call(make_list, {list: [7, 4, 3, 9, 0, 6]});
-                             d3.select('#example_0_1').call(make_list, {list: []});
-                             d3.select('#example_0_2').call(make_list, {list: [17, 98, 4, 31]});
-                             d3.select('#example_0_3').call(make_list, {list: [24, 19, 84, 49, 5, 86, 79, 92, 58, 69]});
-                             d3.select('#example_0_4').call(make_list, {list: [76, 65, 9]});
+                             d3.select('#example_0_0').call(make_list, {list: []});
+                             d3.select('#example_0_1').call(make_list, {list: [76, 65, 99]});
+                             d3.select('#example_0_2').call(make_list, {list: [7, 4, 3, 9, 0, 6]});
+                             d3.select('#example_0_3').call(make_list, {list: [24, 3, 19, 84, 7, 2, 49, 5, 86, 79, 17, 84, 92, 58, 69]});
                             </script>
                         </div>
                         <div class="tab-pane fade" id="page2" role="tabpanel" aria-labelledby="page2-tab">
                             <p>
-                                The game is a guessing game divided into 5 rounds.</p>
+                                The game is a guessing game divided into rounds.
+                                In each round, <strong>the computer will think of a rule
+                                for transforming an input list into an output
+                                list</strong>.
+                            </p>
                             <p>
-                                At the start of each round, the computer will
-                                think of a rule for transforming an input list
-                                into an output list. For example:
+                                For example:
                             </p>
                             <ul class="last">
                                 <li class="mb-2">
@@ -97,35 +112,42 @@
                             <script>
                              d3.select('#example_1_0').call(make_io_pair, {list: [7, 19, 38, 2, 7, 94, 15, 7, 0]}, {list: [3]});
                              d3.select('#example_1_1').call(make_io_pair, {list: [7, 19, 38, 2, 7, 94, 15, 7, 0]}, {list: [8, 20, 39, 3, 8, 95, 16, 8, 1]});
-                             d3.select('#example_1_2').call(make_io_pair, {list: [7, 19, 38, 2, 7, 94, 15, 7, 0]}, {list: [7, 2, 7, 15, 7, 0]});
+                             d3.select('#example_1_2').call(make_io_pair, {list: [7, 18, 38, 2, 7, 94, 17, 7, 0]}, {list: [7, 2, 7, 17, 7, 0]});
                             </script>
                         </div>
                         <div class="tab-pane fade" id="page3" role="tabpanel" aria-labelledby="page3-tab">
                             <p>
-                                The game is to guess the computer's rule. To
-                                help you, the computer will give you 10
-                                questions to answer, like this one:
+                                <strong>You won't know the rule at
+                                first</strong>, but the computer will ask you a
+                                series of questions like this one:
                             </p>
                             <div id="example_2_0" class="mb-3"></div>
                             <p>
-                                You won't have much to go on at first, but after
-                                you answer each question, the computer will show
-                                the correct answer and give you a new question.
+                                Your job is to <strong>guess the computer's rule and correctly answer as many questions as possible</strong>.
                             </p>
                             <p>
+                                After you answer each question, the computer
+                                will show the correct answer and give you a new
+                                question.
+                            </p>
+                            <p class="mb-4">
                                 After a few questions, your screen might look
                                 like this:
                             </p>
-                            <div id="example_2_1" class="mb-2"></div>
-                            <div id="example_2_2" class="mb-2"></div>
-                            <div id="example_2_3" class="mb-2"></div>
-                            <div id="example_2_4" class="mb-2"></div>
+                            <div class="attempt"><h6 class="mb-0">Question 1: <span class="text-danger">Incorrect</span>. You said <span class="io-list">[75]</span>, but the correct answer is <span class="io-list">[76,16,19,95]</span>.</h6></div>
+                            <div id="example_2_1" class="mb-3"></div>
+                            <div class="attempt"><h6 class="mb-0">Question 2: <span class="text-danger">Incorrect</span>. You said <span class="io-list">[54,75,39,19]</span>, but the correct answer is <span class="io-list">[87,42,39,19]</span>.</h6></div>
+                            <div id="example_2_2" class="mb-3"></div>
+                            <div class="attempt"><h6 class="mb-0">Question 3: <span class="text-success">Correct!</span></h6></div>
+                            <div id="example_2_3" class="mb-3"></div>
+                            <div class="attempt"><h6 class="mb-0">Question 4: <span class="text-danger">Incorrect</span>. You said <span class="io-list">[80,80]</span>, but the correct answer is <span class="io-list">[80]</span>.</h6></div>
+                            <div id="example_2_4" class="mb-3"></div>
+                            <div class="attempt"><h6 class="mb-0">Question 5:</h6></div>
                             <div id="example_2_5" class="mb-4"></div>
-                            <p class="last">
-                                You will get 10 questions in each round. At the
-                                end of each round, you will be asked to describe
-                                in words what you think the rule was for that
-                                round.
+                            <p class="font-weight-bold last">
+                                At the end of each round, you will also be asked
+                                to describe in words what you think the rule was
+                                for that round.
                             </p>
                             <script>
                              d3.select('#example_2_0').call(make_iq_pair, {list: [75, 1, 9, 7, 9, 10, 95]}, true);
@@ -142,7 +164,11 @@
                             </p>
                             <ol class="font-weight-bold">
                                 <li>
-                                    play 5 rounds of the guessing game with 10 questions per round (25min)
+                                    play 5 rounds of the guessing game (25min)
+                                    <ul>
+                                        <li>each round contains 11 questions</li>
+                                        <li>you end a round by describing the computer's rule in words</li>
+                                    </ul>
                                 </li>
                                 <li>
                                     complete a short survey (5min)
@@ -153,13 +179,13 @@
                             </p>
                             <ul class="last">
                                 <li>
-                                    The rule the computer is thinking of is <span class="font-weight-bold">never random, rigged, or deceptive</span>.
+                                    The computer's rule is <span class="font-weight-bold">never random, rigged, or deceptive</span>.
                                 </li>
                                 <li>
                                     In each round, there is always <span class="font-weight-bold">one correct answer</span> to each question.
                                 </li>
                                 <li>
-                                    You'll advance immediately if you answer correctly, but <span class="font-weight-bold">will have to wait a few seconds if you answer incorrectly</span>. Do your best!
+                                    You'll advance immediately if you answer correctly but <span class="font-weight-bold">will have to wait a few seconds if you answer incorrectly</span>. Do your best!
                                 </li>
                                 <li>
                                     Each round has a different rule, but <span class="font-weight-bold">the rule is always the same for an entire round</span>, so past questions may help you answer future questions.

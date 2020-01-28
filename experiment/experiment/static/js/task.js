@@ -37,12 +37,12 @@ var make_iq_pair = function(div, input, disabled) {
     var row = div.append("div").attr("class", "row stimulus text-center align-items-center");
     var i_div = row.append("div").attr("class", "col-auto input");
     make_list(i_div, input);
-    row.append("div").attr("class", "col-auto").style("font-size", "125%").append("div").append("span").attr("class", "fas fa-arrow-right");
+    row.append("div").style("font-size", "125%").append("div").append("span").attr("class", "fas fa-arrow-right");
     var q_div = row.append("div").attr("class", "col output needs-validation").attr("novalidate", "").append("div").attr("class", "input-group");
     var text = q_div.append("input")
         .attr("type", "text")
         .attr("class", "form-control")
-        .attr("placeholder", "What's the output list (e.g. \"1 2 3\")? ")
+        .attr("placeholder", "What's the output list (e.g. \"1,2,3\")?")
         .attr("aria-label", "output list")
         .attr("aria-describedby", "basic-addon2")
         .attr("required", "");
@@ -64,7 +64,7 @@ var make_io_pair = function(div, input, output) {
     var row = div.append("div").attr("class", "row text-center align-items-center");
     var i_div = row.append("div").attr("class", "col-auto");
     make_list(i_div, input);
-    row.append("div").attr("class", "col-auto").style("font-size", "125%").append("div").append("span").attr("class", "fas fa-arrow-right");
+    row.append("div").style("font-size", "125%").append("div").append("span").attr("class", "fas fa-arrow-right");
     var o_div = row.append("div").attr("class", "col-auto");
     make_list(o_div, output);
 };
@@ -77,19 +77,20 @@ function make_list(div, input) {
         .data([list])
         .enter().append("text")
         .style("pointer-events", "none")
-        .text(function(d){return pretty_list(d);})
-        .style("font-family", "SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace")
+        .text(d => pretty_list(d))
+        .classed("io-list", true)
         .style("font-size", "125%");
 
 }
 
 var pretty_list = function(xs) {
-    return "[" + _.map(xs, x => x.toString()).join(" ") + "]";
+    return "[" + _.map(xs, x => x.toString()).join(",") + "]";
 };
 
 function parse_list(string, max_length, max_elt) {
     // Remove leading whitespace.
-    var s = string.trim();
+    var s = string.trim(),
+        xs;
 
     // Remove first and last characters if brackets.
     if (s.slice(0, 1) === "[" && s.slice(-1) === "]") {
@@ -102,7 +103,12 @@ function parse_list(string, max_length, max_elt) {
     }
 
     // Parse the list.
-    var xs = _.map(s.split(/\ +/), s => parseInt(s, 10));
+    if (/,/.test(s)) {
+        xs = _.map(s.split(/\ *,\ */), s => parseInt(s, 10));
+    } else {
+        xs = _.map(s.split(/\ +/), s => parseInt(s, 10));
+    }
+
     if (xs.length <= max_length && _.all(xs, x => x <= max_elt && x >= 0)) {
         return xs;
     } else {
@@ -128,7 +134,7 @@ var PreQuiz = function(attempt) {
         // Collect the data
         $('#prequiz input[type=radio]:checked').each(function() {
             if ((this.name==="prequiz-q1" && this.value!=="learn") ||
-                (this.name==="prequiz-q2" && this.value!=="50") ||
+                (this.name==="prequiz-q2" && this.value!=="55") ||
                 (this.name==="prequiz-q3" && this.value!=="report")) {
                 passed = false;
             }
@@ -175,9 +181,12 @@ function IOExperiment() {
         concept, // What concept are we learning?
         correct, // did you respond correctly to the last trial?
         nCorrect = 0, // how many correct responses have been chosen?
-        n_trials = 10, // how many trials are there for each block?
+        version = 'pilot', // Where are we getting data?
+        type = (condition === 0) ? "human" : "machine", // what type of examples?
+        trial_order = counterbalance, // what trial order?
+        n_concepts = 6, // How many concepts are there to choose from?
+        n_trials = 11, // how many trials are there for each block?
         n_blocks = 5, // how many blocks are there?
-        nTest = 16, // how many trials are used to test each rule?
         trial = -1, // what trial are we on now?
         progress = 0, // how many trials have we done?
         total, // how many possible trials are there?
@@ -190,6 +199,10 @@ function IOExperiment() {
         linguistic = true, // completed the linguistic description yet?
         trial_start; // time trial is presented
 
+    // TODO: fixme
+    console.log(`trial_order: ${trial_order}`);
+    console.log(`condition: ${condition}`);
+
     function next() {
         if (block.length === 0 && blocks.length === 0 && linguistic) {
             currentview = new PostQuiz([]);
@@ -198,7 +211,6 @@ function IOExperiment() {
         } else {
             if (block.length === 0) {
                 concept = blocks.shift();
-                console.log(`${concept.id}: ${concept.concept}`);
                 block = concept.trials;
                 blockIdx++;
                 trial = -1;
@@ -224,6 +236,11 @@ function IOExperiment() {
     }
 
     function record_linguistic_description() {
+        var instruct = d3.select("#history")
+            .append("div")
+            .attr("class","linguistic last col-12 mt-5 mb-3 text-center")
+            .append("h5")
+            .text("You answered the last question. What do you think the computer's rule was?");
         var div = d3.select("#history")
             .append("div")
             .attr("class","linguistic last col-12 needs-validation input-group")
@@ -235,8 +252,7 @@ function IOExperiment() {
             .attr("aria-label", "output list")
             .attr("required", "");
         var invalid = div.append("div")
-            .attr("class", "invalid-tooltip")
-            .text("Please enter a description of the rule.");
+            .attr("class", "invalid-tooltip");
         var button = div.append("div")
             .attr("class", "input-group-append")
             .append("button")
@@ -246,13 +262,16 @@ function IOExperiment() {
                 d3.event.stopPropagation();
                 // read the input
                 $('.linguistic.last input[type=text]').each(function() {
-                    console.log("click.");
-                    console.log(this.value.length);
-                    console.log(this.value === "");
                     if (this.value === "") {
                         this.setCustomValidity("empty");
+                        invalid.text("Please enter a description of the rule.");
                         d3.select('.linguistic.last.needs-validation').classed("was-validated", true);
                         d3.select('.linguistic.last.was-validated').on('click', function() {d3.select(this).classed("was-validated", false);});
+                    } else if (parse_list(this.value, max_length, max_elt) !== undefined) {
+                            this.setCustomValidity("just a list");
+                            invalid.text("It looks like you entered a list. Please enter a description of the rule.");
+                            d3.select('.linguistic.last.needs-validation').classed("was-validated", true);
+                            d3.select('.linguistic.last.was-validated').on('click', function() {d3.select(this).classed("was-validated", false);});
                     } else {
                         this.setCustomValidity("");
                         // record data
@@ -262,6 +281,8 @@ function IOExperiment() {
                             'concept': concept.concept,
                             'id': concept.id,
                             'condition': condition,
+                            'type': type,
+                            'trial_order': trial_order,
                             'block': blockIdx,
                             'response': this.value,
                         });
@@ -280,6 +301,11 @@ function IOExperiment() {
             })
             .text("Submit");
         $('.linguistic.last input').focus();
+
+        // scroll up to make trial visible
+        $('html, body').animate({scrollTop: $(document).height()-$(window).height()},
+                                100,
+                                "swing");
     }
 
     function announce_new_block() {
@@ -312,6 +338,8 @@ function IOExperiment() {
             'concept': concept.concept,
             'id': concept.id,
             'condition': condition,
+            'type': type,
+            'trial_order': trial_order,
             'block': blockIdx,
             'block_trial': trial,
             'total_trial': progress,
@@ -372,7 +400,7 @@ function IOExperiment() {
                     var list = parse_list(this.value, max_length, max_elt);
                     if (list === undefined) {
                         this.setCustomValidity(this.value);
-                        d3.select('.trial.last .output .invalid-tooltip').html(`\"${this.value}\" isn't a list.<br>Make sure you have 0 to ${max_length} numbers from 0 to ${max_elt} separated by spaces.<br>For example: \"1 2 3 4 5 6 7 8 9 10\".`);
+                        d3.select('.trial.last .output .invalid-tooltip').html(`\"${this.value}\" isn't a list.<br>Make sure you have 0 to ${max_length} numbers from 0 to ${max_elt} separated by commas or spaces.<br>For example: \"1,2,3,4,5,6,7,8,9\".`);
                         d3.select('.trial.last .needs-validation').classed("was-validated", true);
                         d3.select('.trial.last .was-validated').on('click', function() {d3.select(this).classed("was-validated", false);});
                     } else {
@@ -388,7 +416,7 @@ function IOExperiment() {
             .attr("class","row query justify-content-center mt-4")
             .append("div")
             .attr("class","col-auto font-weight-bold")
-            .html(`Type in 0 to ${max_length} numbers from 0 to ${max_elt} separated by spaces, then click \"Submit\".`);
+            .html(`Type in 0 to ${max_length} numbers from 0 to ${max_elt} separated by commas or spaces, then press Tab Enter or click Submit.`);
     }
 
     function add_performance(div) {
@@ -420,7 +448,12 @@ function IOExperiment() {
 
     function archive_stim(response) {
         var lastTrial = d3.select(".trial.last"),
-            response_list = "[" + (response.length > 0 ? response.join(" ") : " ") + "]";
+            response_list = pretty_list(response),
+            out_list = pretty_list(stimulus.o),
+            callback = () => {
+                lastTrial.selectAll(".query, .status-update, .prog").remove();
+                next();
+            };
 
         // Add space.
         lastTrial.classed("mb-3",true);
@@ -431,36 +464,51 @@ function IOExperiment() {
             .call(make_list, {list: stimulus.o})
             .classed("col needs-validation", false)
             .classed("col-auto", true)
-            .attr("novalidate", null)
-            .attr("data-html", "true")
-            .attr("data-placement", "top")
-            .attr("data-template", `<div class="tooltip trial-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>`)
-            .attr("data-trigger", "hover focus")
-            .attr("data-title", `You ${correct ? "" : "in"}correctly answered<br>${response_list}.`);
-        $(".output").tooltip();
+            .attr("novalidate", null);
+            //.attr("data-html", "true")
+            //.attr("data-placement", "top")
+            //.attr("data-template", `<div class="tooltip trial-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>`)
+            //.attr("data-trigger", "hover focus")
+            //.attr("data-title", `You ${correct ? "" : "in"}correctly answered<br>${response_list}.`);
+        //$(".output").tooltip();
 
         // Label the attempt (in)correct.
         d3.select(".attempt.last h6")
-            .text("Question " + (trial+1) + ": " + (correct ? "Correct!" : "Incorrect"));
-
-        // Remove chrome from last trial.
-        lastTrial.selectAll(".query, .status-update, .prog").remove();
+            .html("Question " + (trial+1) + ": " + (correct ? "<span class=\"text-success\">Correct!</span>" : `<span class="text-danger">Incorrect</span>. You said <span class="io-list">${response_list}</span>, but the correct answer is below.`));
 
         // Do the next trial.
-        next();
+        if (!correct) {
+            insert_delay(callback);
+        } else {
+            callback();
+        }
     }
 
-    function schedule_trials(n_trials, n_blocks) {
-        // Randomly select n_blocks concepts, then load trials for each selected
-        // concept, and randomly select n_trials trials.
-        var nice_ids = _.chain(151).range().drop(1).shuffle().take(n_blocks).map(id => "c" + `000${id}`.slice(-3)).value();
-        var promises = _.chain(nice_ids).map(id => d3.json(`/static/data/${id}.json`)).value();
+    function insert_delay(callback) {
+        // show modal
+        // $("#feedback").modal({
+        //     backdrop: "static",
+        //     keyboard: false
+        // });
+        // wait 3s and hide modal
+        setTimeout(() => {
+            // $("#feedback").modal('hide');
+            callback();
+        } , 3000);
+    }
+
+    function schedule_trials() {
+        // Randomly select n_blocks concepts,
+        // then load trials for each selected concept,
+        // then randomly select n_trials trials.
+        var nice_ids = _.chain(n_concepts+1).range().drop(1).shuffle().take(n_blocks).map(id => "c" + `000${id}`.slice(-3)).value();
+        var promises = _.chain(nice_ids).map(id => d3.json(`/static/data/${version}/${type}/${id}_${trial_order}.json`)).value();
         Promise.all(promises).then(datas => {
             blocks = _.chain(datas).zip(nice_ids).map(data => {
                 return {
                     concept: data[0].concept,
                     id: data[1],
-                    trials: _.chain(data[0].examples).shuffle().take(n_trials).value(),
+                    trials: data[0].examples,
                 };
             }).value();
             total = _.chain(blocks).pluck("trials").flatten().value().length;
@@ -572,6 +620,8 @@ var currentview;
 $(window).load(
     // //Use this to eliminate instructions during debugging.
     // function() { currentview = new IOExperiment(0);
+
+    // Use this for the actual experiment.
     function(){
     psiTurk.doInstructions(
         // a list of instructional pages to display in sequence

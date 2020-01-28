@@ -34,9 +34,9 @@ threads = auto
 #server_timeout = 30
 
 [Task Parameters]
-experiment_code_version = 1.0
-num_conds = 1
-num_counters = 1
+experiment_code_version = 0.0.1
+num_conds = 2
+num_counters = 2
 
 [Shell Parameters]
 launch_in_sandbox_mode = true
