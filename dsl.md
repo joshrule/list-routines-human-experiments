@@ -354,6 +354,11 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Returns the sum of all integers in a list.</td>
 </tr>
 <tr>
+<td><code>swap</code></td>
+<td><code>int → int → [t1] → [t1]</code></td>
+<td>Given two indices and a list, return the list with the elements at those two indices swapped.</td>
+</tr>
+<tr>
 <td><code>take</code></td>
 <td><code>int → [t1] → [t1]</code></td>
 <td>Takes the first N values in an input list, dropping the rest.</td>
