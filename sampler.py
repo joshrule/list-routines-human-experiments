@@ -62,7 +62,7 @@ def _cut_val(v):
         return result
     return helper
 def _cut_vals(v): return lambda xs: [x for x in xs if x != v]
-def _replace(idx): return lambda y: lambda xs: [y if i == idx else x for i, x in enumerate(xs)]
+def _replace(idx): return lambda y: lambda xs: [y if i == idx else x for i, x in enumerate(xs, 1)]
 def _flatten(l): return [x for xs in l for x in xs]
 def _map(f): return lambda l: list(map(f, l))
 def _if(c): return lambda t: lambda f: t if c else f
@@ -79,7 +79,7 @@ def _gt(x): return lambda y: x > y
 def _lt(x): return lambda y: x < y
 # not the most general form (i.e. zip-with) but it matches standard usage
 def _zip(xs): return lambda ys: [list(x) for x in zip(xs, ys)]
-def _mapi(f): return lambda l: list(map(lambda i_x: f(i_x[0])(i_x[1]), enumerate(l)))
+def _mapi(f): return lambda l: list(map(lambda i_x: f(i_x[0])(i_x[1]), enumerate(l, 1)))
 def _and(x): return lambda y: x and y
 def _or(x): return lambda y: x or y
 def _not(x): return not x
@@ -100,11 +100,11 @@ def _is_even(x): return x % 2 == 0
 def _is_odd(x): return x % 2 == 1
 def _count(p): return lambda xs: sum(p(x) for x in xs)
 def _filter(f): return lambda xs: list(filter(f, xs))
-def _filteri(f): return lambda xs: [x for i, x in enumerate(xs) if f(i)(x)]
+def _filteri(f): return lambda xs: [x for i, x in enumerate(xs, 1) if f(i)(x)]
 def _fold(f): return lambda x0: lambda xs: reduce(lambda a, x: f(a)(x), xs, x0)
-def _foldi(f): return lambda x0: lambda xs: reduce(lambda a, t: f(t[0])(a)(t[1]), enumerate(xs), x0)
+def _foldi(f): return lambda x0: lambda xs: reduce(lambda a, t: f(t[0])(a)(t[1]), enumerate(xs, 1), x0)
 def _is_in(xs): return lambda x: x in xs
-def _find(p): return lambda xs: [i for i, x in enumerate(xs) if p(x)]
+def _find(p): return lambda xs: [i for i, x in enumerate(xs, 1) if p(x)]
 def _insert(x): return lambda i: lambda xs: xs[:(i-1)] + [x] + xs[(i-1):]
 def _splice(x): return lambda i: lambda xs: xs[:(i-1)] +  x  + xs[(i-1):]
 
