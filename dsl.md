@@ -224,9 +224,9 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Higher-order function that takes an input list and returns a list of lists grouped by an input function of type (t1 → t2).</td>
 </tr>
 <tr>
-<td><code>head</code></td>
+<td><code>first</code></td>
 <td><code>[t1] → t1</code></td>
-<td>Returns the head (first element) of a list.</td>
+<td>Returns the first element (head) of a list.</td>
 </tr>
 <tr>
 <td><code>if</code></td>
@@ -323,6 +323,11 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Reverses the list.</td>
 </tr>
 <tr>
+<td><code>second</code></td>
+<td><code>[t1] → t1</code></td>
+<td>Returns the second element of a list.</td>
+</tr>
+<tr>
 <td><code>singleton</code></td>
 <td><code>t1 → [t1]</code></td>
 <td>Returns the input argument as a list. (e.g. 7 → [7], 3 → [3]). This is useful in cases where a function would otherwise return a single value instead of a list, because the sampled concepts need to have type [int] → [int].</td>
@@ -359,6 +364,11 @@ This section contains a table of symbols in the DSL, along with their type signa
 <td>Takes the last N values in an input list, dropping the rest.</td>
 </tr>
 <tr>
+<td><code>third</code></td>
+<td><code>[t1] → t1</code></td>
+<td>Returns the third element of a list.</td>
+</tr>
+<tr>
 <td><code>unique</code></td>
 <td><code>[t1] → [t1]</code></td>
 <td>Removes duplicates in the list, returning a list of unique values in the same order.</td>
@@ -392,7 +402,6 @@ Some more examples of Lambda functions can be seen below:
 ## Ideas for the Future
 
 - more sophisticated `replace` (`(int -> t1 -> bool) -> [t1] -> [t1] -> [t1]`)
-- rename `head` to `first`; add `second` and `third`
 - add `windows` and `chunks`
 - add `tail` (i.e. `(drop 1 xs)`) and `init` (i.e. `(droplast 1 xs)`)
 - add `is_empty`, `any`, and `all`
