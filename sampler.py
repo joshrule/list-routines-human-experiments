@@ -178,18 +178,10 @@ def primitives():
 
 def wave_pilot():
     return [
-        '(lambda (unique $0))',
-        '(lambda (repeat (max $0) (min $0)))',
-        '(lambda (concat (drop (last $0) $0) (take (last $0) $0)))',
-        '(lambda (flatten (map (lambda (cons (head $0) (singleton (length $0)))) (group (lambda $0) $0))))',
-        '(lambda (fold (lambda (lambda (if (is_even (nth 2 $0)) (append $1 (head $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0))))',
-    ]
-
-def wave_pilot_human():
-    return [
         {"concept": '(lambda (unique $0))',
+         "adjust": lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) < 0.75 if len(i) > 0 else 1) for i, o in xs)),
          "inputs": [
-             [
+                 [7, 31, 7, 7, 31],
                  [3, 8, 3],
                  [7, 9, 2, 2, 3, 7, 6, 7],
                  [19, 19],
@@ -198,106 +190,102 @@ def wave_pilot_human():
                  [],
                  [19, 38, 14, 76, 7, 4, 88],
                  [16, 25, 8, 8],
-                 [7, 31, 7, 7, 54],
                  [79],
-             ],
-             [
-                 [4, 4, 27, 4], # 4/2
-                 [36, 36], # 2/1
-                 [53, 96, 38, 30, 57, 20, 3, 61, 79], # 9/9
-                 [8, 6, 6, 44, 3, 38, 7, 3], # 8/6
-                 [5, 19, 49, 7, 62], # 5/5
-                 [13, 71, 8], # 3/3
-                 [58, 32, 43, 58, 58, 46, 27, 47, 58, 32], # 10/6
-                 [5], # 1/1
-                 [12, 1, 12, 12, 1, 2], # 6/3
-                 [98, 72, 83, 72, 98, 98, 59], # 7/4
-             ]
+                 [5, 19, 49, 7, 62]
          ]},
+        # {"concept": '(lambda (singleton (length $0))',
+        #  "adjust": lambda xs: 1.0,
+        #  "inputs": [
+        #      [],
+        #      [31],
+        #      [23, 6],
+        #      [38, 4, 18],
+        #      [88, 67, 0, 44],
+        #      [3, 3, 7, 49, 6],
+        #      [80, 70, 51, 5, 98, 2],
+        #      [45, 76, 37, 3, 8, 1, 76],
+        #      [66, 12, 43, 12, 25, 6, 6, 15],
+        #      [22, 24, 58, 84, 3, 46, 0, 22, 3],
+        #      [10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+        #  ]},
         {"concept": '(lambda (repeat (max $0) (min $0)))',
+         "adjust": lambda xs: 1.0 if any(len(o) == 0 for i, o in xs) else 0.0,
          "inputs": [
-             [
-                 [23, 9, 14, 7, 2, 31, 4, 4, 0, 18], # 0/10
-                 [62, 5], # 5/2
                  [99, 7, 55], # 7/3
-                 [31, 15, 18, 43, 95, 17, 17, 18], # 15/8
-                 [32, 14, 67, 32, 9, 70, 77], # 9/7
+                 [36, 22, 2, 15, 7], # 2/5
+                 [62, 5], # 5/2
+                 [23, 9, 14, 7, 2, 31, 4, 4, 0, 18], # 0/10
                  [3, 3, 3, 3], # 3/4
-                 [1], # 1/1
+                 [4, 4, 4], # 4/3
+                 [32, 14, 67, 32, 9, 70, 77], # 9/7
+                 [7], # 7/1
                  [12, 42, 92, 58, 62, 38], # 12/6
                  [48, 56, 39, 58, 13], # 13/5
                  [43, 84, 8, 17, 8, 78, 64, 10], # 8/9
-             ],
-             [
-                 [36, 22, 2, 15, 7], # 2/5
-                 [14, 25], # 14/2
-                 [5, 7, 5, 3, 9, 8], # 3/6
-                 [4, 4, 4], # 4/3
-                 [36, 64, 21, 92, 62, 5, 73, 44, 34, 16], # 5/10
-                 [85, 99, 74, 6, 54, 85, 44], # 6/7
-                 [7], # 7/1
-                 [71, 25, 25, 95, 71, 10, 19, 9, 11], # 9/9
-                 [10, 79, 16, 42], # 10/4
-                 [12, 33, 11, 11, 55, 62, 63, 28], # 11/8
-             ]
          ]},
+        # {"concept": '(lambda (concat (reverse (drop 1 $0)) $0))',
+        #  "adjust": lambda xs: 1.0,
+        #  "inputs": [
+        # [],
+        # [1],
+        # [7, 7],
+        # [49, 0, 34],
+        # [54, 6, 3, 8],
+        # [70, 70, 3, 70, 3],
+        # [64, 15, 92, 54, 15, 85],
+        # [61, 6, 6, 2, 2, 6, 6],
+        # [0, 1, 1, 21, 4, 50, 50, 78],
+        # [93, 93, 93, 93, 93, 93, 93, 93, 93],
+        # [1, 79, 0, 21, 4, 32, 42, 81, 23, 9],
+        # ]},
         {"concept": '(lambda (concat (drop (last $0) $0) (take (last $0) $0)))',
+         "adjust": lambda xs: 0 if sum(i[-1] >= len(i) for i, o in xs) > 2 else 1,
          "inputs": [
-             [
                  [1, 17, 4, 2],
                  [20, 14, 66, 2, 68, 46, 93, 5],
                  [50, 71, 6, 32, 1],
                  [72, 8, 54, 98, 72, 43, 49, 42, 7, 8],
+                 [12, 5, 83, 5, 0, 1],
                  [46, 69, 70, 4, 20, 5, 42, 41, 22, 6],
                  [9, 33, 0],
                  [0, 23, 17, 81, 87, 3],
                  [53, 22, 57, 37, 59, 66, 26, 21, 4],
                  [96, 32, 99, 98, 98, 60, 80, 90, 26, 7],
                  [88, 10, 1, 78, 56, 32],
-             ],
-             [
-                 [42, 55, 15, 80, 10, 10, 91, 3],
-                 [5, 6, 16, 7, 30, 19, 23, 6, 6, 2],
-                 [52, 90, 43, 84, 3, 43, 48, 35, 84, 9],
-                 [8, 5, 30, 9, 8, 1, 49, 9, 7],
-                 [3, 17, 67, 1, 14, 3, 13, 5, 4],
-                 [24, 56, 64, 18, 46, 88, 36, 61, 38, 10],
-                 [12, 5, 83, 5, 0, 1],
-                 [10, 8, 29, 6, 9, 83, 6],
-                 [78, 1, 18, 27],
-                 [2, 77, 3, 10, 86, 97, 0, 5],
-             ]
          ]},
-        {"concept": '(lambda (flatten (map (lambda (cons (head $0) (singleton (length $0)))) (group (lambda $0) $0))))',
+        {"concept": '(lambda (flatten (map (lambda (cons (first $0) (singleton (length $0)))) (group (lambda $0) $0))))',
+         "adjust": lambda xs: len({e for i, o in xs for e in o[1::2]})/10,
          "inputs": [
-             [
                  [2, 2, 2, 19, 2, 2, 25, 2],
                  [4, 4, 8, 4, 3],
                  [4, 4, 4, 4, 4, 4, 4],
                  [79, 79, 8, 79, 7, 7, 7, 79, 8],
+                 [86, 86, 1, 1, 86, 1],
                  [8, 9, 98, 4, 7, 86],
                  [1, 41, 6, 90],
                  [33, 24, 0, 0, 1, 7, 33, 10],
                  [97, 18, 67, 67],
                  [8, 8, 9, 8, 1, 9, 8],
                  [0, 45, 7, 37, 94, 94, 7, 7, 45, 45],
-             ],
-             [
-                 [3, 3, 38, 38, 58, 58, 58, 38],
-                 [10, 10, 10, 10, 10, 10, 10, 10],
-                 [5, 5, 1],
-                 [5, 8, 64, 8, 64, 8, 5, 8, 5],
-                 [86, 86, 1, 1, 86, 1],
-                 [25, 61, 7, 9, 7, 10, 10],
-                 [87, 25, 10, 87],
-                 [7, 7, 7, 1, 1, 1, 1, 1, 7, 1],
-                 [86, 10, 7, 89, 99, 2, 2, 13, 86],
-                 [3, 87, 1, 5, 87, 98, 1, 87, 3],
-             ]
          ]},
-        {"concept": '(lambda (fold (lambda (lambda (if (is_even (nth 2 $0)) (append $1 (head $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0))))',
+        {"concept": '(lambda (fold (lambda (lambda (if (> $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))',
+         "adjust": lambda xs: 2*len({len(o) for i, o in xs})/11,
          "inputs": [
-             [
+                 [1, 3, 2, 5, 3, 4, 7, 6, 9], #9
+                 [22, 6, 7, 38, 62, 44, 78, 91], #8
+                 [0, 4, 9], # 3
+                 [5, 2, 19, 18, 37], #5
+                 [4, 0, 9], # 3
+                 [11, 23, 34, 55, 87], # 5
+                 [97, 13, 82, 4, 55, 97, 3], #7
+                 [], # 0
+                 [34, 35, 62, 24, 75, 6], #6
+                 [2, 6, 2, 10, 17, 3, 53, 9, 72, 3], # 10
+                 [48, 61, 37, 86], #4
+         ]},
+        {"concept": '(lambda (fold (lambda (lambda (if (is_even (second $0)) (append $1 (first $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0))))',
+         "adjust": lambda xs: len({len(o) for i, o in xs})/10,
+         "inputs": [
                  [6, 0, 7, 32],
                  [62, 8, 59, 88, 98, 6],
                  [1, 96, 1, 13, 86, 77, 6, 10, 7, 0],
@@ -306,21 +294,9 @@ def wave_pilot_human():
                  [43, 4, 64, 5, 0],
                  [0, 2, 3],
                  [7, 14, 7, 6, 8, 57, 10],
+                 [27, 6, 21, 6, 86, 8, 0],
                  [4, 10, 6, 8],
                  [6, 0, 85, 7, 10, 69, 22, 5],
-             ],
-             [
-                 [27, 6, 21, 6, 86, 8, 0],
-                 [37, 14, 51, 4],
-                 [19, 82, 27, 0, 6, 4, 4, 2, 15, 10],
-                 [12, 3, 90],
-                 [9, 16],
-                 [39, 10, 6, 32, 47, 92, 61, 65],
-                 [9, 15],
-                 [35, 5, 0, 58, 12],
-                 [],
-                 [81, 6, 43, 3, 6, 8],
-             ]
          ]},
     ]
 
@@ -382,8 +358,8 @@ def wave_1():
         '(lambda (map (lambda (if (is_even $0) (* 3 $0) $0)) $0))',
         '(lambda (mapi (lambda (lambda (* $0 $1))) $0))',
         '(lambda (mapi (lambda (lambda (+ $0 $1))) (reverse $0)))',
-        '(lambda (flatten (map (lambda (cons $0 (cons (is_odd $0) empty))) $0)))',
-        '(lambda (mapi (lambda (lambda (== $0 $1))) $0))',
+        '(lambda (flatten (map (lambda (cons $0 (singleton (if (is_odd $0) 1 0)))) $0)))',
+        '(lambda (mapi (lambda (lambda (if (== $0 $1) 1 0))) $0))',
         '(lambda (map (lambda (count (lambda (== $1 $0)) $1)) (range 1 1 (max $0))))',
         '(lambda (map (lambda (+ (max $1) $0)) $0))',
         '(lambda (map (lambda (- (first $1) $0)) $0))',
@@ -479,27 +455,327 @@ def wave_1():
         '(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))))',
     ]
 
-def sample_examples2(p,n=20,n_pools=3, n_tries=10,n_sets=10,verbose=True):
+def model_comparison_wave_3():
+    return [
+        {'concept': '(lambda (singleton (third $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0
+        },
+        {'concept': '(lambda (if (> 3 (length $0)) empty (singleton (third $0))))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 3 for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (singleton (nth 7 $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i, o in xs) else 0
+        },
+        {'concept': '(lambda (if (> 7 (length $0)) empty (singleton (nth 7 $0))))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 7 for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (singleton (nth (first $0) (drop 1 $0))))',
+         'adjust': lambda xs: 3.0 if all(i[0] <= len(i)-1 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (take 2 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0
+        },
+        {'concept': '(lambda (take 2 $0))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 2 for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (take 6 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 6 for i, o in xs) else 0
+        },
+        {'concept': '(lambda (take 6 $0))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 6 for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (take (first $0) (drop 1 $0)))',
+         'adjust': lambda xs: 3.0 if all(i[0] <= len(i)-1 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (slice 2 4 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (slice 2 4 $0))',
+         'adjust': lambda xs: (sum(2 > len(i)) >= 2) + (sum(4 > len(i) >= 2) >= 2) + (sum(len(i) >= 4) >= 4),
+        },
+        {'concept': '(lambda (slice 3 7 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (slice 3 7 $0))',
+         'adjust': lambda xs: (sum(3 > len(i)) >= 2) + (sum(7 > len(i) >= 3) >= 2) + (sum(len(i) >= 7) >= 4)
+        },
+        {'concept': '(lambda (slice (first $0) (second $0) (drop 2 $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= i[1] for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (replace 2 8 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (replace 2 8 $0))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(2 > len(i) for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (replace 6 3 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 6 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (replace 6 3 $0))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(6 > len(i) for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (replace 1 (last $0) $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 1 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (insert 8 2 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (insert 5 2 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (insert (if (> 5 (length $0)) 8 5) 2 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (insert (if (> 5 (first $0)) 8 5) 2 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (cut_idx 2 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (cut_idx 3 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (cut_idx (if (== (first $0) (third $0)) 3 2) $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) and (0.6 >= sum(i[0] == i[2] for i, o in xs)/len(xs) >= 0.4) else 0,
+        },
+        {'concept': '(lambda (cut_idx (if (> (first $0) (third $0)) 3 2) $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) and (0.6 >= sum(i[0] > i[2] for i, o in xs)/len(xs) >= 0.4) else 0,
+        },
+        {'concept': '(lambda (drop 2 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (drop 4 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (drop (if (and (== (second $0) (first $0)) (> (length $0) 5)) 2 4) $0))',
+         'adjust': lambda xs: (sum(i[0] != i[1] and 5 >= len(i)) >= 2 + sum(i[0] == i[1] and 5 >= len(i)) >= 2 + sum(i[0] != i[1] and len(i) > 5) >= 2 + sum(i[0] == i[1] and len(i) > 5) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (drop (if (and (== (second $0) 0) (> (first $0) 5)) 2 4) $0))',
+         'adjust': lambda xs: (sum(0 != i[1] and 5 >= i[0]) >= 2 + sum(0 == i[1] and 5 >= i[0]) >= 2 + sum(0 != i[1] and i[0] > 5) >= 2 + sum(0 == i[1] and i[0] > 5) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (swap 1 4 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (swap 2 3 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
+         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i)) >= 2 + sum(i[1] == i[3] and 7 >= len(i)) >= 2 + sum(i[1] != i[3] and len(i) > 7) >= 2 + sum(i[1] == i[3] and len(i) > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
+         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3]) >= 2 + sum(i[1] == 7 and 7 >= i[3]) >= 2 + sum(i[1] != 7 and i[3] > 7) >= 2 + sum(i[1] == 7 and i[3] > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (append $0 3))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (append $0 9))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda ((lambda (if (> (length $0) 5) (append $0 3) $0)) ((lambda (if (== (second $0) (third $0)) (append $0 9) $0)) $0)))',
+         'adjust': lambda xs: (sum(i[1] != i[2] and 5 >= len(i)) >= 2 + sum(i[1] == i[2] and 5 >= len(i)) >= 2 + sum(i[1] != i[2] and len(i) > 5) >= 2 + sum(i[1] == i[2] and len(i) > 5) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
+        },
+        {'concept': '(lambda ((lambda (if (> (third $0) 3) (append $0 3) $0)) ((lambda (if (== (second $0) 9) (append $0 9) $0)) $0)))',
+         'adjust': lambda xs: (sum(i[1] != 9 and 3 >= i[2]) >= 2 + sum(i[1] == 9 and 3 >= i[2]) >= 2 + sum(i[1] != 9 and i[2] > 3) >= 2 + sum(i[1] == 9 and i[2] > 3) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (singleton 9))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (cons 5 (singleton 2)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (cons 8 (cons 2 (cons 7 (cons 0 (singleton 3))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (cons 1 (cons 9 (cons 4 (cons 3 (cons 2 (cons 5 (cons 8 (cons 0 (cons 4 (singleton 9)))))))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda $0)',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (cons 7 $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (cons 9 (cons 6 (cons 3 (cons 8 (cons 5 $0))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (take 1 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) > 0 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (drop 1 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) > 0 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (cons (first $0) $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat (repeat (first $0) 5) $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (repeat (first $0) 10))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat (repeat (first $0) 2) (drop 2 $0)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat (repeat (third $0) 3) (drop 3 $0)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat (slice 3 4 $0) (concat (take 2 $0) (drop 4 $0))))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (cut_idx 5 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 5 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (insert 4 7 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (drop 7 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (swap 4 8 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 8 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (swap 3 1 (replace 4 4 (cut_idx 6 (take 7 $0)))))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (singleton (last $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 1 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (droplast 1 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 1 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (drop (first $0) (drop 1 $0)))',
+         'adjust': lambda xs: 3.0 if all(i[0] <= len(i)-1 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (drop 1 (droplast 1 $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (cons 9 (append $0 7)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (append (drop 1 $0) (first $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 1 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (cons (last $0) (append (drop 1 (droplast 1 $0)) (first $0))))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i,o in xs) else 0.0,
+        },
+        {'concept': '(lambda (concat $0 (cons 7 (cons 3 (cons 8 (cons 4 (singleton 3)))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat (cons 9 (cons 3 (cons 4 (singleton 0)))) (concat $0 (cons 7 (cons 2 (cons 9 (singleton 1)))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat $0 $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (map (lambda (+ 2 $0)) $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (flatten (map (lambda (cons $0 (singleton $0))) $0)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (mapi + $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (filter (lambda (> $0 7)) $0))',
+         "adjust": lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) < 0.75 if len(i) > 0 else 1) for i, o in xs)),
+        },
+        {'concept': '(lambda (filteri (lambda (lambda (is_odd $1))) $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (map (lambda (- $0 3)) (filter (lambda (> $0 5)) $0)))',
+         "adjust": lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) < 0.75 if len(i) > 0 else 1) for i, o in xs)),
+        },
+        {'concept': '(lambda (singleton (length $0)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (singleton (max $0)))',
+         "adjust": lambda xs: len({tuple(o) for i,o in xs})/len(xs),
+        },
+        {'concept': '(lambda (singleton (sum $0)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (reverse $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (singleton (third $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0
+        },
+        {'concept': '(lambda (if (> 3 (length $0)) empty (singleton (third $0))))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 3 for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (singleton (nth 7 $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i, o in xs) else 0
+        },
+        {'concept': '(lambda (if (> 7 (length $0)) empty (singleton (nth 7 $0))))',
+         'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 7 for i, o in xs)/len(xs) >= 0.4 else 0,
+        },
+        {'concept': '(lambda (singleton (nth (first $0) (drop 1 $0))))',
+         'adjust': lambda xs: 3.0 if all(i[0] <= len(i)-1 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (swap 1 4 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (swap 2 3 $0))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
+        },
+        {'concept': '(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
+         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i)) >= 2 + sum(i[1] == i[3] and 7 >= len(i)) >= 2 + sum(i[1] != i[3] and len(i) > 7) >= 2 + sum(i[1] == i[3] and len(i) > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
+         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3]) >= 2 + sum(i[1] == 7 and 7 >= i[3]) >= 2 + sum(i[1] != 7 and i[3] > 7) >= 2 + sum(i[1] == 7 and i[3] > 7) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (cons 18 (cons 42 (cons 77 (cons 20 (singleton 36))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (cons 81 (cons 99 (cons 41 (cons 23 (cons 22 (cons 75 (cons 68 (cons 30 (cons 24 (singleton 69)))))))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (cons 92 (cons 63 (cons 34 (cons 18 (cons 55 $0))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (repeat (first $0) 10))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat (slice 3 4 $0) (concat (take 2 $0) (drop 4 $0))))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (drop 1 (droplast 1 $0)))',
+         'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i,o in xs) else 0
+        },
+        {'concept': '(lambda (cons 98 (append $0 37)))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (concat (cons 11 (cons 21 (cons 43 (singleton 19)))) (concat $0 (cons 7 (cons 89 (cons 0 (singleton 57)))))))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (mapi + $0))',
+         'adjust': lambda xs: 1.0,
+        },
+        {'concept': '(lambda (filter (lambda (> $0 49)) $0))',
+         "adjust": lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) < 0.75 if len(i) > 0 else 1) for i, o in xs)),
+        },
+        {'concept': '(lambda (reverse $0))',
+         'adjust': lambda xs: 1.0,
+        },
+    ]
+
+def sample_examples(p,adjust,n=10,n_pools=1000,n_tries=20,n_sets=1000,verbose=True,small=False):
     best_score = 0.0
     best_s = None
-    scanned = 0
-    for _ in range(n_pools):
-        span = 0
-        pool = build_pool(p, n_tries, verbose)
-        while span < n_sets:
-            span += 1
-            scanned += 1
+    for i_pool in range(n_pools):
+        print(f"{i_pool}. ", end="")
+        pool = build_pool(p, n_tries, verbose, small)
+        for scanned in range(n_sets):
             s = make_example_set(pool, n)
-            score = score_set(s)
+            score = score_set(s, adjust)
             if score > best_score:
                 if verbose:
-                    print(f"  {scanned}: {score}")
+                    print(f"    {scanned}: {score}")
                 best_score = score
                 best_s = s
-                span = 0
     return best_s
 
-def build_pool(p, n_tries, verbose):
+def build_pool(p, n_tries, verbose, small):
     if verbose:
         print("building pool", end="", flush=True)
     try:
@@ -514,12 +790,13 @@ def build_pool(p, n_tries, verbose):
             subsubpool = []
             os = []
             tries = 0
-            while len(subsubpool) < n_tries and tries < n_tries**3:
+            while len(subsubpool) < n_tries and tries < 100:
                 tries += 1
-                i = sample_input(length, repetitions)
+                i = sample_input(small, length, repetitions)
                 try:
                     o = p.runWithArguments([i])
-                    if valid_output(o) and (i, o) not in subsubpool and o not in os:
+                    if valid_output(o, small) and (i, o) not in subsubpool and os.count(o) < n_tries/10:
+                        tries = 0
                         os.append(o)
                         subsubpool.append((i,o))
                 except(IndexError, ValueError):
@@ -567,20 +844,16 @@ def make_example_set(pool, n):
         examples = helper()
     return examples
 
-def valid_output(xs):
-    return len(xs) <= 15 and max(xs) < 100
+def valid_output(xs, small):
+    return len(xs) == 0 or (len(xs) <= 15 and max(xs) < (10 if small else 100))
 
-def score_set(s):
+def score_set(s, adjust):
     (inputs, outputs) = zip(*s)
     n = len(s)
 
-    # Measure the distribution of input lengths
-    in_ws = [sum(len(i) == l for i in inputs) for l in range(11)]
-    foil = [len(s)//11 + (1 if x < len(s) % 11 else 0) for x in range(11)]
-    in_len = simple_entropy(in_ws)/simple_entropy(foil)
-
     # Measure the distribution of output lengths
     out_ws = [sum(len(o) == l for o in outputs) for l in range(11)]
+    foil = [len(s)//11 + (1 if x < len(s) % 11 else 0) for x in range(11)]
     out_len = simple_entropy(out_ws)/simple_entropy(foil)
 
     # Inputs are unique by construction.
@@ -590,31 +863,66 @@ def score_set(s):
     # Measure the proportion of non-trivial i/o pairs
     nontrivial = sum(i != o for i,o in s)/n
 
+    # Measure the distribution of list elements.
     all_items = _flatten(_flatten(s))
     ws = [sum(i == j for i in all_items) for j in range(100)]
     foil = [len(all_items)//100 + (1 if x < len(all_items) % 100 else 0) for x in range(100)]
     span = simple_entropy(ws)/simple_entropy(foil)
 
+    # Measure the distribution over input lengths & repetitions
     lrs = [(len(i), len(i)-len(set(i))) for i in inputs]
     lr_ws = [len(list(x)) for x in itertools.groupby(sorted(lrs))]
     foil = [len(lrs)//46 + (1 if x < len(lrs) % 46 else 0) for x in range(46)]
     combos = simple_entropy(lr_ws)/simple_entropy(foil)
-    return out_len + unique + nontrivial + 4*span + 4*combos
+
+    # Adjust the score if necessary.
+    adjustment = 0 if adjust is None else adjust(s)
+
+    return (out_len + unique + nontrivial + span + combos + adjustment)/6
+
+def order_examples(xs, n_orders, n_tries):
+    orders = []
+    for _ in range(max(n_orders, n_tries)):
+        candidate = random.sample(xs, len(xs))
+        orders.append((score_order(candidate), candidate))
+    ranked = sorted(orders, key= lambda x: x[0])
+    best = []
+    while len(best) < n_orders:
+        try:
+            s, candidate = ranked.pop()
+        except IndexError:
+            break
+        firsts = [order[0] for order in best]
+        start = [{tuple(i) for i,o in order[:5]} for order in best]
+        cand_set = {tuple(i) for i,o in candidate[:5]}
+        if (candidate not in best and
+            candidate[0] not in firsts and
+            (len(start) == 0 or
+             max(len(cand_set.intersection(s)) for s in start) <= 2)):
+            best.append(candidate)
+    return best
+
+def score_order(xs):
+    first_short = 1 - min(2, abs(4 - len(xs[0][0]))) / 2
+    first_informative = 1 if xs[0][0] != xs[0][1] else 0
+    good_start = score_set(xs[:5], adjust=lambda xs: 0.0 )/5
+    good_finish = score_set(xs[5:], adjust=lambda xs: 0.0 )/5
+    return first_short + first_informative + good_start + good_finish
 
 def flip(p=0.5):
     return random.random() < p
 
-def sample_element():
-    if flip(0.5):
-        return random.randint(0, 10)
+def sample_element(small):
+    if small or flip(0.5):
+        return random.randint(0, 9)
     return random.randint(0, 99)
 
-def sample_input(l=None, r=None):
+def sample_input(small, l=None, r=None):
     length = random.randint(0, 10) if l is None else l
-    repetitions = random.randint(0, length-1) if r is None else r if length > 1 else 0
+    repetitions = (random.randint(0, length-1) if r is None else r) if length > 1 else 0
     xs = set()
     while len(xs) < length-repetitions:
-        xs.add(sample_element())
+        xs.add(sample_element(small))
     xs = list(xs)
     xs.extend([random.choice(xs) for _ in range(repetitions)])
     random.shuffle(xs)
@@ -638,57 +946,49 @@ def test_p_with_i(e, i):
     print(f"f = {p}")
     print(f"f {i} = {o}")
 
-def process(i, e, n_trials=20, n_orders=2, verbose=True):
+def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, human=False):
     Primitive.GLOBALS.clear()
     grammar = Grammar.uniform(primitives())
-    p = Program.parse(e)
+    tp = arrow(tlist(tint), tlist(tint))
+    p = Program.parse(c['concept'])
     if verbose:
         print(f"{i}. {p}")
-    for i_order in range(n_orders):
-        examples = sample_examples2(p, n=n_trials, n_pools=5, n_tries=20, n_sets=500, verbose=verbose)
+    if not p.canHaveType(tp):
         if verbose:
-            for inp, out in examples:
-                print(f"f {inp} = {out}")
+            print(f"    incorrect type {p.infer()}")
+        return
+    if human:
+        examples = [(inp, p.runWithArguments([inp])) for inp in c['inputs']]
+    else:
+        examples = sample_examples(p, c["adjust"], n=n_trials, n_pools=500, n_tries=20, n_sets=1000, verbose=verbose, small=small)
+    for i_order, order in enumerate(order_examples(examples, n_orders, 5000)):
         data = {
-            "concept": e,
-            "examples": [{"i": e[0], "o": e[1]} for e in examples]
+            'concept': c['concept'],
+            'examples': [{"i": i, "o": o} for i,o in order]
             }
         out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
-        filename = f"../../list-routine-human-experiments/waves/pilot/json/c{i+1:03}_{i_order}.json"
-        with open(filename, "w") as fd:
+        if verbose:
+            print(out.stdout)
+        with open(f"{dirname}/c{i:03}_{i_order}.json", "w") as fd:
             fd.write(out.stdout)
         if verbose:
             print()
 
-def process_human(i, e, inputss, verbose=True):
+def make_grammar():
     Primitive.GLOBALS.clear()
-    grammar = Grammar.uniform(primitives())
-    p = Program.parse(e)
-    if verbose:
-        print(f"{i}. {p}")
-    for i_order, inputs in enumerate(inputss):
-        examples = [(inp, p.runWithArguments([inp])) for inp in inputs]
-        if verbose:
-            for inp, out in examples:
-                print(f"f {inp} = {out}")
-        data = {
-            "concept": e,
-            "examples": [{"i": e[0], "o": e[1]} for e in examples]
-            }
-        out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
-        filename = f"../../list-routine-human-experiments/waves/pilot/json/human/c{i+1:03}_{i_order}.json"
-        with open(filename, "w") as fd:
-            fd.write(out.stdout)
-        if verbose:
-            print()
+    return Grammar.uniform(primitives())
 
 if __name__ == "__main__":
-    # for i, e in enumerate(wave_1()[], 1):
-    #     process(i,e,True)
+    for i, c in enumerate(wave_pilot(), 1):
+        process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False)
+        process("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=True)
+
+    # dirname = "../../list-routine-model-comparison/waves/3/json"
+    # for i, c in enumerate(model_comparison_wave_3()[:20], 1):
+    #     process(dirname, i, c, n_trials=11, n_orders=5, verbose=True, small=(i <= 80))
 
     # Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, False) for i, e in enumerate(wave_1()))
 
-    #Parallel(n_jobs=4, verbose=20)(delayed(process)(i, e, n_trials=10, n_orders=2, verbose=False) for i, e in enumerate(wave_pilot()))
-
-    for (i, c) in enumerate(wave_pilot_human()):
-        process_human(i, c["concept"], c["inputs"], verbose=True)
+    # dirname = "../waves/pilot/json/machine"
+    # Parallel(n_jobs=4, verbose=20)(delayed(process)(dirname, i, e, n_trials=11, n_orders=5, verbose=False)
+    #                                for i, e in enumerate(wave_pilot()))
