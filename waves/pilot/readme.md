@@ -1,6 +1,6 @@
 # Pilot Concepts
 
-This is a list of concepts used to pilot our human experimental paradigm. Inputs and outputs are assumed to be `[int]` with 0 to 10 elements of values 0 to 99 (i.e. each concept is `[int] → [int]`). See [the DSL](../../dsl.md) for details on each symbol. For each function, we test one set of 11 machine-generated examples and one set of 11 human-generated examples for each function. For each set, there are 2 unique orderings. In the list below, *h*s link to orderings of the human-generated examples, while *m*s link to orderings of the machine-generated examples.
+This is a list of concepts used to pilot our human experimental paradigm. Inputs and outputs are assumed to be `[int]` with 0 to 10 elements of values 0 to 99 (i.e. each concept is `[int] → [int]`). See [the DSL](../../dsl.md) for details on each symbol. We test one set of 11 machine-generated examples and one set of 11 human-generated examples for each function. For each set, there are 2 unique orderings. In the list below, *h*s link to orderings of the human-generated examples, while *m*s link to orderings of the machine-generated examples.
 
 1. `(lambda (unique $0))`
    [h][1h0] [h][1h1] [m][1m0] [m][1m1]
