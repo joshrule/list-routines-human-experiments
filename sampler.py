@@ -850,7 +850,7 @@ def model_comparison_wave_3():
          'adjust': lambda xs: (sum(i[0] != i[1] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[0] == i[1] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[0] != i[1] and len(i) > 5 for i,o in xs) >= 2 + sum(i[0] == i[1] and len(i) > 5 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (drop (if (and (== (second $0) 0) (> (first $0) 5)) 2 4) $0))',
-         'adjust': lambda xs: (sum(0 != i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 == i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 != i[1] and i[0] > 5 for i,o in xs) >= 2 + sum(0 == i[1] and i[0] > 5) >= 2 for i,o in xs) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(0 != i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 == i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 != i[1] and i[0] > 5 for i,o in xs) >= 2 + sum(0 == i[1] and i[0] > 5 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (swap 1 4 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
@@ -862,7 +862,7 @@ def model_comparison_wave_3():
          'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] == i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] != i[3] and len(i) > 7 for i,o in xs) >= 2 + sum(i[1] == i[3] and len(i) > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] == 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] != 7 and i[3] > 7 for i,o in xs) >= 2 + sum(i[1] == 7 and i[3] > 7) >= 2 for i,o in xs) if all(len(i) >= 4 for i,o in xs) else 0
+         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] == 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] != 7 and i[3] > 7 for i,o in xs) >= 2 + sum(i[1] == 7 and i[3] > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
         },
         {'concept': '(lambda (append $0 3))',
          'adjust': lambda xs: 1.0,
