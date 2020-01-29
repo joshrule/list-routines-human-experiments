@@ -108,6 +108,7 @@ def _find(p): return lambda xs: [i for i, x in enumerate(xs, 1) if p(x)]
 def _insert(x): return lambda i: lambda xs: xs[:(i-1)] + [x] + xs[(i-1):]
 def _splice(x): return lambda i: lambda xs: xs[:(i-1)] +  x  + xs[(i-1):]
 def _swap(i): return lambda j: lambda xs: xs[:(i-1)] + [xs[(j-1)]] + xs[i:(j-1)] + [xs[(i-1)]] + xs[j:]
+def _sort(k): return lambda xs: sorted(xs, key=k)
 
 # define some primitives
 def primitives():
@@ -162,7 +163,7 @@ def primitives():
         Primitive("reverse", arrow(tlist(t0), tlist(t0)), _reverse),
         Primitive("singleton", arrow(t0, tlist(t0)), _single),
         Primitive("slice", arrow(tint, tint, tlist(t0), tlist(t0)), _slice),
-        Primitive("sort", arrow(arrow(t0, tint), tlist(t0), tlist(t0)), sorted),
+        Primitive("sort", arrow(arrow(t0, tint), tlist(t0), tlist(t0)), _sort),
         Primitive("sum", arrow(tlist(tint), tint), sum),
         Primitive("take", arrow(tint, tlist(t0), tlist(t0)), _take),
         Primitive("takelast", arrow(tint, tlist(t0), tlist(t0)), _takelast),
@@ -327,7 +328,7 @@ def human_experiments_wave_1():
          'adjust': lambda xs: 1.0,
         },
         {'concept': '(lambda (singleton (product $0)))',
-         'adjust': lambda xs: 1.0 if sum(o == [0] for i, o in xs) <= 1 else 0.0 + sum(1 for i,o in xs for x in i if i > 1)/sum(len(i) for i,o in xs),
+         'adjust': lambda xs: (1.0 if sum(o == [0] for i, o in xs) <= 1 else 0.0) + sum(x > 1 for i,o in xs for x in i)/sum(len(i) for i,o in xs),
         },
         {'concept': '(lambda (repeat (first $0) (second $0)))',
          'adjust': lambda xs: 1.0 if any(len(o) == 0 for i, o in xs) else 0.0,
@@ -372,7 +373,7 @@ def human_experiments_wave_1():
          'adjust': lambda xs: sum(i[-1] <= len(i) for i, o in xs)/len(xs)
         },
         {'concept': '(lambda (singleton (nth (nth (first $0) $0) $0)))',
-         'adjust': lambda xs: sum(i[0] <= len(i) and i[i[0]] <= len(i) for i, o in xs)/len(xs)
+         'adjust': lambda xs: sum(0 < len(i) and i[0] <= len(i) and i[i[0]-1] <= len(i) for i, o in xs)/len(xs)
         },
         {'concept': '(lambda (singleton (nth (% (first $0) (length $0)) $0)))',
          'adjust': lambda xs: sum(i[0] <= len(i) for i, o in xs) >= 3 + sum(i[0] > len(i) for i,o in xs) >= 5
@@ -501,10 +502,10 @@ def human_experiments_wave_1():
          'adjust': lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) <= 0.75 if len(i) > 0 else 1) for i, o in xs)),
         },
         {'concept': '(lambda (sort (lambda $0) (unique (filter (lambda (< 20 $0)) $0))))',
-         'adjust': lambda xs: (sum(20 in i for i,o in xs) >= 3) + (sum(21 in i for i,o in xs) >= 3) + (sum(sum(x > 20 for x in i)/sum(x > 20 for x in set(i)) for i,o in xs) >= 4),
+         'adjust': lambda xs: (sum(20 in i for i,o in xs) >= 3) + (sum(21 in i for i,o in xs) >= 3) + (sum(sum(x > 20 for x in i)>sum(x > 20 for x in set(i)) for i,o in xs) >= 4),
         },
         {'concept': '(lambda (reverse (sort (lambda $0) (unique (filter (lambda (< 20 $0)) $0)))))',
-         'adjust': lambda xs: (sum(20 in i for i,o in xs) >= 3) + (sum(21 in i for i,o in xs) >= 3) + (sum(sum(x > 20 for x in i)/sum(x > 20 for x in set(i)) for i,o in xs) >= 4),
+         'adjust': lambda xs: (sum(20 in i for i,o in xs) >= 3) + (sum(21 in i for i,o in xs) >= 3) + (sum(sum(x > 20 for x in i)>sum(x > 20 for x in set(i)) for i,o in xs) >= 4),
         },
         {'concept': '(lambda (singleton (max (drop 2 $0))))',
          'adjust': lambda xs: sum(len(i) >= 3 for i,o in xs)/len(xs)
@@ -611,7 +612,7 @@ def human_experiments_wave_1():
         {'concept': '(lambda (find (lambda (and (> $0 20) (< $0 50))) $0))',
          'adjust': lambda xs: (sum(49 in i for i,o in xs) >= 2) + (sum(50 in i for i,o in xs) >= 2) + (sum(20 in i for i,o in xs) >= 2) + (sum(21 in i for i,o in xs) >= 2),
         },
-        {'concept': '(lambda (singleton (sum (range 1 1 (len $0)))))',
+        {'concept': '(lambda (singleton (sum (range 1 1 (length $0)))))',
          'adjust': lambda xs: len({len(i) for i,o in xs})/len(xs)
         },
         {'concept': '(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0))))',
@@ -1265,10 +1266,10 @@ def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, h
     tp = arrow(tlist(tint), tlist(tint))
     p = Program.parse(c['concept'])
     if verbose:
-        print(f"{i}. [`{p}`](./json/c{i:03}.json)")
+        print(f"{i}. [`{p}`](./json/c{i:03}.json)", flush=True)
     if not p.canHaveType(tp):
         if verbose:
-            print(f"    incorrect type {p.infer()}")
+            print(f"    incorrect type {p.infer()}", flush=True)
         return
     if human:
         examples = [(inp, p.runWithArguments([inp])) for inp in c['inputs']]
