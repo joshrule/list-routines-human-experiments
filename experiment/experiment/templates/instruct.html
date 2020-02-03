@@ -19,6 +19,12 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" id="page4-tab" href="#page4" role="tab" aria-controls="page4" aria-selected="false">4</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" id="page5-tab" href="#page5" role="tab" aria-controls="page5" aria-selected="false">5</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" id="page5-tab" href="#page6" role="tab" aria-controls="page6" aria-selected="false">6</a>
+                        </li>
                     </ul>
                 </div>
 	              <div class="instructions card-body bg-light">
@@ -26,51 +32,35 @@
                         <div class="tab-pane fade show active" id="page1" role="tabpanel" aria-labelledby="page1-tab">
                             <p>
                                 You are about to play a game involving lists of
-                                numbers. <strong>Each list has 0 to 15 numbers, and each
-                                number is from 0 to 99</strong>.
+                                numbers.
                             </p>
                             <p>
-                                For example:
+                                <strong>Each list has 0 to 15 numbers:</strong>
                             </p>
                             <ul>
                                 <li class="mb-2">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            A list with 0 numbers
-                                        </div>
-                                    </div>
                                     <div id="example_0_0"></div>
                                 </li>
                                 <li class="mb-2">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            A list with the number 99
-                                        </div>
-                                    </div>
                                     <div id="example_0_1"></div>
                                 </li>
+                            </ul>
+                            <p>
+                                <strong>Each number is from 0 to 99:</strong>
+                            </p>
+                            <ul class="last">
                                 <li class="mb-2">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            A list with the number 0
-                                        </div>
-                                    </div>
                                     <div id="example_0_2"></div>
                                 </li>
-                                <li class="mb-2">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            A list with 15 numbers
-                                        </div>
-                                    </div>
+                                <li class="last">
                                     <div id="example_0_3"></div>
                                 </li>
                             </ul>
                             <script>
                              d3.select('#example_0_0').call(make_list, {list: []});
-                             d3.select('#example_0_1').call(make_list, {list: [76, 65, 99]});
-                             d3.select('#example_0_2').call(make_list, {list: [7, 4, 3, 9, 0, 6]});
-                             d3.select('#example_0_3').call(make_list, {list: [24, 3, 19, 84, 7, 2, 49, 5, 86, 79, 17, 84, 92, 58, 69]});
+                             d3.select('#example_0_1').call(make_list, {list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]});
+                             d3.select('#example_0_2').call(make_list, {list: [7, 0, 3, 9, 0, 6]});
+                             d3.select('#example_0_3').call(make_list, {list: [99, 76, 65, 99]});
                             </script>
                         </div>
                         <div class="tab-pane fade" id="page2" role="tabpanel" aria-labelledby="page2-tab">
@@ -100,7 +90,7 @@
                                     </div>
                                     <div id="example_1_1"></div>
                                 </li>
-                                <li class="mb-2">
+                                <li class="last">
                                     <div class="row">
                                         <div class="col-auto">
                                             Rule: Remove the numbers greater than 17.
@@ -125,15 +115,45 @@
                             <p>
                                 Your job is to <strong>guess the computer's rule and correctly answer as many questions as possible</strong>.
                             </p>
+                            <p>You can type in lists without or without square brackets, separating numbers with commas, spaces, or both. For example (you'd type what's between quotes):
+                            </p>
+                            <div id="example-responses">
+                                <div class="row last justify-content-around">
+                                    <div class="col-auto">
+                                        <span class="io-list">"[1, 2, 3]"</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="io-list">"1,2,3"</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="io-list">"[1 2 3]"</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="io-list">"1 2 3"</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="io-list">"[1]"</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="io-list">"1"</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="io-list">"[]"</span>
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="io-list">""</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="page4" role="tabpanel" aria-labelledby="page4-tab">
                             <p>
                                 After you answer each question, the computer
                                 will show the correct answer and give you a new
-                                question.
+                                question. Your screen might eventually look like
+                                this:
                             </p>
-                            <p class="mb-4">
-                                After a few questions, your screen might look
-                                like this:
-                            </p>
+                            <div class="block my-5 col-12" style="padding: 0px 15px;"><div class="row justify-content-center"><div class="col-auto text-center"><hr><h3>Round 1</h3><h5>The computer has thought of a new rule. Can you figure it out?</h5><hr></div></div></div>
                             <div class="attempt"><h6 class="mb-0">Question 1: <span class="text-danger">Incorrect</span>. You said <span class="io-list">[75]</span>, but the correct answer is below.</h6></div>
                             <div id="example_2_1" class="mb-3"></div>
                             <div class="attempt"><h6 class="mb-0">Question 2: <span class="text-danger">Incorrect</span>. You said <span class="io-list">[54,75,39,19]</span>, but the correct answer is below.</h6></div>
@@ -143,22 +163,27 @@
                             <div class="attempt"><h6 class="mb-0">Question 4: <span class="text-danger">Incorrect</span>. You said <span class="io-list">[80,80]</span>, but the correct answer is below.</h6></div>
                             <div id="example_2_4" class="mb-3"></div>
                             <div class="attempt"><h6 class="mb-0">Question 5:</h6></div>
-                            <div id="example_2_5" class="mb-4"></div>
-                            <p class="font-weight-bold last">
-                                At the end of each round, you will also be asked
-                                to describe in words what you think the rule was
-                                for that round.
-                            </p>
+                            <div id="example_2_5" class="last"></div>
                             <script>
-                             d3.select('#example_2_0').call(make_iq_pair, {list: [75, 1, 9, 7, 9, 10, 95]}, true);
+                             d3.select('#example_2_0').call(make_iq_pair, {list: [75, 1, 9, 7, 9, 10, 95]}, true).select('button').classed('btn-outline-primary', false).classed('btn-outline-secondary', true);
                              d3.select('#example_2_1').call(make_io_pair, {list: [75, 1, 9, 7, 9, 10, 95]}, {list: [76, 16, 19, 95]});
                              d3.select('#example_2_2').call(make_io_pair, {list: [53, 34, 41, 1, 4, 35, 19]}, {list: [87, 42, 39, 19]});
                              d3.select('#example_2_3').call(make_io_pair, {list: [2, 38, 66, 6, 17, 63, 4, 1]}, {list: [40, 72, 80, 5]});
                              d3.select('#example_2_4').call(make_io_pair, {list: [80]}, {list: [80]});
-                             d3.select('#example_2_5').call(make_iq_pair, {list: [24, 8, 10]}, true);
+                             d3.select('#example_2_5').call(make_iq_pair, {list: [24, 8, 10]}, true).select('button').classed('btn-outline-primary', false).classed('btn-outline-secondary', true);
                             </script>
                         </div>
-                        <div class="tab-pane fade" id="page4" role="tabpanel" aria-labelledby="page4-tab">
+                        <div class="tab-pane fade" id="page5" role="tabpanel" aria-labelledby="page5-tab">
+                            <p>
+                                At the end of each round, you will also be asked
+                                to <strong>describe in words what you think the
+                                rule was for that round</strong>. That will look
+                                like this:
+                            </p>
+                            <div class="linguistic last col-12 mt-5 mb-3 text-center"><h5>You answered the last question. What do you think the computer's rule was?</h5></div>
+                            <div class="linguistic last col-12 input-group" novalidate><input type="text" class="form-control" placeholder="What's the rule (e.g. &quot;count the number of sevens&quot;)? " aria-label="output list" disabled><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" disabled>Submit</button></div></div>
+                        </div>
+                        <div class="tab-pane fade" id="page6" role="tabpanel" aria-labelledby="page6-tab">
                             <p class="last">
                                 To complete the HIT, you will:
                             </p>

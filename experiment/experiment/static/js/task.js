@@ -606,6 +606,7 @@ var PostQuiz = function(responses) {
         changeYear: true,
         yearRange: "1900:2019",
         dateFormat: "yy-mm-dd",
+        defaultDate: "-21y",
         minDate: Date.parse("1900-01-01"),
         maxDate: "-1"
     });
