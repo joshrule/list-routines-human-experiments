@@ -199,10 +199,6 @@ function IOExperiment() {
         linguistic = true, // completed the linguistic description yet?
         trial_start; // time trial is presented
 
-    // TODO: fixme
-    console.log(`trial_order: ${trial_order}`);
-    console.log(`condition: ${condition}`);
-
     function next() {
         if (block.length === 0 && blocks.length === 0 && linguistic) {
             currentview = new PostQuiz([]);
@@ -478,23 +474,10 @@ function IOExperiment() {
 
         // Do the next trial.
         if (!correct) {
-            insert_delay(callback);
+            setTimeout(callback, 3000);
         } else {
             callback();
         }
-    }
-
-    function insert_delay(callback) {
-        // show modal
-        // $("#feedback").modal({
-        //     backdrop: "static",
-        //     keyboard: false
-        // });
-        // wait 3s and hide modal
-        setTimeout(() => {
-            // $("#feedback").modal('hide');
-            callback();
-        } , 3000);
     }
 
     function schedule_trials() {

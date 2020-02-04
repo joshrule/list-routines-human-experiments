@@ -86,12 +86,12 @@ def compute_bonus():
             filter(Participant.uniqueid == uniqueId).\
             one()
         user_data = loads(user.datastring)  # load datastring from JSON
-        bonus = 1.00
+        bonus = 0.00
 
         for record in user_data['data']:  # for line in data file
             trial = record['trialdata']
             if trial['phase'] == 'TEST' and 'accuracy' in trial:
-                bonus += (1-trial['accuracy'])*0.02
+                bonus += trial['accuracy']*0.01
         user.bonus = bonus
         db_session.add(user)
         db_session.commit()
