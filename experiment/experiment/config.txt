@@ -1,7 +1,7 @@
 [HIT Configuration]
 title = List Routines
 description = A guessing game with lists of numbers
-amt_keywords = Psychology, Game, Experiment
+amt_keywords = Psychology, Game, Experiment, Puzzle
 lifetime = 48
 us_only = true
 approve_requirement = 95
