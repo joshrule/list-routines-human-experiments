@@ -92,6 +92,7 @@ def compute_bonus():
             trial = record['trialdata']
             if trial['phase'] == 'TEST' and 'accuracy' in trial:
                 bonus += trial['accuracy']*0.01
+        bonus = round(bonus, 2)
         user.bonus = bonus
         db_session.add(user)
         db_session.commit()
