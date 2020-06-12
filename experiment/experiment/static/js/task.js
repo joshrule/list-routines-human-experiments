@@ -182,7 +182,6 @@ function IOExperiment() {
         correct, // did you respond correctly to the last trial?
         nCorrect = 0, // how many correct responses have been chosen?
         version = 'pilot', // Where are we getting data?
-        type = (condition === 0) ? "human" : "machine", // what type of examples?
         trial_order = counterbalance, // what trial order?
         n_concepts = 6, // How many concepts are there to choose from?
         n_trials = 11, // how many trials are there for each block?
@@ -277,7 +276,6 @@ function IOExperiment() {
                             'concept': concept.concept,
                             'id': concept.id,
                             'condition': condition,
-                            'type': type,
                             'trial_order': trial_order,
                             'block': blockIdx,
                             'response': this.value,
@@ -334,7 +332,6 @@ function IOExperiment() {
             'concept': concept.concept,
             'id': concept.id,
             'condition': condition,
-            'type': type,
             'trial_order': trial_order,
             'block': blockIdx,
             'block_trial': trial,
@@ -485,7 +482,7 @@ function IOExperiment() {
         // then load trials for each selected concept,
         // then randomly select n_trials trials.
         var nice_ids = _.chain(n_concepts+1).range().drop(1).shuffle().take(n_blocks).map(id => "c" + `000${id}`.slice(-3)).value();
-        var promises = _.chain(nice_ids).map(id => d3.json(`/static/data/${version}/${type}/${id}_${trial_order}.json`)).value();
+        var promises = _.chain(nice_ids).map(id => d3.json(`/static/data/${version}/${id}_${trial_order}.json`)).value();
         Promise.all(promises).then(datas => {
             blocks = _.chain(datas).zip(nice_ids).map(data => {
                 return {
