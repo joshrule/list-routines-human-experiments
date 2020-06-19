@@ -8,7 +8,7 @@ ipython = "*"
 pandas = "*"
 
 [packages]
-psiturk = "==2.3.8"
+psiturk = "*"
 python-levenshtein = "*"
 
 [requires]
