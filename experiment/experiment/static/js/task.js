@@ -181,8 +181,7 @@ function IOExperiment() {
         concept, // What concept are we learning?
         correct, // did you respond correctly to the last trial?
         nCorrect = 0, // how many correct responses have been chosen?
-        version = 'pilot', // Where are we getting data?
-        n_concepts = 6, // How many concepts are there to choose from?
+        n_concepts = 250, // How many concepts are there to choose from?
         n_trials = 11, // how many trials are there for each block?
         n_blocks = 10, // how many blocks are there?
         trial = -1, // what trial are we on now?
@@ -327,6 +326,7 @@ function IOExperiment() {
         psiTurk.recordTrialData({
             'phase':"TEST",
             'task':"[(i,o)]->i->o",
+            'purpose': concept.purpose,
             'concept': concept.concept,
             'id': concept.id,
             'condition': condition,
@@ -474,19 +474,37 @@ function IOExperiment() {
         }
     }
 
+    // Randomly select n_blocks concepts, then load trials for each selected
+    // concept, then randomly select n_trials trials.
     function schedule_trials() {
-        // Randomly select n_blocks concepts,
-        // then load trials for each selected concept,
-        // then randomly select n_trials trials.
-        var nice_ids = _.chain(n_concepts+1).range().drop(1).shuffle().take(n_blocks).map(id => "c" + `000${id}`.slice(-3)).value();
-        var promises = _.chain(nice_ids).map(id => d3.json(`/static/data/${version}/${id}.json`)).value();
+        // TODO: Uncomment me for the full experiment.
+        //let ids = _.chain(n_concepts+1).range().drop(1).shuffle().take(n_blocks).value();
+        // TODO: Remove me after the pilot.
+        let initial_ids = [1, 25, 68, 85, 101, 113, 120, 134, 139, 140, 155, 161, 166, 174, 182, 190, 200, 214, 235, 246];
+        let ids = _.chain(initial_ids).shuffle().take(n_blocks).value();
+        let promises = _.chain(ids).map(id => {
+            let purpose = id > 150 ? "model" : "dataset";
+            let nice_id = "c" + `000${id > 150 ? id - 150 : id}`.slice(-3);
+            return d3.json(`/static/data/${purpose}/${nice_id}_1.json`);
+        }).value();
         Promise.all(promises).then(datas => {
-            blocks = _.chain(datas).zip(nice_ids).map(data => {
-                return {
-                    concept: data[0].concept,
-                    id: data[1],
-                    trials: data[0].examples,
-                };
+            blocks = _.chain(datas).zip(ids).map(data => {
+                let json = data[0], id = data[1];
+                if (id > 150) {
+                    return {
+                        concept: json.program,
+                        purpose: "model",
+                        id: "c" + `000${id - 150}`.slice(-3),
+                        trials: json.data,
+                    };
+                } else {
+                    return {
+                        concept: json.concept,
+                        purpose: "dataset",
+                        id: "c" + `000${id}`.slice(-3),
+                        trials: json.examples,
+                    };
+                }
             }).value();
             total = _.chain(blocks).pluck("trials").flatten().value().length;
             next();

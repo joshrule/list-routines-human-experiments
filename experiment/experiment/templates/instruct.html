@@ -59,8 +59,8 @@
                             <script>
                              d3.select('#example_0_0').call(make_list, {list: []});
                              d3.select('#example_0_1').call(make_list, {list: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]});
-                             d3.select('#example_0_2').call(make_list, {list: [7, 0, 3, 9, 0, 6]});
-                             d3.select('#example_0_3').call(make_list, {list: [99, 76, 65, 99]});
+                             d3.select('#example_0_2').call(make_list, {list: [7,0,65,99,3]});
+                             d3.select('#example_0_3').call(make_list, {list: [99,9,0,6,76]});
                             </script>
                         </div>
                         <div class="tab-pane fade" id="page2" role="tabpanel" aria-labelledby="page2-tab">
@@ -115,7 +115,7 @@
                             <p>
                                 Your job is to <strong>guess the computer's rule and correctly answer as many questions as possible</strong>.
                             </p>
-                            <p>You can type in lists without or without square brackets, separating numbers with commas, spaces, or both. For example (you'd type what's between quotes):
+                            <p>You can type in lists with or without brackets, separating numbers with commas, spaces, or both. For example (you'd type what's between quotes):
                             </p>
                             <div id="example-responses">
                                 <div class="row last justify-content-around">
@@ -148,10 +148,10 @@
                         </div>
                         <div class="tab-pane fade" id="page4" role="tabpanel" aria-labelledby="page4-tab">
                             <p>
-                                After you answer each question, the computer
-                                will show the correct answer and give you a new
-                                question. Your screen might eventually look like
-                                this:
+                                After you answer each question, <span class="font-weight-bold">the computer
+                                will show the correct answer</span> and ask a
+                                new question. Your screen might eventually look
+                                like this:
                             </p>
                             <div class="block my-5 col-12" style="padding: 0px 15px;"><div class="row justify-content-center"><div class="col-auto text-center"><hr><h3>Round 1</h3><h5>The computer has thought of a new rule. Can you figure it out?</h5><hr></div></div></div>
                             <div class="attempt"><h6 class="mb-0">Question 1: <span class="text-danger">Incorrect</span>. You said <span class="io-list">[75]</span>, but the correct answer is below.</h6></div>
@@ -213,13 +213,23 @@
                                     In each round, there is always <span class="font-weight-bold">one correct answer</span> to each question.
                                 </li>
                                 <li>
-                                    You'll advance immediately if you answer correctly but <span class="font-weight-bold">will have to wait a few seconds if you answer incorrectly</span>. Do your best!
-                                </li>
-                                <li>
-                                    <span class="font-weight-bold">Each correct response increases the bonus</span> you will be paid after finishing the HIT by $0.01. The maximum possible bonus is $1.10. The task is challenging, but if you make an effort to answer correctly, you will probably earn a significant portion of the bonus.
+                                    You'll advance immediately if you answer correctly but will have to <span class="font-weight-bold">wait a few seconds if you answer incorrectly</span>. Do your best!
                                 </li>
                                 <li>
                                     Each round has a different rule, but <span class="font-weight-bold">the rule is always the same for an entire round</span>, so past questions may help you answer future questions.
+                                </li>
+                                <li>
+                                    <span class="font-weight-bold">Each correct response increases your bonus by $0.01</span>. The maximum possible bonus is $1.10. The task is challenging, but if you make an effort to answer correctly, you will probably earn a significant portion of the bonus.
+                                </li>
+                                <li class="last">
+                                    We don't expect you to get every item
+                                    right&mdash;you will be fully compensated as
+                                    long as you answer each item as best you
+                                    can. <span class="font-weight-bold">Please
+                                    don't just enter blank guesses or the same
+                                    guess for each item</span>. You will incur
+                                    delays due to errors, and <span class="font-weight-bold">your
+                                    HIT will be disqualified</span>.
                                 </li>
                             </ul>
                             <div class="row instructionsnav justify-content-end mt-3">
