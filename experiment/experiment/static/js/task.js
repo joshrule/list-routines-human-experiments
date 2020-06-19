@@ -134,7 +134,7 @@ var PreQuiz = function(attempt) {
         // Collect the data
         $('#prequiz input[type=radio]:checked').each(function() {
             if ((this.name==="prequiz-q1" && this.value!=="learn") ||
-                (this.name==="prequiz-q2" && this.value!=="55") ||
+                (this.name==="prequiz-q2" && this.value!=="110") ||
                 (this.name==="prequiz-q3" && this.value!=="report")) {
                 passed = false;
             }
@@ -184,7 +184,7 @@ function IOExperiment() {
         version = 'pilot', // Where are we getting data?
         n_concepts = 6, // How many concepts are there to choose from?
         n_trials = 11, // how many trials are there for each block?
-        n_blocks = 5, // how many blocks are there?
+        n_blocks = 10, // how many blocks are there?
         trial = -1, // what trial are we on now?
         progress = 0, // how many trials have we done?
         total, // how many possible trials are there?
