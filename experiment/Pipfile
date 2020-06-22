@@ -10,6 +10,6 @@ pandas = "*"
 [packages]
 psiturk = "*"
 python-levenshtein = "*"
+pymysql = "*"
 
 [requires]
-python_version = "3.7"
