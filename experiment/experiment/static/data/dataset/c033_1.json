@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (cut_slice 2 5 $0))",
+  "program": "(lambda (cut_slice 2 5 $0))",
   "examples": [
     { "i": [93, 93, 27, 20, 27], "o": [93] },
     { "i": [95, 47, 47, 3, 32, 32, 9, 32], "o": [95, 32, 9, 32] },

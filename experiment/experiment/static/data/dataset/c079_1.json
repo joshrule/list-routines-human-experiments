@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort (lambda $0) $0))))",
+  "program": "(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort (lambda $0) $0))))",
   "examples": [
     { "i": [99, 3, 9, 40], "o": [9, 99, 40, 3] },
     { "i": [40, 1, 9], "o": [9, 40, 1] },

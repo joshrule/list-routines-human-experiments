@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (range 1 1 (first $0)))",
+  "program": "(lambda (range 1 1 (first $0)))",
   "examples": [
     { "i": [1, 7, 23, 23], "o": [1] },
     { "i": [4, 9, 28, 0, 15, 12, 83, 34, 15, 34], "o": [1, 2, 3, 4] },

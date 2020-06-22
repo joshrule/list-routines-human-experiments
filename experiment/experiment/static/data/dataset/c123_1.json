@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (sum (filter (lambda (== (% $0 $1) 0)) $1))) (range 1 1 10)))",
+  "program": "(lambda (map (lambda (sum (filter (lambda (== (% $0 $1) 0)) $1))) (range 1 1 10)))",
   "examples": [
     { "i": [1, 30, 35, 29], "o": [95, 30, 30, 0, 65, 30, 35, 0, 0, 30] },
     { "i": [4, 7, 2, 60, 8, 9], "o": [90, 74, 69, 72, 60, 60, 7, 8, 9, 60] },

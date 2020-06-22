@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (nth (% $0 10) $1)) $0))",
+  "program": "(lambda (map (lambda (nth (% $0 10) $1)) $0))",
   "examples": [
     { "i": [3, 2, 53, 81], "o": [53, 2, 53, 3] },
     { "i": [34, 92, 1, 92, 34], "o": [92, 92, 34, 92, 92] },

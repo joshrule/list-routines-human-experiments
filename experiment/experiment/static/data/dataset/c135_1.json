@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0)))",
+  "program": "(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0)))",
   "examples": [
     { "i": [5, 1, 1, 2], "o": [5, 4, 3, 2, 1, 2] },
     { "i": [1, 2, 3, 2, 2], "o": [1, 2, 3, 2] },

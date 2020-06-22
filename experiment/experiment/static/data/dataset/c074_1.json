@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (take (length (unique $0)) $0))",
+  "program": "(lambda (take (length (unique $0)) $0))",
   "examples": [
     { "i": [54, 54, 90, 43], "o": [54, 54, 90] },
     { "i": [1, 8, 33, 58, 33, 33, 3, 1], "o": [1, 8, 33, 58, 33] },

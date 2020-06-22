@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (max $0)))",
+  "program": "(lambda (singleton (max $0)))",
   "examples": [
     { "i": [8, 8, 72, 57], "o": [72] },
     { "i": [49, 6], "o": [49] },

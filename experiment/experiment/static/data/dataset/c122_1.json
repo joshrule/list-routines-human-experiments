@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filteri (lambda (lambda (is_odd $1))) (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0)))))",
+  "program": "(lambda (filteri (lambda (lambda (is_odd $1))) (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0)))))",
   "examples": [
     { "i": [73, 92, 83, 30], "o": [19, 53] },
     { "i": [4, 30, 55], "o": [26] },

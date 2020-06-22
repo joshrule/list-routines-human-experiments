@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (product (slice 3 6 $0))))",
+  "program": "(lambda (singleton (product (slice 3 6 $0))))",
   "examples": [
     { "i": [2, 1, 1, 8, 1, 5], "o": [40] },
     { "i": [92, 92, 2, 1, 4, 6, 46], "o": [48] },

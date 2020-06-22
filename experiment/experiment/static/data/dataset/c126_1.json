@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (drop (/ (first $0) 10) (droplast (/ (last $0) 10) $0)))",
+  "program": "(lambda (drop (/ (first $0) 10) (droplast (/ (last $0) 10) $0)))",
   "examples": [
     { "i": [5, 3, 5, 22], "o": [5, 3] },
     { "i": [7, 2, 12, 34], "o": [7] },

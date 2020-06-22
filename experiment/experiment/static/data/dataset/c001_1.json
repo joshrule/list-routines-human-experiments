@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))",
+  "program": "(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))",
   "examples": [
     { "i": [69, 3, 43, 7], "o": [11, 19, 24, 33, 42, 5, 82, 0, 64, 9] },
     { "i": [1, 57, 4, 59, 50, 7, 49, 5], "o": [11, 19, 24, 33, 42, 5, 82, 0, 64, 9] },

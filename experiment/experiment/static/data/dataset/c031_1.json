@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (drop (last $0) (reverse $0)))",
+  "program": "(lambda (drop (last $0) (reverse $0)))",
   "examples": [
     { "i": [57, 0, 0], "o": [0, 0, 57] },
     { "i": [24, 1, 9, 4, 5, 54, 6, 91, 3, 8], "o": [1, 24] },

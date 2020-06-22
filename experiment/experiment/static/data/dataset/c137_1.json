@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (take 1 (unique $0)) (drop 1 (unique $0))))",
+  "program": "(lambda (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (take 1 (unique $0)) (drop 1 (unique $0))))",
   "examples": [
     { "i": [9, 9, 2], "o": [9, 11] },
     { "i": [21, 9, 1, 0, 0], "o": [21, 30, 31, 31] },

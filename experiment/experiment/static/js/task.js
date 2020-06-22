@@ -495,11 +495,11 @@ function IOExperiment() {
                         concept: json.program,
                         purpose: "model",
                         id: "c" + `000${id - 150}`.slice(-3),
-                        trials: json.data,
+                        trials: json.examples,
                     };
                 } else {
                     return {
-                        concept: json.concept,
+                        concept: json.program,
                         purpose: "dataset",
                         id: "c" + `000${id}`.slice(-3),
                         trials: json.examples,

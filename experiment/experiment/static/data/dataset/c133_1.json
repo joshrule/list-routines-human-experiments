@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map length (group (lambda $0) $0)))",
+  "program": "(lambda (map length (group (lambda $0) $0)))",
   "examples": [
     { "i": [75, 6, 6, 75], "o": [2, 2] },
     { "i": [21, 5, 54, 3, 2, 79, 24, 8, 9, 4], "o": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },

@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (sum (filter (== 1) (map length (group (lambda $0) $0))))))",
+  "program": "(lambda (singleton (sum (filter (== 1) (map length (group (lambda $0) $0))))))",
   "examples": [
     { "i": [62, 65, 6, 4], "o": [4] },
     { "i": [9, 61, 83, 49, 14], "o": [5] },

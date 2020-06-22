@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filteri (lambda (lambda (or (== (% $1 2) 0) (> 20 $0)))) $0))",
+  "program": "(lambda (filteri (lambda (lambda (or (== (% $1 2) 0) (> 20 $0)))) $0))",
   "examples": [
     { "i": [8, 8, 58], "o": [8, 8] },
     { "i": [69, 37, 14, 18, 39, 0, 27, 16, 18], "o": [37, 14, 18, 0, 16, 18] },

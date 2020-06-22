@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (flatten (map (lambda (cons (first $0) (singleton (length $0)))) (group (lambda $0) $0))))",
+  "program": "(lambda (flatten (map (lambda (cons (first $0) (singleton (length $0)))) (group (lambda $0) $0))))",
   "examples": [
     { "i": [2, 2, 2], "o": [2, 3] },
     { "i": [36, 36], "o": [36, 2] },

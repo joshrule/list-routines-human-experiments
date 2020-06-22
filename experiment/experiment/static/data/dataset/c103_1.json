@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (find (lambda (and (> $0 20) (< $0 50))) $0))",
+  "program": "(lambda (find (lambda (and (> $0 20) (< $0 50))) $0))",
   "examples": [
     { "i": [27, 27, 27, 1], "o": [1, 2, 3] },
     { "i": [5, 86], "o": [ ] },

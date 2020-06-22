@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (slice (first $0) (second $0) (drop 2 $0)))",
+  "program": "(lambda (slice (first $0) (second $0) (drop 2 $0)))",
   "examples": [
     { "i": [2, 2], "o": [ ] },
     { "i": [4, 11, 5, 2, 2, 6, 7, 5, 63, 4], "o": [6, 7, 5, 63, 4] },

@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (if (== (% $0 3) 0) 1 0)) $0))",
+  "program": "(lambda (map (lambda (if (== (% $0 3) 0) 1 0)) $0))",
   "examples": [
     { "i": [54, 53, 9, 53], "o": [1, 0, 1, 0] },
     { "i": [82, 9], "o": [0, 1] },

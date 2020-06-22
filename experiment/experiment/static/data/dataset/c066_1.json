@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (sort (lambda $0) (unique $0)))",
+  "program": "(lambda (sort (lambda $0) (unique $0)))",
   "examples": [
     { "i": [9, 9, 76, 76], "o": [9, 76] },
     { "i": [69, 69, 69], "o": [69] },

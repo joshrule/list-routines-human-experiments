@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (max (cons (sum (filteri (lambda (lambda (is_even $1))) $0)) (singleton (sum (filteri (lambda (lambda (is_odd $1))) $0)))))))",
+  "program": "(lambda (singleton (max (cons (sum (filteri (lambda (lambda (is_even $1))) $0)) (singleton (sum (filteri (lambda (lambda (is_odd $1))) $0)))))))",
   "examples": [
     { "i": [4, 23, 4, 64], "o": [87] },
     { "i": [1, 11, 8, 7, 38, 27], "o": [47] },

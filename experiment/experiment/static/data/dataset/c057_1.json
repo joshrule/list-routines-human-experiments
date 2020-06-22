@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (flatten (map (lambda (cons $0 (singleton (if (is_odd $0) 1 0)))) $0)))",
+  "program": "(lambda (flatten (map (lambda (cons $0 (singleton (if (is_odd $0) 1 0)))) $0)))",
   "examples": [
     { "i": [5, 49, 29, 14], "o": [5, 1, 49, 1, 29, 1, 14, 0] },
     { "i": [12], "o": [12, 0] },

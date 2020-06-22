@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (splice (slice 4 5 $0) (- (length $0) 2) (reverse $0)))",
+  "program": "(lambda (splice (slice 4 5 $0) (- (length $0) 2) (reverse $0)))",
   "examples": [
     { "i": [43, 69, 56, 72, 3], "o": [3, 72, 72, 3, 56, 69, 43] },
     { "i": [96, 96, 96, 96, 96, 96, 96], "o": [96, 96, 96, 96, 96, 96, 96, 96, 96] },

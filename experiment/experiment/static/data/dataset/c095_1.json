@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (flatten (sort (lambda (% (first $0) 4)) (group (lambda (% $0 4)) $0))))",
+  "program": "(lambda (flatten (sort (lambda (% (first $0) 4)) (group (lambda (% $0 4)) $0))))",
   "examples": [
     { "i": [19, 57, 57, 19], "o": [57, 57, 19, 19] },
     { "i": [2, 34, 15, 15, 30, 5, 9, 14, 3], "o": [5, 9, 2, 34, 30, 14, 15, 15, 3] },

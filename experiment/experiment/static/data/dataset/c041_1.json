@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (replace (first $0) (second $0) (drop 2 $0)))",
+  "program": "(lambda (replace (first $0) (second $0) (drop 2 $0)))",
   "examples": [
     { "i": [33, 3, 2, 4], "o": [2, 4] },
     { "i": [91, 26, 7, 55, 26, 73, 0, 83, 2], "o": [7, 55, 26, 73, 0, 83, 2] },

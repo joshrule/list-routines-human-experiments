@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filteri (lambda (lambda (and (== (% $1 2) 0) (is_odd $0)))) $0))",
+  "program": "(lambda (filteri (lambda (lambda (and (== (% $1 2) 0) (is_odd $0)))) $0))",
   "examples": [
     { "i": [4, 33, 86], "o": [33] },
     { "i": [3, 57, 1, 76, 1, 9, 17, 34, 4, 78], "o": [57, 9] },

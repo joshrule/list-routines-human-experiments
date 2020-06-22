@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (count is_even $0)))",
+  "program": "(lambda (singleton (count is_even $0)))",
   "examples": [
     { "i": [43, 1, 75, 0], "o": [1] },
     { "i": [76, 23, 56, 92, 18, 18, 8, 6, 27], "o": [7] },

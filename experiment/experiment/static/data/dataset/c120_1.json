@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (/ $0 (if (is_even (length $1)) 2 5))) $0))",
+  "program": "(lambda (map (lambda (/ $0 (if (is_even (length $1)) 2 5))) $0))",
   "examples": [
     { "i": [9, 1, 92, 8], "o": [4, 0, 46, 4] },
     { "i": [89], "o": [17] },

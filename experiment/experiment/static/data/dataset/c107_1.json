@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map sum (zip $0 (reverse $0))))",
+  "program": "(lambda (map sum (zip $0 (reverse $0))))",
   "examples": [
     { "i": [5, 57, 21, 17], "o": [22, 78, 78, 22] },
     { "i": [76, 76, 4, 9, 5, 45, 80, 4, 9], "o": [85, 80, 84, 54, 10, 54, 84, 80, 85] },

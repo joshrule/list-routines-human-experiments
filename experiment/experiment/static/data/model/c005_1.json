@@ -1,7 +1,6 @@
 {
-  "id": "c005",
   "program": "(lambda (singleton (nth (first $0) (drop 1 $0))))",
-  "data": [
+  "examples": [
     { "i": [3, 2, 8, 6], "o": [6] },
     { "i": [2, 9, 0], "o": [0] },
     { "i": [1, 1], "o": [1] },

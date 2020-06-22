@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filteri (lambda (lambda (is_even (+ $1 $0)))) $0))",
+  "program": "(lambda (filteri (lambda (lambda (is_even (+ $1 $0)))) $0))",
   "examples": [
     { "i": [38, 6, 68, 9], "o": [6] },
     { "i": [96, 30, 6, 72, 7, 4, 72, 19, 81, 2], "o": [30, 72, 7, 4, 81, 2] },

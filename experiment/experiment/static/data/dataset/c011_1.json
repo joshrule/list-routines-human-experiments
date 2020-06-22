@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (repeat (max $0) (min $0)))",
+  "program": "(lambda (repeat (max $0) (min $0)))",
   "examples": [
     { "i": [40, 3, 87, 6], "o": [87, 87, 87] },
     { "i": [39, 70, 37, 4, 93, 6, 2, 98], "o": [98, 98] },

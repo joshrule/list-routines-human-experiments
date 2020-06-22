@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (flatten (reverse (sort (lambda (/ (first $0) 10)) (group (lambda (/ $0 10)) $0)))))",
+  "program": "(lambda (flatten (reverse (sort (lambda (/ (first $0) 10)) (group (lambda (/ $0 10)) $0)))))",
   "examples": [
     { "i": [8, 87, 2, 9], "o": [87, 8, 2, 9] },
     { "i": [3, 54, 3, 54, 54], "o": [54, 54, 54, 3, 3] },

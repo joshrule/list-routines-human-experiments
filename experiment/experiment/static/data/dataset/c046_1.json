@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))",
+  "program": "(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))",
   "examples": [
     { "i": [40, 40, 40, 40], "o": [0, 0, 0] },
     { "i": [0, 37, 78, 2, 6, 78, 2], "o": [37, 41, 76, 4, 72, 76] },

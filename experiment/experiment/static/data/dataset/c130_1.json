@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (if (> (min $0) (- (max $0) (min $0))) (range (min $0) 2 (max $0)) (range 0 2 (min $0))))",
+  "program": "(lambda (if (> (min $0) (- (max $0) (min $0))) (range (min $0) 2 (max $0)) (range 0 2 (min $0))))",
   "examples": [
     { "i": [33, 52, 33, 52], "o": [33, 35, 37, 39, 41, 43, 45, 47, 49, 51] },
     { "i": [34, 8, 42, 42, 9, 34], "o": [0, 2, 4, 6, 8] },

@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (flatten (map (lambda (range $0 -2 1)) $0)))",
+  "program": "(lambda (flatten (map (lambda (range $0 -2 1)) $0)))",
   "examples": [
     { "i": [5, 5, 5, 5], "o": [5, 3, 1, 5, 3, 1, 5, 3, 1, 5, 3, 1] },
     { "i": [9, 0, 2, 0, 2], "o": [9, 7, 5, 3, 1, 2, 2] },

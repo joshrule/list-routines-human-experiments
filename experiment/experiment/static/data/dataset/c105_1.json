@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0))))",
+  "program": "(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0))))",
   "examples": [
     { "i": [4, 5, 6, 5], "o": [4] },
     { "i": [88, 49, 49], "o": [88] },

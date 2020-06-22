@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (find is_even $0))",
+  "program": "(lambda (find is_even $0))",
   "examples": [
     { "i": [91, 2, 91, 41], "o": [2] },
     { "i": [76, 79, 71, 2, 71], "o": [1, 4] },

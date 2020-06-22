@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (cut_idx (first $0) (drop 1 $0)))",
+  "program": "(lambda (cut_idx (first $0) (drop 1 $0)))",
   "examples": [
     { "i": [3, 43, 51, 7], "o": [43, 51] },
     { "i": [2, 90, 59, 90, 27, 59, 75], "o": [90, 90, 27, 59, 75] },

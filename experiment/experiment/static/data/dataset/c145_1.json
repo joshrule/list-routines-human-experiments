@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (count (lambda (== (first $1) $0)) (drop 1 $0))))",
+  "program": "(lambda (singleton (count (lambda (== (first $1) $0)) (drop 1 $0))))",
   "examples": [
     { "i": [93, 93, 5, 3], "o": [1] },
     { "i": [9, 9, 9], "o": [2] },

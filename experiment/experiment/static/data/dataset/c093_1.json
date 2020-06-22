@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (if (< (length $0) 5) $0 (drop 5 (sort (lambda $0) $0))))",
+  "program": "(lambda (if (< (length $0) 5) $0 (drop 5 (sort (lambda $0) $0))))",
   "examples": [
     { "i": [1, 8, 83, 34, 8], "o": [ ] },
     { "i": [47, 30, 30, 75, 47, 75], "o": [75] },

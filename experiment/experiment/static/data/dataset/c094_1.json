@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filter (lambda (is_in $1 $0)) (range (min $0) 2 (max $0))))",
+  "program": "(lambda (filter (lambda (is_in $1 $0)) (range (min $0) 2 (max $0))))",
   "examples": [
     { "i": [6, 6, 6], "o": [6] },
     { "i": [23, 81, 7, 5, 20, 2, 19, 1, 49, 19], "o": [1, 5, 7, 19, 23, 49, 81] },
