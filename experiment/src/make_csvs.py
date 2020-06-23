@@ -33,7 +33,9 @@ def make_csvs(out_dir):
         # * CREDITED = 5
         # - QUITEARLY = 6
         # * BONUSED = 7
+        # USE ME FOR TESTING
         statuses = [3, 4, 5, 7]
+        # USE ME FOR LIVE EXPERIMENTS
         # statuses = [5,7]
 
         data = filter_rows(
@@ -202,7 +204,7 @@ def filter_rows(rows, statuses, excludes, versions):
         # the right version of the experiment
         row['codeversion'] in versions and
         # while it was live
-        row['mode'] == 'debug' and
+        row['mode'] == 'live' and
         # and aren't excluded
         row['workerid'] not in excludes
     ]
