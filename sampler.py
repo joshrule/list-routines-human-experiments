@@ -1570,6 +1570,25 @@ def process_2(programs, n_trials=1000, small=False):
         else:
             pairss[s].append(p)
     return pairss
+
+def count_applications(program):
+    return sum(subprogram[1].isApplication for subprogram in program.walk())
+
+def list_priors(filename, programs, small=False):
+    Primitive.GLOBALS.clear()
+    grammar = Grammar.uniform(primitives())
+    request =  arrow(tlist(tint), tlist(tint))
+    with open(filename, 'w') as fd:
+        fd.write("id,program,prior,length,depth,lambda,apps,visible,semi,hidden\n")
+        for i, program in enumerate(programs):
+            p = Program.parse(program["concept"])
+            try:
+                prior = grammar.logLikelihood(request, p)
+            except AssertionError:
+                prior = "NA"
+            apps = count_applications(p)
+            fd.write(f"c{(i+1):03},{program['concept']},{prior},{p.size()},{p.depth()},1,{apps},,\n")
+
 def make_grammar():
     Primitive.GLOBALS.clear()
     return Grammar.uniform(primitives())
@@ -1600,3 +1619,7 @@ if __name__ == "__main__":
     #
     ## for i, c in enumerate(model_comparison_wave_3(), 1):
     ##    process("./tmp", i, c, n_trials=11, n_orders=5, verbose=True, small=(i <= 80), human=False, parallel=True)
+
+    # list_priors("model_comparison_priors.csv", model_comparison_wave_3())
+
+    # list_priors("dataset_priors.csv", human_experiments_wave_1())
