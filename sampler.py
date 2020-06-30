@@ -1544,6 +1544,29 @@ def programs_small():
         "(lambda (take 6 $0))",
         "(lambda (take 6 $0))",
     ]
+
+def process_2(programs, n_trials=1000, small=False):
+    Primitive.GLOBALS.clear()
+    grammar = Grammar.uniform(primitives())
+    inputs = []
+    while len(inputs) < n_trials:
+        i = sample_input(small)
+        if i not in inputs:
+          inputs.append(i)
+    pairss = {}
+    for program in programs:
+        p = Program.parse(program)
+        s = ""
+        for i in inputs:
+            try:
+                s += f" {str((i, p.runWithArguments([i])))} "
+            except:
+                s += f" ({i}, ERR) "
+        if s not in pairss:
+            pairss[s] = [p]
+        else:
+            pairss[s].append(p)
+    return pairss
 def make_grammar():
     Primitive.GLOBALS.clear()
     return Grammar.uniform(primitives())
@@ -1556,9 +1579,19 @@ if __name__ == "__main__":
     #     process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False, parallel=True)
 
     # Human Experiments - Wave 1
+    # for i, c in enumerate(human_experiments_wave_1(), 1):
+    #     process("../waves/1/json", i, c, n_trials=11, n_orders=5, verbose=True, small=False, human=False, parallel=True)
 
-    for i, c in enumerate(human_experiments_wave_1(), 1):
-        process("../waves/1/json", i, c, n_trials=11, n_orders=5, verbose=True, small=False, human=False, parallel=True)
+    # blah = process_2(programs_large(), small=False)
+    # print(len(blah))
+    # for v in blah.values():
+    #     print(f"{len(v)} => {v}")
+    # print("\n\n\n")
+
+    # blah = process_2(programs_small(), small=True)
+    # print(len(blah))
+    # for v in blah.values():
+    #     print(f"{len(v)} => {v}")
 
     ## Model Comparison - Wave 3
     #
