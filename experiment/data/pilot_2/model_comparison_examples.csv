@@ -1,0 +1,101 @@
+id,gloss,program,example,comment
+c001,return the third element,(lambda (singleton (third $0))),2,"list is only three elements long in three examples, so easy to confuse with c061"
+c002,"return the third element if possible, else the empty list",(lambda (if (> 3 (length $0)) empty (singleton (third $0)))),3,"5 examples have a lot of duplicates, which makes it harder to see the pattern"
+c003,return the seventh element,(lambda (singleton (nth 7 $0))),1,NA
+c004,"return the seventh element if possible, else the empty list",(lambda (if (> 7 (length $0)) empty (singleton (nth 7 $0)))),2,reorder examples
+c005,index in head,(lambda (singleton (nth (first $0) (drop 1 $0)))),3,"degenerate examples, 7 of 11 trials return are confusable with c061"
+c006,first two elements,(lambda (take 2 $0)),1,NA
+c007,"first 2 elements, or as many as possible if list length < 2",(lambda (take 2 $0)),1,NA
+c008,first 6 elements,(lambda (take 6 $0)),1,NA
+c009,"first 6 elements, or as many as possible if list length < 6",(lambda (take 6 $0)),2,reorder examples
+c010,take the head in the tail,(lambda (take (first $0) (drop 1 $0))),2,"3 examples are equal to taking the entire tail, so easy to confuse with c049"
+c011,elements 2 through 4,(lambda (slice 2 4 $0)),2,reorder examples
+c012,"elements 2 through 4, or as many as supported by list length",(lambda (slice 2 4 $0)),2,reorder examples
+c013,elements 3 through 7,(lambda (slice 3 7 $0)),2,reorder examples
+c014,"elements 3 through 7, or as many as supported by list length",(lambda (slice 3 7 $0)),2,reorder examples (put general condition first)
+c015,slice specified by first two elements,(lambda (slice (first $0) (second $0) (drop 2 $0))),3,buggy example uses 0 as an index; one empty slice; reorder examples
+c016,replace second element with 8,(lambda (replace 2 8 $0)),1,NA
+c017,replace second element with 8 if there's a second element,(lambda (replace 2 8 $0)),1,NA
+c018,replace sixth element with 3,(lambda (replace 6 3 $0)),2,reorder examples
+c019,replace sixth element with 3 if there's a sixth element,(lambda (replace 6 3 $0)),2,reorder examples
+c020,replace the first element with the last element,(lambda (replace 1 (last $0) $0)),1,NA
+c021,insert 8 as new second element,(lambda (insert 8 2 $0)),1,NA
+c022,insert 5 as new second element,(lambda (insert 5 2 $0)),1,NA
+c023,"insert new second element; 8 if list length > 5, else 5.",(lambda (insert (if (> 5 (length $0)) 8 5) 2 $0)),1,NA
+c024,"insert new second element; 8 if head > 5, else 5.",(lambda (insert (if (> 5 (first $0)) 8 5) 2 $0)),1,NA
+c025,remove second element,(lambda (cut_idx 2 $0)),1,NA
+c026,remove third element,(lambda (cut_idx 3 $0)),1,NA
+c027,"if the first and third elements are identical, remove the third element, else remove the second element",(lambda (cut_idx (if (== (first $0) (third $0)) 3 2) $0)),3,3 examples where second and third elements are identical
+c028,"if the head > third element, remove third element, else remove the second element",(lambda (cut_idx (if (> (first $0) (third $0)) 3 2) $0)),1,NA
+c029,remove first two elements,(lambda (drop 2 $0)),1,NA
+c030,remove first four elements,(lambda (drop 4 $0)),1,NA
+c031,"drop initial N elements; if the first and second elements are equal and the list length > 5, N = 2, else N = 4",(lambda (drop (if (and (== (second $0) (first $0)) (> (length $0) 5)) 2 4) $0)),2,reorder examples; too many cases to see sufficient examples
+c032,"drop initial N elements; if the second element is 0 and the first element > 5, N = 2, else N = 4.",(lambda (drop (if (and (== (second $0) 0) (> (first $0) 5)) 2 4) $0)),2,reorder examples; too many cases to see sufficient examples
+c033,swap first and fourth elements,(lambda (swap 1 4 $0)),2,reorder examples
+c034,swap second and third elements,(lambda (swap 2 3 $0)),1,NA
+c035,"if the second and fourth elements are equal or the list length > 7, swap first and fourth elements, else swap second and third.",(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0))),1,too many cases to see sufficient examples
+c036,"if the second element is seven or the fourth element > 7, swap first and fourth elements, else swap second and third.",(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0))),3,"examples mostly swap 2 and 3, just 2 examples of swapping 1 and 4"
+c037,append 3,(lambda (append $0 3)),1,NA
+c038,append 9,(lambda (append $0 9)),1,NA
+c039,"if second and third elements are equal, append 9, else do nothing. Then, if the length is greater than 5, append 3, else do nothing.",(lambda ((lambda (if (> (length $0) 5) (append $0 3) $0)) ((lambda (if (== (second $0) (third $0)) (append $0 9) $0)) $0))),3,no cases where we just append 9; too many cases to see sufficient examples
+c040,"if the second element is 9, append 9, else do nothing. Then, if the third element > 3, append 3, else do nothing.",(lambda ((lambda (if (> (third $0) 3) (append $0 3) $0)) ((lambda (if (== (second $0) 9) (append $0 9) $0)) $0))),3,no cases where both conditions apply; too many cases to see sufficient examples
+c041,the constant list [9],(lambda (singleton 9)),1,NA
+c042,"the constant list [5,2]",(lambda (cons 5 (singleton 2))),1,NA
+c043,"the constant list [8,2,7,0,3]",(lambda (cons 8 (cons 2 (cons 7 (cons 0 (singleton 3)))))),1,NA
+c044,"the constant list [1,9,4,3,2,5,8,0,4,9]",(lambda (cons 1 (cons 9 (cons 4 (cons 3 (cons 2 (cons 5 (cons 8 (cons 0 (cons 4 (singleton 9))))))))))),1,NA
+c045,identity,(lambda $0),1,NA
+c046,prepend 7,(lambda (cons 7 $0)),1,NA
+c047,"concatenate [9,6,3,8,5] and the input",(lambda (cons 9 (cons 6 (cons 3 (cons 8 (cons 5 $0)))))),1,NA
+c048,head,(lambda (take 1 $0)),1,NA
+c049,tail,(lambda (drop 1 $0)),1,NA
+c050,prepend head,(lambda (cons (first $0) $0)),1,NA
+c051,prepend the head 5 times.,(lambda (concat (repeat (first $0) 5) $0)),1,NA
+c052,repeat the head 10 times.,(lambda (repeat (first $0) 10)),1,NA
+c053,prepend the head twice onto the tail's tail.,(lambda (concat (repeat (first $0) 2) (drop 2 $0))),1,NA
+c054,set the first three elements to the third element,(lambda (concat (repeat (third $0) 3) (drop 3 $0))),1,NA
+c055,"move the third and fourth elements to be first and second, respectively.",(lambda (concat (slice 3 4 $0) (concat (take 2 $0) (drop 4 $0)))),1,NA
+c056,remove the fifth element,(lambda (cut_idx 5 $0)),2,reorder examples (first looks like drop last)
+c057,insert 4 at index 7,(lambda (insert 4 7 $0)),1,NA
+c058,remove the first seven elements,(lambda (drop 7 $0)),2,reorder examples (empty list is first)
+c059,swap elements at indices 4 and 8,(lambda (swap 4 8 $0)),2,reorder examples (don’t swap last element in first example)
+c060,"take the first 7 elements, remove the sixth element, replace the fourth element with a 4, and swap elements 3 and 1.",(lambda (swap 3 1 (replace 4 4 (cut_idx 6 (take 7 $0))))),3,all incorrect; we can modify concept definition or generate new examples
+c061,last,(lambda (singleton (last $0))),1,NA
+c062,droplast,(lambda (droplast 1 $0)),1,NA
+c063,drop head in tail,(lambda (drop (first $0) (drop 1 $0))),2,would be nice to have a few larger values in the head
+c064,drop first and last elements,(lambda (drop 1 (droplast 1 $0))),1,NA
+c065,prepend 9 and append 7,(lambda (cons 9 (append $0 7))),1,NA
+c066,move head to last,(lambda (append (drop 1 $0) (first $0))),1,NA
+c067,swap head and last,(lambda (cons (last $0) (append (drop 1 (droplast 1 $0)) (first $0)))),1,NA
+c068,concatenate the input and [7 3 8 4 3],(lambda (concat $0 (cons 7 (cons 3 (cons 8 (cons 4 (singleton 3))))))),2,requires a lot of typing
+c069,"concatenate [9 3 4 0], the input, and [7 2 9 1]",(lambda (concat (cons 9 (cons 3 (cons 4 (singleton 0)))) (concat $0 (cons 7 (cons 2 (cons 9 (singleton 1))))))),2,requires a lot of typing
+c070,concatenate the input with itself,(lambda (concat $0 $0)),2,requires a lot of typing
+c071,add 2 to every element,(lambda (map (lambda (+ 2 $0)) $0)),1,NA
+c072,"duplicate every element, in order",(lambda (flatten (map (lambda (cons $0 (singleton $0))) $0))),2,requires a lot of typing
+c073,add the index to every element,(lambda (mapi + $0)),1,NA
+c074,remove all elements less than 7,(lambda (filter (lambda (> $0 7)) $0)),2,reorder examples
+c075,remove elements with an odd index,(lambda (filteri (lambda (lambda (is_odd $1))) $0)),1,NA
+c076,"remove elements less than 5, then subtract 3 from every element",(lambda (map (lambda (- $0 3)) (filter (lambda (> $0 5)) $0))),2,maybe reorder examples
+c077,length,(lambda (singleton (length $0))),1,NA
+c078,max,(lambda (singleton (max $0))),3,4 lists are just repetitions of a single element
+c079,sum,(lambda (singleton (sum $0))),1,NA
+c080,reverse,(lambda (reverse $0)),1,NA
+c081,the third element (0--99),(lambda (singleton (third $0))),2,reorder examples
+c082,"the third element if it exists, else the empty list (0--99)",(lambda (if (> 3 (length $0)) empty (singleton (third $0)))),2,reorder examples
+c083,the seventh element (0--99),(lambda (singleton (nth 7 $0))),2,reorder examples
+c084,"the seventh element if it exists, else the empty list (0--99)",(lambda (if (> 7 (length $0)) empty (singleton (nth 7 $0)))),2,reorder examples
+c085,head in tail (0--99),(lambda (singleton (nth (first $0) (drop 1 $0)))),2,reorder examples
+c086,swap the first and fourth elements (0--99),(lambda (swap 1 4 $0)),2,reorder examples
+c087,swap the second and third elements (0--99),(lambda (swap 2 3 $0)),2,reorder examples
+c088,"if the second and fourth elements are equal or list length > 7, swap first and fourth elements, else swap second and third (0--99)",(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0))),1,too many cases to see sufficient examples
+c089,"if the second elements is 7 or the fourth elements > 8, swap first and fourth elements, else swap second and third (0--99)",(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0))),3,examples aren't well balanced between conditions; too many cases to see sufficient examples
+c090,the constant list [18 42 77 20 36] (0--99),(lambda (cons 18 (cons 42 (cons 77 (cons 20 (singleton 36)))))),1,NA
+c091,the constant list [81 99 41 23 22 75 68 30 24 69] (0--99),(lambda (cons 81 (cons 99 (cons 41 (cons 23 (cons 22 (cons 75 (cons 68 (cons 30 (cons 24 (singleton 69))))))))))),1,NA
+c092,concatenate [92 63 34 18 55] to the input (0--99),(lambda (cons 92 (cons 63 (cons 34 (cons 18 (cons 55 $0)))))),1,NA
+c093,repeat the head 10 times (0--99),(lambda (repeat (first $0) 10)),1,NA
+c094,"move the third and fourth elements to be first and second, respectively (0--99)",(lambda (concat (slice 3 4 $0) (concat (take 2 $0) (drop 4 $0)))),2,reorder examples
+c095,drop head and last (0--99),(lambda (drop 1 (droplast 1 $0))),2,reorder examples
+c096,prepend 98 and append 37 (0--99),(lambda (cons 98 (append $0 37))),1,NA
+c097,"concatenate [11 21 43 19], the input, and [7 89 0 57] (0--99)",(lambda (concat (cons 11 (cons 21 (cons 43 (singleton 19)))) (concat $0 (cons 7 (cons 89 (cons 0 (singleton 57))))))),1,NA
+c098,add the index and the element (0--99),(lambda (mapi + $0)),1,NA
+c099,remove all elements greater than 49 (0--99),(lambda (filter (lambda (> $0 49)) $0)),2,reorder examples (more numbers closer to 50 in first example)
+c100,reverse (0--99),(lambda (reverse $0)),1,NA

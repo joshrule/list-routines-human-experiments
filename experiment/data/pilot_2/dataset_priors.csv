@@ -1,0 +1,151 @@
+id,program,prior,length,depth,lambda,apps,visible,semi,hidden
+c001,(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty))))))))))),-88.05365820432280,42,12,1,20,21,0,0
+c002,(lambda $0),-3.6375861597263900,2,1,1,0,1,0,0
+c003,(lambda (singleton (length $0))),-12.130486658573600,6,3,1,2,0,3,0
+c004,(lambda (singleton (max $0))),-12.130486658573600,6,3,1,2,0,3,0
+c005,(lambda (reverse $0)),-7.275172319452770,4,2,1,1,2,0,0
+c006,(lambda (sort (lambda $0) $0)),-12.087356674825200,7,4,1,2,1,3,0
+c007,(lambda (unique $0)),-7.275172319452770,4,2,1,1,1,1,0
+c008,(lambda (singleton (sum $0))),-12.079193364186000,6,3,1,2,0,3,0
+c009,(lambda (singleton (product $0))),-12.079193364186000,6,3,1,2,0,3,0
+c010,(lambda (repeat (first $0) (second $0))),-20.52080056864570,10,4,1,4,2,3,0
+c011,(lambda (repeat (max $0) (min $0))),-20.623387157420800,10,4,1,4,2,3,0
+c012,(lambda (range 1 1 (first $0))),-21.68723545365250,10,4,1,4,1,4,0
+c013,(lambda (range (last $0) -2 0)),-21.68723545365250,10,5,1,4,1,4,0
+c014,(lambda (cons (last $0) $0)),-15.716779523912400,8,4,1,3,3,1,0
+c015,(lambda (append $0 (second $0))),-15.716779523912400,8,3,1,3,3,1,0
+c016,(lambda (concat (reverse (drop 1 $0)) $0)),-22.991951843365200,12,6,1,5,4,2,0
+c017,(lambda (concat (drop 3 $0) (take 3 $0))),-27.79597288809840,14,5,1,6,2,5,0
+c018,(lambda (concat (drop (last $0) $0) (take (last $0) $0))),-35.07114520755120,18,6,1,8,1,8,0
+c019,(lambda ((lambda (concat ($0 first) (concat $1 ($0 last)))) (lambda (if (== ($0 $1) 8) empty (singleton 8))))),NA,32,9,1,14,11,6,0
+c020,(lambda (singleton (first $0))),-12.079193364186000,6,3,1,2,0,3,0
+c021,(lambda (singleton (last $0))),-12.079193364186000,6,3,1,2,0,3,0
+c022,(lambda (singleton (second $0))),-12.079193364186000,6,3,1,2,0,3,0
+c023,(lambda (singleton (nth (last $0) $0))),-20.52080056864570,10,5,1,4,0,2,3
+c024,(lambda (singleton (nth (nth (first $0) $0) $0))),-28.962407773105300,14,7,1,6,0,3,4
+c025,(lambda (singleton (nth (% (first $0) (length $0)) $0))),-33.81772211222610,16,7,1,7,0,2,6
+c026,(lambda (drop 1 $0)),-12.079193364186000,6,3,1,2,1,2,0
+c027,(lambda (droplast 1 $0)),-12.079193364186000,6,3,1,2,1,2,0
+c028,(lambda (drop 2 $0)),-12.079193364186000,6,3,1,2,1,2,0
+c029,(lambda (slice (first $0) (second $0) (drop 2 $0))),-32.599993932831700,16,5,1,7,2,2,4
+c030,(lambda (take (first $0) (drop 1 $0))),-24.158386728372100,12,4,1,5,2,1,3
+c031,(lambda (drop (last $0) (reverse $0))),-19.3543656836388,10,4,1,4,2,3,0
+c032,(lambda (cut_idx 3 $0)),-12.079193364186000,6,3,1,2,1,2,0
+c033,(lambda (cut_slice 2 5 $0)),-16.883214408919300,8,4,1,3,2,2,0
+c034,(lambda (cut_slice (first $0) (second $0) $0)),-24.158386728372100,12,5,1,5,1,3,2
+c035,(lambda (cut_val 7 $0)),-12.079193364186000,6,3,1,2,1,2,0
+c036,(lambda (cut_val (max $0) $0)),-15.768072818300000,8,4,1,3,1,3,0
+c037,(lambda (cut_vals 3 $0)),-12.079193364186000,6,3,1,2,1,2,0
+c038,(lambda (cut_vals (first $0) $0)),-15.716779523912400,8,4,1,3,1,3,0
+c039,(lambda (cut_vals (max $0) $0)),-15.768072818300000,8,4,1,3,1,3,0
+c040,(lambda (replace 2 9 $0)),-16.883214408919300,8,4,1,3,2,2,0
+c041,(lambda (replace (first $0) (second $0) (drop 2 $0))),-32.599993932831700,16,5,1,7,1,7,0
+c042,(lambda (replace (nth (first $0) $0) (second $0) $0)),-32.599993932831700,16,7,1,7,1,3,4
+c043,(lambda (map (lambda (if (== $0 (max $1)) (min $1) $0)) $0)),-42.990254695713,21,9,1,9,1,3,7
+c044,(lambda (map (lambda (if (or (== $0 (max $1)) (== $0 (min $1))) (- (max $1) (min $1)) $0)) $0)),-76.54383057723910,37,11,1,17,1,13,5
+c045,(lambda (map (lambda (first $1)) $0)),-16.46938330949910,9,5,1,3,3,2,0
+c046,(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0)))),-54.70192041434360,27,7,1,12,0,2,12
+c047,(lambda (flatten (mapi (lambda (lambda (cons $0 (singleton $1)))) $0))),-29.17192562341450,16,8,1,6,3,6,0
+c048,(lambda (flatten (map (range 1 1) $0))),NA,12,6,1,5,1,5,0
+c049,(lambda (flatten (map (lambda (range $0 -2 1)) $0))),-28.960229457940600,15,8,1,6,1,7,0
+c050,(lambda (flatten (map (lambda (if (> $0 (first $1)) (range (first $1) 1 $0) (singleton $0))) $0))),-60.94285943651740,31,11,1,14,2,14,0
+c051,(lambda (flatten (map (lambda (repeat $0 $0)) $0))),-24.148045102568200,13,7,1,5,1,6,0
+c052,(lambda (flatten (map (lambda (cons $0 (singleton (last $1)))) $0))),-31.42321742202100,17,8,1,7,3,6,0
+c053,(lambda (flatten (map (lambda (cons (first $0) (singleton (length $0)))) (group (lambda $0) $0)))),-44.91333019463230,24,8,1,10,1,7,5
+c054,(lambda (map (lambda (if (is_even $0) (* 3 $0) $0)) $0)),-39.144010725241300,19,8,1,8,1,1,8
+c055,(lambda (mapi (lambda (lambda (* $0 $1))) $0)),-23.098019746689900,12,7,1,4,0,2,5
+c056,(lambda (mapi (lambda (lambda (+ $0 $1))) (reverse $0))),-26.7356059064163,14,7,1,5,0,2,6
+c057,(lambda (flatten (map (lambda (cons $0 (singleton (if (is_odd $0) 1 0)))) $0))),-45.1666233075783,23,11,1,10,7,0,5
+c058,(lambda (mapi (lambda (lambda (if (== $0 $1) 1 0))) $0)),-37.1165731842614,18,10,1,7,0,2,8
+c059,(lambda (map (lambda (count (lambda (== $1 $0)) $1)) (range 1 1 (max $0)))),-49.2820265159442,24,9,1,10,0,10,3
+c060,(lambda (map (lambda (+ (max $1) $0)) $0)),-26.093752020243900,13,7,1,5,0,2,5
+c061,(lambda (map (lambda (- (first $1) $0)) $0)),-26.042458725856400,13,7,1,5,0,2,5
+c062,(lambda (map (lambda (+ 7 (* 3 $0))) $0)),-31.336094096314900,15,7,1,6,0,2,6
+c063,(lambda (map (lambda (* (- $0 10) 2)) $0)),-31.336094096314900,15,8,1,6,0,2,6
+c064,(lambda (map (lambda (+ (/ $0 4) 5)) $0)),-31.336094096314900,15,8,1,6,0,2,6
+c065,(lambda (filter is_even (reverse $0))),NA,8,3,1,3,1,2,1
+c066,(lambda (sort (lambda $0) (unique $0))),-15.724942834551600,9,4,1,3,1,4,0
+c067,(lambda (sort (lambda $0) (unique (filter (lambda (< 20 $0)) $0)))),-31.931336684189200,18,8,1,7,1,4,5
+c068,(lambda (reverse (sort (lambda $0) (unique (filter (lambda (< 20 $0)) $0))))),-35.56892284391560,20,9,1,8,1,4,6
+c069,(lambda (singleton (max (drop 2 $0)))),-20.623387157420800,10,5,1,4,0,2,3
+c070,(lambda (cons (first $0) (singleton (last $0)))),-24.158386728372100,12,4,1,5,2,4,0
+c071,(lambda (drop 1 (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (singleton 0) $0))),-51.70492285100470,26,11,1,11,0,10,4
+c072,(lambda (drop 1 (fold (lambda (lambda (append $1 (* (last $1) $0)))) (singleton 1) $0))),-51.70492285100470,26,11,1,11,0,10,4
+c073,(lambda (singleton (max (append $0 (length $0))))),-24.31226661153470,12,5,1,5,0,2,4
+c074,(lambda (take (length (unique $0)) $0)),-19.4569522724139,10,5,1,4,2,0,3
+c075,(lambda (fold (lambda (lambda (if (> $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0))),-65.49563056808150,34,11,1,15,1,17,0
+c076,(lambda (fold (lambda (lambda (if (< $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0))),-65.49563056808150,34,11,1,15,1,17,0
+c077,(lambda (flatten (zip $0 (reverse $0)))),-18.16126255154980,10,4,1,4,2,3,0
+c078,(lambda (fold (lambda (lambda (if (is_even (second $0)) (append $1 (first $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0)))),-73.87638074715950,38,11,1,17,0,1,19
+c079,(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort (lambda $0) $0)))),-39.823670277224000,23,9,1,9,1,0,12
+c080,(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (sort (lambda $0) $0))),-36.18608411749760,21,9,1,8,1,0,11
+c081,(lambda (flatten (zip (filteri (lambda (lambda (is_odd $1))) $0) (reverse (filteri (lambda (lambda (is_even $1))) $0))))),-42.33597590120010,26,9,1,10,1,14,0
+c082,(lambda (filteri (lambda (lambda (== (% $1 3) 0))) $0)),-30.45525701919700,16,9,1,6,1,8,0
+c083,(lambda (filteri (lambda (lambda (not (== (% $1 3) 0)))) $0)),-33.39969599836340,18,10,1,7,1,9,0
+c084,(lambda (filteri (lambda (lambda (and (== (% $1 2) 0) (is_odd $0)))) $0)),-41.849466513462200,22,11,1,9,0,2,10
+c085,(lambda (filteri (lambda (lambda (or (== (% $1 2) 0) (> 20 $0)))) $0)),-46.66165086883460,24,11,1,10,1,0,12
+c086,(lambda (filter (lambda (== (% $0 5) 1)) $0)),-29.762109838637000,15,8,1,6,1,7,0
+c087,(lambda (concat $0 (cons 0 $0))),-19.3543656836388,10,4,1,4,5,0,0
+c088,(lambda (map (lambda (if (== (% $0 3) 0) 1 0)) $0)),-44.24995619914190,21,11,1,9,0,2,9
+c089,(lambda (range (min $0) 1 (max $0))),-25.427408202154000,12,5,1,5,1,5,0
+c090,(lambda (range (first $0) 2 (last $0))),-25.324821613378900,12,5,1,5,1,5,0
+c091,(lambda (flatten (map (lambda (repeat $0 (/ $0 10))) $0))),-33.77241381331310,17,8,1,7,5,4,0
+c092,(lambda (map (lambda (if (< $0 50) (% $0 10) (/ $0 10))) $0)),-53.580563791358500,25,9,1,11,0,2,11
+c093,(lambda (if (< (length $0) 5) $0 (drop 5 (sort (lambda $0) $0)))),-44.04549672148450,23,7,1,10,2,0,10
+c094,(lambda (filter (lambda (is_in $1 $0)) (range (min $0) 2 (max $0)))),-40.510497150533200,21,6,1,9,0,1,10
+c095,(lambda (flatten (sort (lambda (% (first $0) 4)) (group (lambda (% $0 4)) $0)))),-47.67635768534460,24,8,1,10,1,0,12
+c096,(lambda (concat (cons 17 (cons 38 (singleton 82))) (concat $0 (cons 1 (cons 55 (singleton 27)))))),-61.562401705937000,30,6,1,14,15,0,0
+c097,(lambda (filter (lambda (and (> 50 $0) (> (- $0 (min $1)) 10))) $0)),-48.67047484330050,25,9,1,11,1,0,12
+c098,(lambda (map (lambda (% $0 7)) $0)),-21.711725385570000,11,6,1,4,0,1,5
+c099,(lambda (map (lambda (% $0 7)) (sort (lambda $0) $0))),-30.161495900668800,16,6,1,6,0,2,7
+c100,(lambda (sort (lambda $0) (map (lambda (% $0 7)) $0))),-30.161495900668800,16,7,1,6,0,2,7
+c101,(lambda (unique (sort (lambda $0) (map (lambda (% $0 7)) $0)))),-33.79908206039520,18,8,1,7,0,1,9
+c102,(lambda (find is_even $0)),NA,6,3,1,2,0,1,2
+c103,(lambda (find (lambda (and (> $0 20) (< $0 50))) $0)),-35.459813267216900,19,8,1,8,0,1,9
+c104,(lambda (singleton (sum (range 1 1 (length $0))))),-30.180135952499700,14,6,1,6,0,2,5
+c105,(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0)))),-38.20371704309670,19,10,1,8,0,2,8
+c106,(lambda (filter (lambda (< (% $0 10) 3)) $0)),-29.468348720108900,15,8,1,6,1,7,0
+c107,(lambda (map sum (zip $0 (reverse $0)))),NA,12,4,1,5,0,1,5
+c108,(lambda (map (lambda (- (max $0) (min $0))) (zip $0 (reverse $0)))),-41.40499887076320,21,7,1,9,0,2,9
+c109,(lambda (insert (+ (max $0) (min $0)) 3 (sort (lambda $0) $0))),-42.318785921712500,21,7,1,9,1,5,5
+c110,(lambda (insert (last $0) (first $0) (unique $0))),-27.79597288809840,14,5,1,6,1,0,6
+c111,(lambda (splice (slice 4 5 $0) (- (length $0) 2) (reverse $0))),-45.896915476412200,22,7,1,10,2,9,0
+c112,(lambda (splice (cons 3 (cons 91 (singleton 17))) 3 $0)),-37.404014977565000,18,7,1,8,8,1,0
+c113,(lambda (cut_slice (first $0) (second $0) (drop 2 $0))),-32.599993932831700,16,5,1,7,2,2,4
+c114,(lambda (cut_idx (first $0) (drop 1 $0))),-24.158386728372100,12,4,1,5,1,1,4
+c115,(lambda (singleton (product (slice 3 6 $0)))),-25.324821613378900,12,6,1,5,0,2,4
+c116,(lambda (flatten (reverse (sort (lambda (/ (first $0) 10)) (group (lambda (/ $0 10)) $0))))),-51.287275597988800,26,9,1,11,1,3,10
+c117,(lambda (flatten (sort (lambda (% (first $0) 10)) (group (lambda (% $0 10)) $0)))),-47.67635768534460,24,8,1,10,1,12,0
+c118,(lambda (mapi (lambda (lambda (if (> $1 $0) $1 $0))) $0)),-37.10441509210860,18,10,1,7,0,2,8
+c119,(lambda (filteri (lambda (lambda (is_even (+ $1 $0)))) $0)),-26.042458725856400,14,8,1,5,1,0,7
+c120,(lambda (map (lambda (/ $0 (if (is_even (length $1)) 2 5))) $0)),-42.781596884967700,21,10,1,9,0,2,9
+c121,(lambda (singleton (max (cons (sum (filteri (lambda (lambda (is_even $1))) $0)) (singleton (sum (filteri (lambda (lambda (is_odd $1))) $0))))))),-57.12792500603700,32,11,1,13,0,2,16
+c122,(lambda (filteri (lambda (lambda (is_odd $1))) (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))),-66.78927708916880,35,8,1,15,0,1,18
+c123,(lambda (map (lambda (sum (filter (lambda (== (% $0 $1) 0)) $1))) (range 1 1 10))),-57.69911730316940,28,12,1,12,0,2,13
+c124,(lambda (fold (lambda (lambda (cons $0 (reverse $1)))) empty $0)),-27.330848494290700,16,8,1,6,1,2,6
+c125,(lambda (slice 2 (- (length $0) 2) $0)),-30.180135952499700,14,6,1,6,2,5,0
+c126,(lambda (drop (/ (first $0) 10) (droplast (/ (last $0) 10) $0))),-47.01205706703150,22,7,1,10,1,2,8
+c127,(lambda (unique (flatten (zip $0 (reverse $0))))),-21.798848711276200,12,5,1,5,1,1,4
+c128,(lambda (map (lambda (nth (% $0 10) $1)) $0)),-30.161495900668800,15,8,1,6,1,1,6
+c129,(lambda (foldi (lambda (lambda (lambda (append $1 ((if (is_even $2) + *) (last $1) $0))))) (take 1 $0) (drop 1 $0))),NA,37,14,1,16,0,20,0
+c130,(lambda (if (> (min $0) (- (max $0) (min $0))) (range (min $0) 2 (max $0)) (range 0 2 (min $0)))),-84.03068463036180,40,8,1,19,0,6,14
+c131,(lambda (sort (lambda $0) (map length (group (lambda $0) $0)))),NA,16,6,1,6,0,3,6
+c132,(lambda (singleton (/ (sum $0) (length $0)))),-25.37611490776650,12,5,1,5,0,2,4
+c133,(lambda (map length (group (lambda $0) $0))),NA,11,5,1,4,0,1,5
+c134,(lambda (flatten (map (lambda (drop 1 $0)) (group (lambda $0) $0)))),-32.08969635549880,18,7,1,7,1,9,0
+c135,(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0))),-94.00506872088620,46,15,1,21,0,24,0
+c136,(lambda (map (lambda (/ $0 2)) (filter is_even $0))),NA,15,6,1,6,0,1,7
+c137,(lambda (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (take 1 (unique $0)) (drop 1 (unique $0)))),-62.61768133018380,32,10,1,14,0,13,4
+c138,(lambda (singleton (sum (filter (== 1) (map length (group (lambda $0) $0)))))),NA,21,8,1,9,0,2,9
+c139,(lambda (singleton (sum (filter (< 1) (map length (group (lambda $0) $0)))))),-29.116287656268,14,5,1,6,0,2,5
+c140,(lambda (singleton (count (== (length $0)) (drop 1 $0)))),NA,16,6,1,7,0,2,6
+c141,(lambda (singleton (count (== (length (unique $0))) $0))),NA,14,7,1,6,0,1,6
+c142,(lambda (singleton (count (== (last $0)) (take (first $0) $0)))),NA,18,6,1,8,0,2,7
+c143,(lambda (singleton (count is_even $0))),NA,8,4,1,3,0,2,2
+c144,(lambda (singleton (count (lambda (== 3 $0)) $0))),-24.993055467013000,13,7,1,5,0,2,5
+c145,(lambda (singleton (count (lambda (== (first $1) $0)) (drop 1 $0)))),-37.816689306146500,19,8,1,8,0,2,8
+c146,(lambda (singleton (length (unique $0)))),-15.819366112687500,8,4,1,3,0,1,3
+c147,(lambda (first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))),-82.05197803514380,44,14,1,20,1,22,0
+c148,(lambda (first (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))),-78.44106012249960,42,13,1,19,1,21,0
+c149,(lambda (map first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))),NA,46,14,1,21,1,23,0
+c150,(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))))),NA,48,15,1,22,1,24,0

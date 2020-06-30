@@ -169,19 +169,17 @@ dm <- import_time_data("./times.csv")
 
 ```{r dt, include = FALSE}
 dt <- import_trial_data('./trials.csv', './stimuli.csv')
-dtl <- dt %>% filter(task == '[(i,o)]->i->o')
+dtl <- dt %>%
+  mutate(id = unique_id(purpose, id)) %>%
+  filter(task == '[(i,o)]->i->o') %>%
+  group_by(subject, id) %>%
+  mutate(mu = mean(accuracy)) %>%
+  ungroup()
 concepts <- read_csv("./concepts.csv") %>%
   mutate(id = unique_id(purpose, id)) %>%
-  left_join(
-    dtl %>%
-      group_by(subject, id) %>%
-      dplyr::summarize(learned = !is.na(first_m_of_n(3, 3, accuracy))) %>%
-      ungroup() %>%
-      group_by(id) %>%
-      dplyr::summarize(pct_learned = sum(learned) / n())
-  ) %>%
-  mutate(name = fct_reorder(factor(name), pct_learned, .desc=T))
-dtl <- dtl %>% left_join(concepts)
+  left_join(dtl %>% group_by(id) %>% dplyr::summarize(mu = mean(mu))) %>%
+  mutate(name = fct_reorder(factor(name), mu, .desc=T))
+dtl <- dtl %>% left_join(concepts %>% rename(mu_mu = mu))
 dtv <-
   dt %>% filter(task == '[(i,o)]->spec') %>% select(
     -total_trial,
@@ -195,11 +193,28 @@ dtv <-
     -rt,
     -order
   ) %>% left_join(concepts)
+priors <- bind_rows(read_csv("./model_comparison_priors.csv") %>% mutate(purpose = "model"),
+                    read_csv("./dataset_priors.csv") %>% mutate(purpose = "dataset"))%>%
+  mutate(id = unique_id(purpose, id)) %>%
+  rename(concept = program)
+concepts <- concepts %>% left_join(priors)
 ```
 
 # Introduction 
 
 This document analyzes data collected during a 2020-06-22 pilot of `v0.0.5` of the list-routines experiment. The analysis focuses on questions relevant to running a full-scale study.
+
+# Recommendations
+
+- Regenerate concepts:
+  - Generate new concepts for any concept predicted to have < 10\% (20\%?) mean accuracy, including any paired concepts if coming from the model-comparison dataset.
+- Regenerate training data:
+  - Assess example quality for dataset concepts
+  - Pick the best of the 5 tested orderings for training sets scored "reorder", according to my assessment of informativeness for human learners.
+  - Update example constraints and generate new i/o pairs for training sets scored "resample".
+- Ask modelers to rerun any new training sets for the model-comparison problems.
+- Adopt adaptive sampling based on some measure of performance variance.
+- Maintain current levels of compensation, all else being equal.
 
 # Method
 
@@ -301,7 +316,6 @@ Table \@ref(tab:list-functions) describes each function.
 tbl <- concepts %>%
   mutate(concept = str_replace(concept, '(.*)', '`\\1`'),
          id = str_replace(id, '(.*)', '`\\1`')) %>%
-  select(-pct_learned) %>%
   select(name, gloss, id, purpose, concept) %>%
   pivot_longer(!starts_with("name"),
                names_to = "feature",
@@ -310,86 +324,24 @@ tbl <- concepts %>%
   rename(Name = name)
   tbl$Description <- kableExtra::cell_spec(tbl$Description,
                                            extra_css = "display: block; overflow: scroll; height: 1.4em; width: 50em;")
-kableExtra::kable_styling(
-  knitr::kable(tbl, caption = "The tested list routines from most learned to least learned. Each row gives a memorable name, a verbal description, its unique id, its intended purpose (model-comparison or dataset), and an implementation.", escape = FALSE)
-) %>% collapse_rows(columns = 1, valign = "top")
+  knitr::kable(tbl, caption = "The tested list routines from most learned to least learned. Each row gives a memorable name, a verbal description, its unique id, its intended purpose (model-comparison or dataset), and an implementation.", escape = FALSE) %>%
+    kable_styling() %>%
+    collapse_rows(columns = 1, valign = "top")
 ```
 
 # Results
 
-## Task difficulty: overall
-
-```{r learnability, cache=T, echo=F, warning=F}
-learnability <- dtl %>%
-  group_by(subject, purpose, name) %>%
-  dplyr::summarize(learned = !is.na(first_m_of_n(3, 3, accuracy))) %>%
-  ungroup()
-learnability_by_concept <- learnability %>%
-  group_by(name, purpose) %>%
-  tidyboot_mean(learned)
-learnability_by_purpose <- learnability %>%
-  group_by(purpose) %>%
-  tidyboot_mean(learned)
-```
-
-```{r plot-learnability, dependson="learnability", echo=F, warning=F, fig.align='center', fig.show='hold', out.width="100%", fig.height=5, fig.width=15, fig.cap="(Left): Percentage of people (y-axis) who learned each concept (x-axis). Participants are considered to have learned a concept if they can provide three correct answers in a row; (Right): Mean per-concept learnability (y-axis) by purpose (x-axis). Bars are bootstrapped 95% CIs."}
-plot_learnability_by_concept <- function(data) {
-    ggplot(data, aes(x = name, y = empirical_stat * 100, fill = purpose)) +
-    geom_bar(stat = 'identity') +
-    geom_errorbar(
-      aes(
-        x = name,
-        ymin = 100 * ci_lower,
-        ymax = 100 * ci_upper
-      ),
-      position = position_dodge(width = 0.9),
-      width = 0.5
-    ) +
-    xlab("Concept") +
-    ylab("Participants Who Learned Concept (%)") +
-    coord_cartesian(ylim=c(0,100)) +
-    scale_y_continuous(breaks = c(10, 30, 50, 70, 90)) +
-    theme(legend.position = "top") +
-    theme(axis.text.x = element_text(
-      angle = 90,
-      vjust = 0.5,
-      hjust = 1
-    ))
-}
-plot_learnability_by_purpose <- function(data) {
-  ggplot(data, aes(x = purpose, y = 100 * empirical_stat, fill=purpose)) +
-    geom_bar(position = position_dodge(width = 0.9),
-             stat = 'identity') +
-    geom_errorbar(
-      aes(
-        x = purpose,
-        ymin = 100 * ci_lower,
-        ymax = 100 * ci_upper
-      ),
-      position = position_dodge(width = 0.9),
-      width = 0.5
-    ) +
-    ylab("Participants Who Learned Concept (%)") +
-    xlab("Purpose") +
-    coord_cartesian(ylim=c(0,100)) +
-    theme(legend.position = "none")
-}
-plot_learnability_by_concept(learnability_by_concept) +
-  plot_learnability_by_purpose(learnability_by_purpose) +
-  plot_layout(widths = c(2, 1))
-```
+## Task difficulty in the pilot
 
 ```{r accuracy, cache=T, echo=F, warning=F}
-accuracy <- dtl %>%
-  group_by(subject, purpose, name) %>%
-  dplyr::summarize(mu = mean(accuracy)) %>%
-  ungroup() %>%
-  mutate(name = fct_reorder(name, mu, .fun=mean, .desc=T)) %>%
-  ungroup()
-accuracy_by_concept <- accuracy %>%
+accuracy_by_concept <- dtl %>%
+  group_by(subject, name, purpose, mu, mu_mu) %>%
+  group_keys() %>%
   group_by(name, purpose) %>%
   tidyboot_mean(mu)
-accuracy_by_purpose <- accuracy %>%
+accuracy_by_purpose <- dtl %>%
+  group_by(subject, name, purpose, mu, mu_mu) %>%
+  group_keys() %>%
   group_by(purpose) %>%
   tidyboot_mean(mu)
 ```
@@ -441,34 +393,8 @@ plot_accuracy_by_concept(accuracy_by_concept) +
   plot_layout(widths = c(2, 1))
 ```
 
-```{r how-many, cache=T, echo=F, warning=F}
-make_how_many <- function(tbl) {
-  total <- length(unique(tbl$subject))
-  tbl %>%
-    group_by(subject, id) %>%
-    dplyr::summarize(learned = !is.na(first_m_of_n(3, 3, accuracy))) %>%
-    group_by(subject) %>%
-    dplyr::summarize(n_learned = sum(learned)) %>%
-    group_by(n_learned) %>%
-    dplyr::summarize(n = n()/total)
-}
-how_many <- make_how_many(dtl)
-```
-
-```{r plot-how-many, dependson=c("how-many"), echo=F, warning=F, fig.align='center', fig.show='hold', out.width="66%", fig.height=5, fig.width=10, fig.cap="Number of people (y-axis) who learned N concepts (x-axis)."}
-plot_how_many <- function(data) {
-  ggplot(data, aes(x=n_learned, y=n*100)) +
-    geom_bar(stat='identity', color="black", fill="white") +
-    xlab("Number of Functions Learned") +
-    ylab("Percentage of Participants (%)") +
-    scale_x_continuous(breaks=seq(0,10)) +
-    coord_cartesian(xlim=c(0, 10)) +
-    theme(legend.position = "none")
-}
-plot_how_many(how_many)
-```
-
 Several of our predictions focused on task difficulty. We predicted that:
+
 1. For most model-comparison tasks, most participants will learn that tasks.
 2. Dataset task learnability would be significantly lower than model-comparison task learnability
 3. For most dataset tasks, a significant number of participants will learn that task.
@@ -483,16 +409,16 @@ I also grouped---post-hoc but without consulting the results---the specific func
 
 Group 1 uses the same simple rule every time, without conditions or reasoning about values in the list. Group 2 requires reasoning about the value of items in the list. Group 3 chains multiple operations together, with `div_2_or_5` perhaps being the hardest (you have to figure out what condition separates dividing by 2 from dividing by 5). Group 4 boils a list down to a single number, so the amount of information received on each trial is relatively low. That number, however, is in the list, so the structure of the list can provide hints about the rule. Group 5 either boils down to a single number that isn't in the list or involves complex conditions.
 
-Figure \@ref(fig:plot-learnability).left shows that 7 of the 10 model-comparison functions were learned by most participants. There is only one model-comparison task where fewer than 10\% of participants learned the function This confirms our first hypothesis, though without looking at the specific functions used in the pilot, I would have expected to see another 1--2 functions learned by most people. The figure also shows that: only 1 of the 10 dataset functions was learned by most participants, confirming our second hypothesis; and 6 dataset functions were learned by ~30\% of participants or more, confirming our third hypothesis. That said, there are 4 dataset tasks where fewer of 10\% of participants learned the function, including three that were never learned.
+Figure \@ref(fig:plot-accuracy).left shows that 7 of the 10 model-comparison functions were learned by most participants. There is only one model-comparison task where fewer than 10\% of participants learned the function This confirms our first hypothesis, though without looking at the specific functions used in the pilot, I would have expected to see another 1--2 functions learned by most people. The figure also shows that: only 1 of the 10 dataset functions was learned by most participants, confirming our second hypothesis; and 6 dataset functions were learned by ~30\% of participants or more, confirming our third hypothesis. That said, there are 4 dataset tasks where fewer of 10\% of participants learned the function, including three that were never learned.
 
-Figure \@ref(fig:plot-learnability).left also tells us the relative difficulty of each concept. There seem to be roughly four groups:
+Figure \@ref(fig:plot-accuracy).left also tells us the relative difficulty of each concept. There seem to be roughly four groups:
 
-1. easy: `slice_2_4`, `constant`, `98_xs_37`, `idx_head_in_tail_sm`, `drop_ends`, `replace_2_8`, and `repeat_head`
-2. moderately easy: `idx_head_in_tail_lg`, `group_and_drop`, `num_repetition`, `slice_in_tail`, `unique_>_20_desc`, and `insert_by_head`
-3. moderately_hard: `drop_2_or_4`, and `length_in_tail`
-4. hard: `idx_head_mod_length`, `append_3_or_9`, `div_2_or_5`, `mod_7_unique`, and `rm_odd_idxs_>_20`
+1. easy: `slice_2_4`, `constant`, `98_xs_37`, `drop_ends`, `replace_2_8`, and `repeat_head` 
+2. moderately easy: `idx_head_in_tail_sm`, `unique_>_20_desc`,  `drop_2_or_4`, `num_repetition`, `slice_in_tail`, `idx_head_in_tail_lg`, `group_and_drop`,  and `insert_by_head`
+3. moderately_hard: `length_in_tail`, `idx_head_mod_length`, `div_2_or_5`, `append_3_or_9`, and `rm_odd_idxs_>_20`
+4. hard: `mod_7_unique` (the only concept where accuracy isn't statistically different from 0)
 
-Compared to my predictions: `idx_head_in_tail_sm` and `num_repetitions` are much easier; `idx_head_in_tail_lg` is slightly easier; `slice_in_tail` and `idx_head_mod_length` are moderately harder; and `div_2_or_5` is much harder.
+Compared to my predictions: `idx_head_in_tail_sm` and `num_repetitions` are much easier; `idx_head_in_tail_lg` is moderately easier; `slice_in_tail` and `idx_head_mod_length` are moderately harder; and `div_2_or_5` is much harder.
 
 Speculating on why we see these deviations from my predictions:
 
@@ -502,104 +428,107 @@ Speculating on why we see these deviations from my predictions:
 - `num_repetitions`: the concept of the number of repetitions was simply more obvious to people than I expected.
 - `idx_head_in_tail_sm` and `idx_head_in_tail_lg`: in 7/11 and 4/11 trials, respectively, you could just guess the last number and be right. This is another case of bad data, but these are model-comparison tasks. In reality, just 1--3 people appear to have acquired the general rule for each of these.
 
-Figure \@ref(fig:plot-learnability).right compares per-function learnability between dataset and model-comparison tasks, further confirming that model-comparison tasks are significantly easier.
+Figure \@ref(fig:plot-accuracy).right summarizes per-function accuracy between dataset and model-comparison tasks, confirming that model-comparison tasks are significantly easier.
 
-Figure \@ref(fig:plot-accuracy) repeats these analyses using per-concept accuracy rather than learnability. The same general trends hold, though the exact ordering of specific functions differs slightly, and the division into four groups perhaps fades into three, with the two moderate groups combining into one.
+## Predicting task difficulty
 
-Finally, Figure \@ref(fig:plot-how-many) shows that most participants learn most of the concepts. 60\% are learning 5 or more concepts, and while none learned all the concepts presented, only 3 learned fewer than 3 concepts. 
-
-## Task difficulty: individual differences
-
-```{r correct-total, cache=T, echo=F, warning=F}
-correct_total <- dtl %>%
-  group_by(subject, name) %>%
-  dplyr::summarize(k = sum(accuracy)) %>%
-  mutate(k = factor(x = k, c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))) %>%
-  ungroup() %>%
-  group_by(name, k, .drop = F) %>%
-  dplyr::summarize(n = n())
-```
-
-```{r plot-correct-total, dependson=c("correct-total", "correct-per-trial"), echo=F, warning=F, out.width="100%", fig.height=5, fig.width=20, fig.show='hold', fig.align='center', fig.cap="Number of subjects (y-axis) for each possible number of correct responses (x-axis) by concept (colored curves)."}
-plot_correct_total <- function(data) {
-  ggplot(data, aes(
-    x = k,
-    y = n,
-    group = name,
-    fill = name
-  )) +
-    geom_bar(na.rm = T, stat = 'identity') +
-    facet_wrap( ~ name, nrow = 2) +
-    xlab("Number of Correct Trials") +
-    ylab("Number of Participants") +
-    theme(legend.position = "none")
+```{r predictive-model, cache=T, echo=F, warning=F}
+predictive_model <- function(raw_data) {
+data <- raw_data %>% filter(!(name %in% c("group_and_drop", "idx_head_in_tail_sm")))
+model <- lm(mu ~ depth + length + visible + semi, data=data)
+print(summary(model))
+model
 }
-plot_correct_total(correct_total)
-```
-
-```{r plot-when-learned, echo=F, warning=F, out.width="100%", fig.height=5, fig.width=20, fig.align='center', fig.cap="Number of participants (y-axis) first giving 3 consecutive correct responses on a given trial (x-axis) by concept (subplots). Fill in floating bar shows percentage of subjects who learned concept."}
-plot_three <- function(tbl) {
-    raw <- tbl %>%
-      group_by(subject, name) %>%
-      dplyr::summarize(three = first_m_of_n(3,3,accuracy)) %>%
-      mutate(three = addNA(factor(three, levels=seq(1, 11)))) %>%
-      group_by(name) %>%
-      count(three, .drop=F) %>%
-      mutate(pct = n/sum(n),
-             three = fct_recode(three, NULL="NA")) %>%
-      drop_na(three)
-    sums <- raw %>% group_by(name) %>% dplyr::summarize(n = sum(pct))
-    ggplot(raw, aes(x=three, y=n, group=name, fill=name)) +
-      geom_bar(stat="identity") +
-      geom_segment(size = 4, color = "#666666",
-                   aes(x = 10.5, xend = 10.5, y = 10, yend = 20)) +
-      geom_segment(data = sums, size = 4,
-                   aes(x = 10.5, xend = 10.5, y = 10, yend = 10+10*n, color=name)) +
-      facet_wrap(~name, nrow=2) +
-      xlab("First trial to get three in a row") +
-      ylab("Number of Participants") +
-      scale_y_continuous(breaks=seq(0, 100, by = 20)) +
-      theme(legend.position= "none")
+length_model <- function(raw_data) {
+data <- raw_data %>% filter(!(name %in% c("group_and_drop", "idx_head_in_tail_sm")))
+model <- lm(mu ~ length, data=data)
+print(summary(model))
+model
 }
-plot_three(dtl)
+length_model <- length_model(concepts)
+model <- predictive_model(concepts)
 ```
 
-Figure \@ref(fig:plot-correct-total) shows the distribution over the number of correct trials per participant for each concept. For easy and difficult concepts, the distributions over number of correct trials are fairly tightly clustered---most people get roughly the same number of trials. For moderately difficult concepts, however, the distribution is dispersed. People appear to master the concept at different rates, with some never doing so. **Learning curves which average over all participants may be relatively informative for easy and hard concepts but are probably not the best way to see what's happening for intermediate concepts**.
-
-Figure \@ref(fig:plot-when-learned) plots if/when participants learned each concept, showing high variation in how quickly each concept was learned. Even for the easiest concepts, there's a wide range of times as to when people are judged as having learned the concept. Participant performance isn't uniform, even when the result is, i.e. learning the concept.
-
-```{r correct-per-trial, cache=T, echo=F, warning=F}
-correct_per_trial <- dtl %>%
-  group_by(name, block_trial) %>%
-  tidyboot_mean(column = accuracy, nboot = 500)
-```
-
-```{r plot-correct-per-trial, dependson=c("correct-total", "correct-per-trial"), echo=F, warning=F, out.width="100%", fig.height=5, fig.width=20, fig.show='hold', fig.align='center', fig.cap="Mean performance (y-axis) by trial (x-axis) by concept (colored curves), with bootstrapped 95% CI (shaded regions)."}
-plot_correct_per_trial <- function(data) {
-  ggplot(data, aes(x = block_trial, y = empirical_stat)) +
-    geom_ribbon(
-      aes(
-        x = block_trial,
-        ymin = ci_lower,
-        ymax = ci_upper,
-        fill = name
-      ),
-      linetype = 0,
-      alpha = 0.2
-    ) +
-    geom_line(aes(color = name), size = 1.5) +
-    facet_wrap( ~ name, nrow = 2) +
-    xlab("Trial") +
-    ylab("Mean Performance (%)") +
-    scale_x_continuous(breaks = seq(1, 11)) +
-    labs(fill = "Function", color = "Function") +
-    theme(legend.position = "none")
+```{r plot-predictive-model, dependson="predictive-model", echo=F, warning=F, fig.align='center', out.width="100%", fig.height=5, fig.width=10, fig.cap="Length-based predictive models of difficulty. (Left): Linear regression predictions of mean acuracy based solely on concept length in the DSL; (Right): Linear regression predictions of mean acuracy based on concept length in the DSL, adjusted for the amount of visible and semi-visible information."}
+plot_predictive_model <- function(model, length_model, raw_data) {
+  data <- raw_data %>% filter(!(name %in% c("group_and_drop", "idx_head_in_tail_sm")))
+  length_data <- data %>% mutate(predict = predict(length_model, data))
+  data <- data %>% mutate(predict = predict(model, data))
+  p1 <- ggplot(length_data, aes(x = mu, y = predict, color=name)) +
+    geom_point() +
+    geom_abline(intercept=c(0,0), slope=1) +
+    xlab("Mean Accuracy") +
+    ylab("Model Prediction (length)") +
+    coord_cartesian(xlim=c(0,1), ylim=c(0,1))
+  p2 <- ggplot(data, aes(x = mu, y = predict, color=name)) +
+    geom_point() +
+    geom_abline(intercept=c(0,0), slope=1) +
+    xlab("Mean Accuracy") +
+    ylab("Model Prediction (depth + visible + semi + length)") +
+    coord_cartesian(xlim=c(0,1), ylim=c(0,1))
+  p1 + p2
 }
-# plot_correct_per_trial(correct_per_trial)
+plot_predictive_model(model, length_model, concepts)
 ```
 
+```{r plot-predictive-model-predictions, dependson="predictive-model", echo=F, warning=F, fig.align='center', out.width="100%", fig.height=5, fig.width=12, fig.cap="Program-based predictive models of difficulty. Linear regression predictions (y-axis) of mean accuracy (x-axis) based on concept length in the DSL, adjusted for the amount of visible and semi-visible information. Black entries are the actual difficulties of tested concepts."}
+plot_predictive_model <- function(model, priors, concepts) {
+  data <- priors %>%
+    mutate(Tested = factor(concept %in% concepts$concept, labels = c("Untested", "Tested")))
+  data <- data %>% mutate(predict = predict(model, data)) %>% left_join(concepts %>% select(id, mu))
+  ggplot(data, aes(x = predict, fill = purpose)) +
+    geom_histogram(bins=50) +
+    geom_histogram(data = data %>% filter(Tested == "Tested"), aes(x=mu), bins=50, fill="black") +
+    facet_wrap(~purpose, nrow=2) +
+    
+    xlab("Model Predicted Mean Accuracy") +
+    ylab("Number of concepts")
+}
+plot_predictive_model(model, priors, concepts)
+```
 
-## Learning: not just 3 in a row
+We'd like to be able to predict task difficulty, so we can decide whether our concepts are too easy, too difficult, or sitting in the sweet spot for human learning. Let's start with a simple model based on the prior probability of each concept in the DSL. Over all `r nrow(priors)` problems, negative log prior and length in the DSL are strongly correlated ($\rho =$ `r cor(-priors$prior, priors$length, use="complete.obs")`. Length is also much easier to compute and in the same units as some of the other data I've collected about visibility, so we'll use length in what follows. Figure \@ref(fig:plot-predictive-model).left shows the relationship between mean accuracy and length over our pilot concepts. The correlation is terrible because of some notable outliters. We can improve it by adjusting for two additional kinds of information about each program: its depth, and the amount of program structure visible in the final output. Figure \@ref(fig:plot-predictive-model).right shows the impact of these changes on the model's predictiveness.
+
+We can apply this improved model to the 230 untested concepts to get some indication for how difficult they are likely to be. Figure \@ref(fig:plot-predictive-model-predictions) plots these predictions and suggests that while we have some extremely difficult that are probably worth redefining, we have a pretty nice distribution over concept difficulty. If anything, we may want to make those extremely difficult concepts fairly moderate to fill in the distribution. If, for example, we decide to replace anything with a predicted accuracy below 10\%, Table \@ref(tab:worst-predicted-accuracies) shows what needs to be replaced.
+
+```{r worst-predicted-accuracies, echo=F, warning=F, result="asis"}
+worst_predicted_accuracies <- function(tbl) {
+  data <- tbl %>% mutate(predict = predict(model, tbl), concept = str_replace(concept, '(.*)', '`\\1`')) %>% select(id, predict, concept) %>% arrange(predict) %>% filter(predict < 0.1) %>% mutate(predict = round(predict, 3))
+  data$concept <- kableExtra::cell_spec(data$concept,
+                                           extra_css = "display: block; overflow: scroll; height: 1.4em; width: 50em;")
+  kable(data, escape=F, col.names=c("Id", "Accuracy", "Program"), caption="Predicted accuracies (Accuracy) for the concepts with  predicted accuracy < 10%. Note that only 4 are from the model-comparison (i.e. id starts with \"m\").") %>% kable_styling()
+}
+worst_predicted_accuracies(priors)
+```
+
+**Note**: We wondered how many categories we needed for dealing with the visibility of a node in the program, where by visibility we mean how directly its impact can be seen in a given input/output pair. The model coefficients for `visible` and `semi` (two non-zero levels of visiblity), however, are pretty similar. This could mean that I wasn't consistent in assigning nodes to these two categories, that these categories aren't that different from one another, or that we need a more fine-grained method for assigning visibility scores to nodes.
+
+**NOTE**: I exclude `idx_head_in_tail_sm` and `group_and_drop` from these analyses because I think the data more strongly reflects extremely bad examples than the difficulty of the concepts.
+
+## Example quality
+
+```{r model-comparison-examples, include=F, echo=F, warning=F}
+mc_examples <- read_csv("./model_comparison_examples.csv")
+```
+
+I haven't yet analyzed the example quality for the dataset concepts.
+
+I have done analyzed the model-comparison concepts, assigning each to 1 of 3 categories: "good" (examples are good), "order" (examples are okay so long as we change the order), or "resample" (examples need to be resampled). We've run the models on 5 orderings of the same trials, so "order" just suggests selecting a better trial ordering from these 5 for the human experiment---we won't need to rerun the models.
+
+Of the `r nrow(mc_examples)` concepts, `r nrow(mc_examples %>% filter(example == 1))` scored "good", `r nrow(mc_examples %>% filter(example == 2))` scored "order", and `r nrow(mc_examples %>% filter(example == 3))` scored "resample". For those scoring "resample", Table \@ref(tab:model-comparison-examples-predicted-accuracies) shows the predicted accuracies. For the four concepts with the lowest predicted accuracies, it might make sense to generate new concepts altogether.
+
+```{r model-comparison-examples-predicted-accuracies, echo=F, warning=F, result="asis"}
+mc_examples_predicted_accuracies <- function(tbl) {
+  data <- tbl %>% mutate(purpose = "model", id = unique_id(purpose, id)) %>% filter(example == 3) %>% left_join(priors, by=c("id", "purpose"))
+  data <- data %>% mutate(predict = round(predict(model, data), 3), concept = str_replace(concept, '(.*)', '`\\1`')) %>% select(id, predict, concept) %>% arrange(desc(predict))
+  data$concept <- kableExtra::cell_spec(data$concept,
+                                           extra_css = "display: block; overflow: scroll; height: 1.4em; width: 50em;")
+  kable(data, escape=F, col.names=c("Id", "Predicted Accuracy", "Program"), caption="Predicted accuracies (Accuracy) for the model-comparison concepts (Id; Concept) I've assessed as needing new training data.") %>% kable_styling()
+}
+mc_examples_predicted_accuracies(mc_examples)
+```
+
+## Learning is not just 3-in-a-row
 
 ```{r learning_fs, cache=T, include=F, echo=F, warning=F}
 after_fx <- function(tbl, f, x, pername) {
@@ -745,6 +674,100 @@ plot_backward(backward_overall, F) + plot_backward(backward_drop_7, F)
 
 We can repeat the analysis using a backward learning curve, but there's not enough data/concept to draw clear conclusions (Figure \@ref(fig:plot-backward). Collapsing over concepts in Figure \@ref(fig:plot-backward-group) reinforces the earlier plots in this section: there's certainly a difference in performance after getting 3-in-a-row, but that doesn't imply that performance will be at ceiling.
 
+## Individual differences
+
+```{r correct-total, cache=T, echo=F, warning=F}
+correct_total <- dtl %>%
+  group_by(subject, name) %>%
+  dplyr::summarize(k = sum(accuracy)) %>%
+  mutate(k = factor(x = k, c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))) %>%
+  ungroup() %>%
+  group_by(name, k, .drop = F) %>%
+  dplyr::summarize(n = n())
+```
+
+```{r plot-correct-total, dependson=c("correct-total", "correct-per-trial"), echo=F, warning=F, out.width="100%", fig.height=5, fig.width=20, fig.show='hold', fig.align='center', fig.cap="Number of subjects (y-axis) for each possible number of correct responses (x-axis) by concept (colored curves)."}
+plot_correct_total <- function(data) {
+  ggplot(data, aes(
+    x = k,
+    y = n,
+    group = name,
+    fill = name
+  )) +
+    geom_bar(na.rm = T, stat = 'identity') +
+    facet_wrap( ~ name, nrow = 2) +
+    xlab("Number of Correct Trials") +
+    ylab("Number of Participants") +
+    theme(legend.position = "none")
+}
+plot_correct_total(correct_total)
+```
+
+```{r correct-per-trial, cache=T, echo=F, warning=F}
+correct_per_trial <- dtl %>%
+  group_by(name, purpose, block_trial) %>%
+  tidyboot_mean(column = accuracy, nboot = 500)
+```
+
+```{r plot-correct-per-trial, dependson=c("correct-total", "correct-per-trial"), echo=F, warning=F, out.width="100%", fig.height=5, fig.width=20, fig.show='hold', fig.align='center', fig.cap="Mean performance (y-axis) by trial (x-axis) by concept (colored curves), with bootstrapped 95% CI (shaded regions)."}
+plot_correct_per_trial <- function(data) {
+  ggplot(data, aes(x = block_trial, y = empirical_stat)) +
+    geom_ribbon(
+      aes(
+        x = block_trial,
+        ymin = ci_lower,
+        ymax = ci_upper,
+        fill = purpose
+      ),
+      linetype = 1,
+      alpha = 0.2
+    ) +
+    geom_linerange(
+      aes(
+        x = block_trial,
+        ymin = ci_lower,
+        ymax = ci_upper,
+        color = purpose
+      ),
+      linetype = 1,
+      alpha = 0.9,
+    ) +
+    geom_line(aes(color = purpose), size = 1.5) +
+    facet_wrap( ~ name, nrow = 2) +
+    xlab("Trial") +
+    ylab("Mean Performance (%)") +
+    scale_x_continuous(breaks = seq(1, 11)) +
+    labs(fill = "Function", color = "Function") +
+    theme(legend.position = "none")
+}
+plot_correct_per_trial(correct_per_trial)
+```
+
+```{r accuracy_over_time, cache=T, echo=F, warning=F}
+accuracy_over_time <- dtl %>%
+  group_by(subject, name) %>%
+  arrange(block_trial) %>%
+  mutate(performance = cumsum(accuracy))
+```
+
+```{r plot-accuracy-over-time, dependson=c("accuracy-curves"), echo=F, warning=F, out.width="100%", fig.height=5, fig.width=20, fig.show='hold', fig.align='center', fig.cap="Mean performance (y-axis) by trial (x-axis) by concept (colored curves), with bootstrapped 95% CI (shaded regions)."}
+plot_accuracy_over_time <- function(data) {
+  ggplot(data, aes(x = block_trial, y = performance, group=subject, color=subject)) +
+    geom_line(position=position_jitter(height=0.15, width=0.15), size = 1.5) +
+    facet_wrap( ~ name, nrow = 2) +
+    xlab("Trial") +
+    ylab("Cumulative Correct") +
+    scale_x_continuous(breaks = seq(1, 11)) +
+    labs(fill = "Function", color = "Function") +
+    theme(legend.position = "none")
+}
+plot_accuracy_over_time(accuracy_over_time)
+```
+
+If we don't use 3-in-a-row, we'll need some other metric for deciding when to continue collecting data from additional participants. I don't have the answer, but I think we may want to look at our understanding of inter-participant/intra-concept variance, how many patterns of response do we see within a concept?
+
+Figures \@ref(fig:plot-correct-total)--\@ref(fig:plot-accuracy-over-time) show a few ways of looking at that. For easy and difficult concepts, the variance in these plots is fairly low---most people are doing roughly the same thing. For moderately difficult concepts, however, the distributions are dispersed. People appear to master the concept at different rates, with some never doing so. Learning curves which average over all participants may be relatively informative for easy and hard concepts but are probably not the best way to see what's happening for intermediate concepts. We want a better measure of this variance.
+
 ## Time per block
 
 ```{r times-table, echo=FALSE, warning=FALSE, result='asis'}
@@ -878,48 +901,30 @@ list_experience(dp)
 
 # Discussion
 
-## Task difficulty
+## Task
 
-**While the model-comparison tasks do appear to be easier than the dataset tasks, both are more difficult than I expected**. I expected the model-comparison tasks to cluster at ceiling, and the dataset tasks to smoothly ascend in difficulty. Part of the gap between expectations and reality is my failure to think through all the tasks in the model-comparison problem set (some are relatively difficult, which is, in hindsight, a positive feature for comparing patterns of behavior against humans), but **some tasks may be genuinely harder for participants than I expected**.
+**While the model-comparison tasks do appear to be easier than the dataset tasks, both are more difficult than I expected**. I expected the model-comparison tasks to cluster at ceiling, and the dataset tasks to smoothly ascend in difficulty. By contrast, **many tasks appear genuinely harder for participants than I expected**. In hindsight, this is a positive feature for comparing patterns of behavior against humans, but we want to make sure we don't overdo it.
 
-Perhaps one reason for this is that **we may have too few trials per task**. Several of the tasks in both problem sets require conditional reasoning. In my experience, it's difficult to tease apart multiple conditions until you get a few examples of each, though that brings you basically to the end of the block for that concept. For these cocnepts, we may be testing too few trials, but adding trials for the easy concepts is likely to bore participants and would increase cost.
+Perhaps one reason for this is that **some tasks are too complex for the number of trials we're running**. Several of the tasks in both problem sets require conditional reasoning. In my experience, it's difficult to tease apart multiple conditions until you get a few examples of each, though that brings you basically to the end of the block for that concept. For these cocnepts, we may be testing too few trials, but adding trials for the easy concepts is likely to bore participants and would increase cost. It will b easier to throw out these concepts and generate easier ones.
 
-Another reason may be that **we're using poor machine-generated trials**. Most machine-generated trials are fine, but some are really uninformative. As a result, there are some concepts where you burn through a significant fraction of the trials without getting much relevant information. I'd like to revisit this in the future and put together a model of how we generate informative trials, but I don't have a great solution given our time constraints, particularly given that we've now run several of the model-comparison models on a significant subset of these trials.
+Another reason may be that **we're using poor machine-generated trials**. Most machine-generated trials are fine, but some are really uninformative. As a result, there are some concepts where you burn through a significant fraction of the trials without getting much relevant information. I'd like to revisit this in the future and put together a model of how we generate informative trials, but given our time constraints, our best option is probably to generate a few new concepts and training sets with new more informative objectives for what makes for a good example of that concept.
 
-## Learnability
+**Given these limitations, I don't want to make any strong claims based on these results.**.
 
-**Using 3-in-a-row as our metric for learning a concept may not be predictive for more difficult concepts**. We see several cases where subjects get 4 or 5 trials right and still have relatively poor performance. 
+That said, I selected the concepts to be tested uniformly at random, and tested ~8\% of the available concepts. If we also include results from the first pilot, that takes us up to just over 10\% of the available concepts, and the broad patterns of learnability and accuracy seem similar: there are some easy concepts, some hard concepts, and some that are in between. I think that will hold generally, but I'm not sure we're in a position yet where the specific patterns of difficulty we see are due to the concept as opposed to having too little relevant information. If we address the concerns I've identified with hard concepts and bad examples, I think we'll collect much more reliable \& meaningful data.
 
-We want to know whether a person has acquired a concept and if so, on which trial they appear to have acquired it. This metric would ideally apply equally well at the beginning or end of a set of trials as at the middle.
+## Individual Differences and adaptive data collection
 
-I don't have a particular metric in mind as I write, so I'd appreciate suggestions. The basic idea I keep returning to is that we want an estimate of when performance permanently passes some threshold. One difficulty is that we just don't have that many trials for each concept. Another difficulty is that each trial contributes just a 1 or 0. Together, these make it hard to reliably estimate, e.g., the point at which participants start getting 90% of trials correct. If someone is learning rapidly, it will be difficult to say whether they learned the concept on trial 2 or trial 4. Was the correct response on 2 a fluke, or the result of partial understanding? What about the incorrect result on trial 3? How does our judgment change if they happen to fat-finger trial 7?
+**Using 3-in-a-row as a metric for learning a concept doesn't appear predictive for more difficult concepts**.
 
-We could use the string edit distance between the response and correct output to entrich our measure of accuracy. If, e.g., the function is to remove everything less than 20 and the input is [7 98 15 26 28 3 41 12], then the correct output is [98 26 28 41]. As a string, this is "98 26 28 41". We convert to a string because these are the relevant characters that must be typed in. Someone could fat finger somewhere along the line, and we want to give them partial credit. We could use the same mechanism I use in the TRS model to give partial credit. We'd want to find some way to rescale based on the score of some important lists like the correct answer, the empty list, and the input.
+We're mostly using learnability as a metric for understanding when we need to collect more data: we want enough data to adequately capture variance between participants for a single concept. That is, rather than set the bounds statically at 10% < 3-in-a-row < 90%, **it might make sense to target a certain upper bound on variance in participant responses**. I don't have a particular metric in mind as I write---I'd appreciate suggestions---but the data in \@ref(fig:plot-accuracy-over-time) seems like a good place to start.
 
-## Generalizability
+Assuming we find a good measure of variance, **collecting data adaptively**---collecting additional data on concepts which an initial set of 10 participants suggest are empirically moderately difficult---**still looks like a viable option**. Several of the plots above would benefit from additional data for moderately difficult concepts.
 
-**I initially had no concerns that these results would generalize, but I'm now concerned that the results are limited by the earlier discussions of difficulty and learnability**.
-
-That said, I selected the concepts to be tested uniformly at random, and tested ~8\% of the available concepts. If we also include results from the first pilot, that takes us up to just over 10\% of the available concepts, and the broad patterns of learnability and accuracy seem similar: there are some easy concepts, some hard concepts, and some that are in between. I think that will hold generally, but I'm not sure we're in a position yet where the specific patterns of difficulty we see are due to the concept as opposed to having too little relevant information.
-
-## Adaptive data collection
-
-**Collecting data adaptively**---collecting additional data on concepts which an initial set of 10 participants suggest are empirically moderately difficult---**still looks like a viable option**. Several of the plots above would benefit from additional data for moderately difficult concepts.
-
-Rather than set the bounds statically at 10% < learnability < 90%, **it might make sense to target a certain sized error bar** on learnability. Consider for example the difference between `slice_2_4` and `repeat_head` in \@ref(fig:plot-learnability).left. Tight error bars might be the most appropriate signal to drive our decision about when we've collected enough data.
+**NOTE**: We could use the string edit distance between the response and correct output to entrich our measure of accuracy. If, e.g., the function is to remove everything less than 20 and the input is [7 98 15 26 28 3 41 12], then the correct output is [98 26 28 41]. As a string, this is "98 26 28 41". We convert to a string because these are the relevant characters that must be typed in. Someone could fat finger somewhere along the line, and we want to give them partial credit. We could use the same mechanism I use in the TRS model to give partial credit. We'd want to find some way to rescale based on the score of some important lists like the correct answer, the empty list, and the input.
 
 ## Compensation
 
 On the whole, **our compensation is reasonable**.
 
 We're paying a flat rate of \$7.50 + \$0.01 per correct response. A median compensation of \$`r round(median(dp$bonus+7.5), 2)` for a median `r round(median(dp$total_time), 1)`min of work suggests we're paying approximately \$`r round(median(dp$bonus+7.5)/median(dp$total_time/60), 2)`/hr. Even though this figure includes bonuses, it is lower than our target compensation of \$10/hr, because participants took slightly longer to complete the experiment than we'd anticipated. To compensate, we'd need to pay roughtly an additional \$0.75/participant. The only participant who commented on compensation, however, said, "I found the hit challenging and fun and the pay is decent." People didn't seem upset by insufficient compensation.
-
-# Recommendations to consider
-
-- Add additional trials (and rerun all model-comparison simulations?).
-- Manually review dataset trials and regenerate as necessary.
-- Manually review model-comparison trials, regenerate as necessary, and ask modelers to rerun.
-- Redefine learnability.
-- Adopt adaptive sampling based on learnability error bar size.
-- Maintain current levels of compensation, all else being equal.
-- Extend analysis to look for order effects and estimate task difficulty \& subject performance.
