@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
+
 try:
     import binutil  # required to import from dreamcoder modules
 except ModuleNotFoundError:
