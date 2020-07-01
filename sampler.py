@@ -1208,16 +1208,15 @@ def score_set(s, adjust):
     foil = [len(all_items)//100 + (1 if x < len(all_items) % 100 else 0) for x in range(100)]
     span = simple_entropy(ws)/simple_entropy(foil)
 
-    # Measure the distribution over input lengths & repetitions
-    lrs = [(len(i), len(i)-len(set(i))) for i in inputs]
-    lr_ws = [len(list(x)) for x in itertools.groupby(sorted(lrs))]
-    foil = [len(lrs)//46 + (1 if x < len(lrs) % 46 else 0) for x in range(46)]
-    combos = simple_entropy(lr_ws)/simple_entropy(foil)
+    # Measure the distribution over input lengths
+    in_ws = [sum(len(i) == l for i in inputs) for l in range(11)]
+    foil = [len(s)//11 + (1 if x < len(s) % 11 else 0) for x in range(11)]
+    in_len = simple_entropy(in_ws)/simple_entropy(foil)
 
     # Adjust the score if necessary.
     adjustment = 0 if adjust is None else adjust(s)
 
-    return (out_len + unique + nontrivial + span + combos + adjustment)/6
+    return (out_len + unique + nontrivial + span + in_len)/5 + adjustment
 
 def order_examples(xs, n_orders, n_tries):
     orders = []
