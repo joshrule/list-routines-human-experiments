@@ -765,13 +765,28 @@ def human_experiments_wave_1():
         },
     ]
 
+def proportion(xs, f):
+    return sum(f(i, o) for i,o in xs)/len(xs)
+
+def proportion_set(xs, f):
+    return len({f(i, o) for i,o in xs})/len(xs)
+
+def limit(xs, accept, f):
+    return max(0, sum(f(i, o) for i,o in xs) - accept)
+
+def center(xs, f, factor = 1/2):
+    return 1 + abs(factor * len(xs) - sum(f(i,o) for i, o in xs))
+
+def proportion_unique_elements(xs):
+   return sum(len(set(i)) for i,o in xs) / sum(len(xs) for i,o in xs)
+
 def model_comparison_wave_3():
     return [
         {'concept': '(lambda (singleton (third $0)))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0
         },
         {'concept': '(lambda (if (> 3 (length $0)) empty (singleton (third $0))))',
-         'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 3 for i, o in xs)/len(xs) >= 0.4 else 0,
+         'adjust': lambda xs: 6/center(xs, lambda i,o: len(i) >= 3) + 2 * proportion_unique_elements(xs)
         },
         {'concept': '(lambda (singleton (nth 7 $0)))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i, o in xs) else 0
@@ -780,7 +795,7 @@ def model_comparison_wave_3():
          'adjust': lambda xs: 3.0 if 0.6 >= sum(len(i) >= 7 for i, o in xs)/len(xs) >= 0.4 else 0,
         },
         {'concept': '(lambda (singleton (nth (first $0) (drop 1 $0))))',
-         'adjust': lambda xs: 3.0 if all(i[0] <= len(i)-1 for i, o in xs) else 0,
+         'adjust': lambda xs: 2.0 * proportion(xs, lambda i,o: i[0] <= len(i)-1) + 2.0 * proportion_set(xs, lambda i,o: i[0]) + 2 * proportion_unique_elements(xs) + 2 * proportion_set(xs, lambda i,o: len(i)-i[0]) - 0.5 * limit(xs, 1, lambda i,o: i[0] == 1)
         },
         {'concept': '(lambda (take 2 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0
@@ -810,7 +825,7 @@ def model_comparison_wave_3():
          'adjust': lambda xs: (sum(3 > len(i) for i,o in xs) >= 2) + (sum(7 > len(i) >= 3 for i,o in xs) >= 2) + (sum(len(i) >= 7 for i,o in xs) >= 4)
         },
         {'concept': '(lambda (slice (first $0) (second $0) (drop 2 $0)))',
-         'adjust': lambda xs: 3.0 if all(len(i) >= i[1] for i, o in xs) else 0,
+         'adjust': lambda xs: 4.0 * proportion(xs, lambda i,o: len(i)-2 >= i[1] >= i[0] > 0) + proportion_set(xs, lambda i,o: i[0]) + proportion_set(xs, lambda i,o: i[1]) + proportion_set(xs, lambda i,o: len(i)-i[1])  - 0.5 * limit(xs, 1, lambda i,o: len(i)-2 == i[1]) - 0.5 * limit(xs, 1, lambda i,o: i[1] == i[0])
         },
         {'concept': '(lambda (replace 2 8 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
@@ -845,23 +860,23 @@ def model_comparison_wave_3():
         {'concept': '(lambda (cut_idx 3 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
         },
-        {'concept': '(lambda (cut_idx (if (== (first $0) (third $0)) 3 2) $0))',
-         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) and (0.6 >= sum(i[0] == i[2] for i, o in xs)/len(xs) >= 0.4) else 0,
+        {'concept': '(lambda (cut_idx (if (== (first $0) (second $0)) 2 3) $0))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 3 and i[1] != i[2]) + 2 / center(xs, lambda i,o: len(i) >= 3 and i[0] == i[1]) + 2 * proportion_set(xs, lambda i,o: (i[0], i[1]) if len(i) > 1 else (0, 0)),
         },
-        {'concept': '(lambda (cut_idx (if (> (first $0) (third $0)) 3 2) $0))',
-         'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) and (0.6 >= sum(i[0] > i[2] for i, o in xs)/len(xs) >= 0.4) else 0,
+        {'concept': '(lambda (cut_idx (if (> (first $0) (second $0)) 2 3) $0))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 3 and ((i[0] > i[1] and i[0] < i[2]) or (i[0] > i[2] and i[0] < i[1])))  + 2 / center(xs, lambda i,o: len(i) >= 3 and i[0] > i[1]) + 2 * proportion_set(xs, lambda i,o: (i[0], i[1]) if len(i) > 1 else (0, 0)),
         },
         {'concept': '(lambda (drop 2 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 2 for i, o in xs) else 0,
         },
-        {'concept': '(lambda (drop 4 $0))',
-         'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
+        {'concept': '(lambda (droplast 2 $0))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 2) + proportion_set(xs, lambda i,o: len(o)),
         },
-        {'concept': '(lambda (drop (if (and (== (second $0) (first $0)) (> (length $0) 5)) 2 4) $0))',
-         'adjust': lambda xs: (sum(i[0] != i[1] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[0] == i[1] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[0] != i[1] and len(i) > 5 for i,o in xs) >= 2 + sum(i[0] == i[1] and len(i) > 5 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        {'concept': '(lambda ((if (== (first $0) (second $0)) drop droplast) 2 $0))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 3 and ((i[0]==i[1] and i[-1] != i[-2]) or (i[0]!=i[1] and i[-1] == i[-2])))
         },
-        {'concept': '(lambda (drop (if (and (== (second $0) 0) (> (first $0) 5)) 2 4) $0))',
-         'adjust': lambda xs: (sum(0 != i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 == i[1] and 5 >= i[0] for i,o in xs) >= 2 + sum(0 != i[1] and i[0] > 5 for i,o in xs) >= 2 + sum(0 == i[1] and i[0] > 5 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        {'concept': '(lambda ((if (> (first $0) (last $0)) drop droplast) 2 $0))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 3 and (i[0]!=i[-1])) + 2 / center(xs, lambda i,o: len(i) >= 3 and i[0] > i[-1]),
         },
         {'concept': '(lambda (swap 1 4 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 4 for i, o in xs) else 0,
@@ -869,11 +884,11 @@ def model_comparison_wave_3():
         {'concept': '(lambda (swap 2 3 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
         },
-        {'concept': '(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] == i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] != i[3] and len(i) > 7 for i,o in xs) >= 2 + sum(i[1] == i[3] and len(i) > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        {'concept': '(lambda (if (== (second $0) (third $0)) (swap 1 4 $0) (swap 2 3 $0)))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 4 and ((i[1] == i[2] and i[0] != i[3]) or (i[1] != i[2] and i[0] == i[3]))) + 2 / center(xs, lambda i,o: i[1] == i[2])
         },
-        {'concept': '(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] == 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] != 7 and i[3] > 7 for i,o in xs) >= 2 + sum(i[1] == 7 and i[3] > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        {'concept': '(lambda (if (> (second $0) (third $0)) (swap 2 3 $0) (swap 1 4 $0)))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 4 and ((i[1] > i[2] and i[0] <= i[3]) or (i[1] <= i[2] and i[0] > i[3]))) + 2 / center(xs, lambda i,o: i[1] > i[2]),
         },
         {'concept': '(lambda (append $0 3))',
          'adjust': lambda xs: 1.0,
@@ -881,11 +896,11 @@ def model_comparison_wave_3():
         {'concept': '(lambda (append $0 9))',
          'adjust': lambda xs: 1.0,
         },
-        {'concept': '(lambda ((lambda (if (> (length $0) 5) (append $0 3) $0)) ((lambda (if (== (second $0) (third $0)) (append $0 9) $0)) $0)))',
-         'adjust': lambda xs: (sum(i[1] != i[2] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[1] == i[2] and 5 >= len(i) for i,o in xs) >= 2 + sum(i[1] != i[2] and len(i) > 5 for i,o in xs) >= 2 + sum(i[1] == i[2] and len(i) > 5 for i,o in xs) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
+        {'concept': '(lambda (if (== (length $0) 3) (append $0 3) (if (== (length $0) 9) (append $0 9) $0)))',
+         'adjust': lambda xs: 4 / center(xs, lambda i,o: len(i) in [3, 9], factor = 8/11) + 1 / max(1, abs(sum(len(i) == 3 for i,o in xs) - sum(len(i) == 9 for i,o in xs))),
         },
-        {'concept': '(lambda ((lambda (if (> (third $0) 3) (append $0 3) $0)) ((lambda (if (== (second $0) 9) (append $0 9) $0)) $0)))',
-         'adjust': lambda xs: (sum(i[1] != 9 and 3 >= i[2] for i,o in xs) >= 2 + sum(i[1] == 9 and 3 >= i[2] for i,o in xs) >= 2 + sum(i[1] != 9 and i[2] > 3 for i,o in xs) >= 2 + sum(i[1] == 9 and i[2] > 3 for i,o in xs) >= 2) if all(len(i) >= 3 for i,o in xs) else 0
+        {'concept': '(lambda (if (is_in $0 3) (append $0 3) (if (is_in $0 9) (append $0 9) $0)))',
+         'adjust': lambda xs: 4 / center(xs, lambda i,o: (3 in i and 9 not in i), factor = 4/11) + 4 / center(xs, lambda i,o: (9 in i and 3 not in i), factor = 4/11) + 4 / center(xs, lambda i,o: (3 not in i and 9 not in i), factor = 3/11)
         },
         {'concept': '(lambda (singleton 9))',
          'adjust': lambda xs: 1.0,
@@ -945,7 +960,7 @@ def model_comparison_wave_3():
          'adjust': lambda xs: 3.0 if all(len(i) >= 8 for i,o in xs) else 0.0,
         },
         {'concept': '(lambda (swap 3 1 (replace 4 4 (cut_idx 6 (take 7 $0)))))',
-         'adjust': lambda xs: 3.0 if all(len(i) >= 7 for i,o in xs) else 0.0,
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 7) + 2 * proportion_unique_elements(xs),
         },
         {'concept': '(lambda (singleton (last $0)))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 1 for i,o in xs) else 0.0,
@@ -992,14 +1007,14 @@ def model_comparison_wave_3():
         {'concept': '(lambda (filteri (lambda (lambda (is_odd $1))) $0))',
          'adjust': lambda xs: 1.0,
         },
-        {'concept': '(lambda (map (lambda (- $0 3)) (filter (lambda (> $0 5)) $0)))',
-         "adjust": lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) <= 0.75 if len(i) > 0 else 1) for i, o in xs)),
+        {'concept': '(lambda (cons (max $0) (cons (last $0) (cons (length $0) (cons (first $0) (singleton (min $0)))))))',
+         "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: len(i)) + 2 * proportion_unique_elements(xs),
         },
         {'concept': '(lambda (singleton (length $0)))',
          'adjust': lambda xs: 1.0,
         },
         {'concept': '(lambda (singleton (max $0)))',
-         "adjust": lambda xs: len({tuple(o) for i,o in xs})/len(xs),
+         "adjust": lambda xs: 4 * proportion_set(xs, lambda i,o: o[0]) + 2 * proportion_unique_elements(xs),
         },
         {'concept': '(lambda (singleton (sum $0)))',
          'adjust': lambda xs: 1.0,
@@ -1028,11 +1043,11 @@ def model_comparison_wave_3():
         {'concept': '(lambda (swap 2 3 $0))',
          'adjust': lambda xs: 3.0 if all(len(i) >= 3 for i, o in xs) else 0,
         },
-        {'concept': '(lambda (if (or (== (second $0) (nth 4 $0)) (> (length $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] == i[3] and 7 >= len(i) for i,o in xs) >= 2 + sum(i[1] != i[3] and len(i) > 7 for i,o in xs) >= 2 + sum(i[1] == i[3] and len(i) > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        {'concept': '(lambda (if (== (second $0) (third $0)) (swap 1 4 $0) (swap 2 3 $0)))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 4 and ((i[1] == i[2] and i[0] != i[3]) or (i[1] != i[2] and i[0] == i[3]))) + 2 / center(xs, lambda i,o: i[1] == i[2])
         },
-        {'concept': '(lambda (if (or (== (second $0) 7) (> (nth 4 $0) 7)) (swap 1 4 $0) (swap 2 3 $0)))',
-         'adjust': lambda xs: (sum(i[1] != 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] == 7 and 7 >= i[3] for i,o in xs) >= 2 + sum(i[1] != 7 and i[3] > 7 for i,o in xs) >= 2 + sum(i[1] == 7 and i[3] > 7 for i,o in xs) >= 2) if all(len(i) >= 4 for i,o in xs) else 0
+        {'concept': '(lambda (if (> (second $0) (third $0)) (swap 2 3 $0) (swap 1 4 $0)))',
+         'adjust': lambda xs: 4 * proportion(xs, lambda i,o: len(i) >= 4 and ((i[1] > i[2] and i[0] <= i[3]) or (i[1] <= i[2] and i[0] > i[3]))) + 2 / center(xs, lambda i,o: i[1] > i[2]),
         },
         {'concept': '(lambda (cons 18 (cons 42 (cons 77 (cons 20 (singleton 36))))))',
          'adjust': lambda xs: 1.0,
