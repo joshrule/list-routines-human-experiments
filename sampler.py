@@ -110,7 +110,14 @@ def _is_in(xs): return lambda x: x in xs
 def _find(p): return lambda xs: [i for i, x in enumerate(xs, 1) if p(x)]
 def _insert(x): return lambda i: lambda xs: xs[:(i-1)] + [x] + xs[(i-1):]
 def _splice(x): return lambda i: lambda xs: xs[:(i-1)] +  x  + xs[(i-1):]
-def _swap(i): return lambda j: lambda xs: xs[:(i-1)] + [xs[(j-1)]] + xs[i:(j-1)] + [xs[(i-1)]] + xs[j:]
+def _swap(i):
+    def swap_helper_j(j):
+        def swap_helper_xs(xs):
+            fst = min(i,j)
+            snd = max(i,j)
+            return xs[:(fst-1)] + [xs[(snd-1)]] + xs[fst:(snd-1)] + [xs[(fst-1)]] + xs[snd:]
+        return swap_helper_xs
+    return swap_helper_j
 def _sort(k): return lambda xs: sorted(xs, key=k)
 
 # define some primitives
