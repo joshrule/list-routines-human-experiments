@@ -1084,6 +1084,57 @@ def model_comparison_wave_3():
         },
     ]
 
+def sample_examples_greedy(p,adjust,n=10,n_restarts=10000,n_tries=100,small=False):
+    best_score = 0.0
+    best_s = None
+    for i_restart in range(n_restarts):
+        s, score = greedy_set(p,adjust,n,n_tries,small)
+        if score > best_score:
+            best_s = s
+            best_score = score
+            print(f"{i_restart}. {best_score}")
+            for i,o in s:
+                print(f"  {i} = {o}")
+    return best_s
+
+def greedy_set(p,adjust,n,n_tries,small):
+    s = initialize_set(p,n,small)
+    score = score_set(s, adjust)
+    # print(f"  >> {score}, {s}")
+    for i_try in range(n_tries):
+        i = sample_input(small)
+        if i not in list(zip(*s))[0]:
+            try:
+                o = p.runWithArguments([i])
+            except:
+                continue
+            # print(f"    {i} = {o}")
+            options = []
+            for idx in range(n):
+                new_s = s[:]
+                new_s[idx] = (i,o)
+                new_score = score_set(new_s, adjust)
+                # print(f"    {new_score}, {new_s}")
+                options.append((new_score, new_s))
+            new_score, new_s = max(options, key = lambda x: x[0])
+            # print(f"    best is {new_score}, {new_s}")
+            if new_score > score:
+                s = new_s
+                score = new_score
+                # print(f"  {i_try}. {score}, {adjust(s)} - {s}")
+    return s, score
+
+def initialize_set(p,n,small):
+    s = []
+    while len(s) < n:
+        i = sample_input(small)
+        try:
+            o = p.runWithArguments([i])
+            s.append((i,o))
+        except:
+            continue
+    return s
+
 def sample_examples_parallel(p,adjust,n=10,n_pools=1000,n_tries=20,n_sets=1000,small=False):
     def helper2(pool):
         s = make_example_set(pool, n)
@@ -1284,7 +1335,7 @@ def test_p_with_i(e, i):
     print(f"f = {p}")
     print(f"f {i} = {o}")
 
-def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, human=False, parallel=True):
+def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, human=False, kind="greedy"):
     Primitive.GLOBALS.clear()
     grammar = Grammar.uniform(primitives())
     tp = arrow(tlist(tint), tlist(tint))
@@ -1297,8 +1348,10 @@ def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, h
         return
     if human:
         examples = [(inp, p.runWithArguments([inp])) for inp in c['inputs']]
-    elif parallel:
+    elif kind == "parallel":
         examples = sample_examples_parallel(p, c["adjust"], n=n_trials, n_pools=1000, n_tries=20, n_sets=1000, small=small)
+    elif kind == "greedy":
+        examples = sample_examples_greedy(p, c["adjust"], n=n_trials, n_restarts=1000, n_tries=1000, small=small)
     else:
         examples = sample_examples(p, c["adjust"], n=n_trials, n_pools=1000, n_tries=20, n_sets=1000, verbose=verbose, small=small)
     for i_order, order in enumerate(order_examples(examples, n_orders, 5000)):
@@ -1308,7 +1361,6 @@ def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, h
             }
         #out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
         with open(f"{dirname}/c{i:03}_{i_order}.json", "w") as fd:
-            # fd.write(out.stdout)
             fd.write(json.dumps(data))
 
 def programs_large():
