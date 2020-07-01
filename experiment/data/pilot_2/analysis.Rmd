@@ -207,9 +207,9 @@ This document analyzes data collected during a 2020-06-22 pilot of `v0.0.5` of t
 # Recommendations
 
 - Regenerate concepts:
-  - Generate new concepts for any concept predicted to have < 10\% (20\%?) mean accuracy, including any paired concepts if coming from the model-comparison dataset.
+  - Generate new concepts for any concept predicted to have < 10\% mean accuracy, including any yoked concepts in the model-comparison dataset.
 - Regenerate training data:
-  - Assess example quality for dataset concepts
+  - Assess example quality for dataset concepts.
   - Pick the best of the 5 tested orderings for training sets scored "reorder", according to my assessment of informativeness for human learners.
   - Update example constraints and generate new i/o pairs for training sets scored "resample".
 - Ask modelers to rerun any new training sets for the model-comparison problems.
@@ -475,7 +475,7 @@ plot_predictive_model(model, length_model, concepts)
 plot_predictive_model <- function(model, priors, concepts) {
   data <- priors %>%
     mutate(Tested = factor(concept %in% concepts$concept, labels = c("Untested", "Tested")))
-  data <- data %>% mutate(predict = predict(model, data)) %>% left_join(concepts %>% select(id, mu))
+  data <- data %>% mutate(predict = predict(model, data)) %>% left_join(concepts %>% select(id, mu), by=c("id"))
   ggplot(data, aes(x = predict, fill = purpose)) +
     geom_histogram(bins=50) +
     geom_histogram(data = data %>% filter(Tested == "Tested"), aes(x=mu), bins=50, fill="black") +
@@ -495,15 +495,15 @@ We can apply this improved model to the 230 untested concepts to get some indica
 worst_predicted_accuracies <- function(tbl) {
   data <- tbl %>% mutate(predict = predict(model, tbl), concept = str_replace(concept, '(.*)', '`\\1`')) %>% select(id, predict, concept) %>% arrange(predict) %>% filter(predict < 0.1) %>% mutate(predict = round(predict, 3))
   data$concept <- kableExtra::cell_spec(data$concept,
-                                           extra_css = "display: block; overflow: scroll; height: 1.4em; width: 50em;")
-  kable(data, escape=F, col.names=c("Id", "Accuracy", "Program"), caption="Predicted accuracies (Accuracy) for the concepts with  predicted accuracy < 10%. Note that only 4 are from the model-comparison (i.e. id starts with \"m\").") %>% kable_styling()
+                                           extra_css = "display: block; overflow: scroll; height: 1.4em; width: 45em;")
+  kable(data, escape=F, col.names=c("ID", "Accuracy", "Concept"), caption="Predicted accuracies (Accuracy) for the concepts (ID, Concept) with predicted accuracy < 10%. Note that only 4 are from the model-comparison (i.e. id starts with \"m\").") %>% kable_styling()
 }
 worst_predicted_accuracies(priors)
 ```
 
 **Note**: We wondered how many categories we needed for dealing with the visibility of a node in the program, where by visibility we mean how directly its impact can be seen in a given input/output pair. The model coefficients for `visible` and `semi` (two non-zero levels of visiblity), however, are pretty similar. This could mean that I wasn't consistent in assigning nodes to these two categories, that these categories aren't that different from one another, or that we need a more fine-grained method for assigning visibility scores to nodes.
 
-**NOTE**: I exclude `idx_head_in_tail_sm` and `group_and_drop` from these analyses because I think the data more strongly reflects extremely bad examples than the difficulty of the concepts.
+**Note**: I exclude `idx_head_in_tail_sm` and `group_and_drop` from these analyses because I think the data more strongly reflects extremely bad examples than the difficulty of the concepts.
 
 ## Example quality
 
@@ -523,7 +523,7 @@ mc_examples_predicted_accuracies <- function(tbl) {
   data <- data %>% mutate(predict = round(predict(model, data), 3), concept = str_replace(concept, '(.*)', '`\\1`')) %>% select(id, predict, concept) %>% arrange(desc(predict))
   data$concept <- kableExtra::cell_spec(data$concept,
                                            extra_css = "display: block; overflow: scroll; height: 1.4em; width: 50em;")
-  kable(data, escape=F, col.names=c("Id", "Predicted Accuracy", "Program"), caption="Predicted accuracies (Accuracy) for the model-comparison concepts (Id; Concept) I've assessed as needing new training data.") %>% kable_styling()
+  kable(data, escape=F, col.names=c("ID", "Accuracy", "Concept"), caption="Predicted accuracies (Accuracy) for the model-comparison concepts (ID; Concept) I've assessed as needing new training data.") %>% kable_styling()
 }
 mc_examples_predicted_accuracies(mc_examples)
 ```
