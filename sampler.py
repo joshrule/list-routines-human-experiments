@@ -1667,15 +1667,35 @@ def make_grammar():
     return Grammar.uniform(primitives())
 
 if __name__ == "__main__":
-    ## Human Experiments - Wave Pilot
+    ## Human Experiment - Wave Pilot
     #
     # for i, c in enumerate(wave_pilot(), 1):
     #     process("../waves/pilot/json/human", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=True)
     #     process("../waves/pilot/json/machine", i, c, n_trials=11, n_orders=2, verbose=True, small=False, human=False, parallel=True)
 
-    # Human Experiments - Wave 1
+    ## Human Experiment - Wave 1
+
     # for i, c in enumerate(human_experiments_wave_1(), 1):
     #     process("../waves/1/json", i, c, n_trials=11, n_orders=5, verbose=True, small=False, human=False, parallel=True)
+
+    # list_priors("dataset_priors.csv", human_experiments_wave_1())
+
+    ## Model Comparison - Wave 3
+
+    for i, c in enumerate(model_comparison_wave_3(), 1):
+        if i in [2,5,15,27,28,30,31,32,35,36,39,40,60,76,78,88,89]:
+            process("./tmp",
+                    i,
+                    c,
+                    n_trials=11,
+                    n_orders=5,
+                    verbose=True,
+                    small=(i <= 80),
+                    human=False,
+                    kind="greedy",
+            )
+
+    # list_priors("model_comparison_priors.csv", model_comparison_wave_3())
 
     # blah = process_2(programs_large(), small=False)
     # print(len(blah))
@@ -1687,12 +1707,3 @@ if __name__ == "__main__":
     # print(len(blah))
     # for v in blah.values():
     #     print(f"{len(v)} => {v}")
-
-    ## Model Comparison - Wave 3
-    #
-    ## for i, c in enumerate(model_comparison_wave_3(), 1):
-    ##    process("./tmp", i, c, n_trials=11, n_orders=5, verbose=True, small=(i <= 80), human=False, parallel=True)
-
-    # list_priors("model_comparison_priors.csv", model_comparison_wave_3())
-
-    # list_priors("dataset_priors.csv", human_experiments_wave_1())
