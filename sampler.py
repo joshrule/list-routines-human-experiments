@@ -1120,7 +1120,6 @@ def sample_examples_greedy(p,adjust,n=10,n_restarts=10000,n_tries=100,small=Fals
 def greedy_set(p,adjust,n,n_tries,small):
     s = initialize_set(p,n,small)
     score = score_set(s, adjust)
-    # print(f"  >> {score}, {s}")
     for i_try in range(n_tries):
         i = sample_input(small)
         if i not in list(zip(*s))[0]:
@@ -1128,20 +1127,17 @@ def greedy_set(p,adjust,n,n_tries,small):
                 o = p.runWithArguments([i])
             except:
                 continue
-            # print(f"    {i} = {o}")
-            options = []
-            for idx in range(n):
-                new_s = s[:]
-                new_s[idx] = (i,o)
-                new_score = score_set(new_s, adjust)
-                # print(f"    {new_score}, {new_s}")
-                options.append((new_score, new_s))
-            new_score, new_s = max(options, key = lambda x: x[0])
-            # print(f"    best is {new_score}, {new_s}")
-            if new_score > score:
-                s = new_s
-                score = new_score
-                # print(f"  {i_try}. {score}, {adjust(s)} - {s}")
+            if valid_output(o, small):
+                options = []
+                for idx in range(n):
+                    new_s = s[:]
+                    new_s[idx] = (i,o)
+                    new_score = score_set(new_s, adjust)
+                    options.append((new_score, new_s))
+                new_score, new_s = max(options, key = lambda x: x[0])
+                if new_score > score:
+                    s = new_s
+                    score = new_score
     return s, score
 
 def initialize_set(p,n,small):
@@ -1150,9 +1146,10 @@ def initialize_set(p,n,small):
         i = sample_input(small)
         try:
             o = p.runWithArguments([i])
-            s.append((i,o))
         except:
             continue
+        if valid_output(o, small) and (len(s) == 0 or i not in list(zip(*s))[0]):
+            s.append((i,o))
     return s
 
 def sample_examples_parallel(p,adjust,n=10,n_pools=1000,n_tries=20,n_sets=1000,small=False):
