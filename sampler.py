@@ -1405,6 +1405,17 @@ def process_2(programs, n_trials=1000, small=False):
 def count_applications(program):
     return sum(subprogram[1].isApplication for subprogram in program.walk())
 
+def predict(program, visible, semi):
+    Primitive.GLOBALS.clear()
+    grammar = Grammar.uniform(primitives())
+    request =  arrow(tlist(tint), tlist(tint))
+    p = Program.parse(program)
+    apps = count_applications(p)
+    length = p.size()
+    depth = p.depth()
+    print(f"{program},{length},{depth},1,{apps},{visible},{semi}")
+
+
 def list_priors(filename, programs, small=False):
     Primitive.GLOBALS.clear()
     grammar = Grammar.uniform(primitives())
