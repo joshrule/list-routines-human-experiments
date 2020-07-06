@@ -40,9 +40,9 @@ def _repeat(x): return lambda n: [x]*n
 def _range(start): return lambda step: lambda stop: list(range(start, stop+1 if step > 0 else stop-1, step))
 def _last(x): return x[-1]
 def _drop(i): return lambda xs: xs[i:]
-def _droplast(i): return lambda xs: xs[:-i]
+def _droplast(i): return lambda xs: xs[:-i] if i > 0 else xs[:]
 def _take(i): return lambda xs: xs[:i]
-def _takelast(i): return lambda xs: xs[-i:]
+def _takelast(i): return lambda xs: xs[-i:] if i > 0 else []
 def _eq(x): return lambda y: x == y
 def _mod(x): return lambda y: x % y
 def _slice(x): return lambda y: lambda l: l[(x-1):y]
