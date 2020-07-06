@@ -1371,12 +1371,11 @@ def process(dirname, i, c, n_trials=10, n_orders=2, verbose=True, small=False, h
         examples = sample_examples_greedy(p, c["adjust"], n=n_trials, n_restarts=1000, n_tries=1000, small=small)
     else:
         examples = sample_examples(p, c["adjust"], n=n_trials, n_pools=1000, n_tries=20, n_sets=1000, verbose=verbose, small=small)
-    for i_order, order in enumerate(order_examples(examples, n_orders, 5000)):
+    for i_order, order in enumerate(order_examples(examples, n_orders, 5000), 1):
         data = {
             'concept': c['concept'],
             'examples': [{"i": i, "o": o} for i,o in order]
             }
-        #out = subprocess.run(["underscore", "print"], input=json.dumps(data), capture_output=True, text=True)
         with open(f"{dirname}/c{i:03}_{i_order}.json", "w") as fd:
             fd.write(json.dumps(data))
 
