@@ -187,6 +187,24 @@ def primitives():
         Primitive("swap", arrow(tint, tint, tlist(t0), tlist(t0)), _swap),
     ]
 
+def proportion(xs, f):
+    return sum(f(i, o) for i,o in xs)/len(xs)
+
+def proportion_set(xs, f):
+    return len({f(i, o) for i,o in xs})/len(xs)
+
+def limit(xs, accept, f):
+    return max(0, sum(f(i, o) for i,o in xs) - accept)
+
+def forbid(xs, f):
+    return limit(xs, 0, f)
+
+def center(xs, f, factor = 1/2):
+    return 1 + abs(factor * len(xs) - sum(f(i,o) for i, o in xs))
+
+def proportion_unique_elements(xs):
+   return sum(len(set(i)) for i,o in xs) / sum(len(i) for i,o in xs)
+
 def wave_pilot():
     return [
         {"concept": '(lambda (unique $0))',
@@ -765,20 +783,22 @@ def human_experiments_wave_1():
         },
     ]
 
-def proportion(xs, f):
-    return sum(f(i, o) for i,o in xs)/len(xs)
+def words(xs, sep=0):
+    words = []
+    word = []
+    looped = False
+    for x in xs:
+        looped = True
+        if x == sep:
+            words.append(word)
+            word = []
+            looped = False
+        else:
+            word.append(x)
+    if looped:
+        words.append(word)
+    return words
 
-def proportion_set(xs, f):
-    return len({f(i, o) for i,o in xs})/len(xs)
-
-def limit(xs, accept, f):
-    return max(0, sum(f(i, o) for i,o in xs) - accept)
-
-def center(xs, f, factor = 1/2):
-    return 1 + abs(factor * len(xs) - sum(f(i,o) for i, o in xs))
-
-def proportion_unique_elements(xs):
-   return sum(len(set(i)) for i,o in xs) / sum(len(xs) for i,o in xs)
 
 def model_comparison_wave_3():
     return [
