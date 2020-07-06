@@ -331,455 +331,605 @@ def wave_pilot():
 
 def human_experiments_wave_1():
     return [
-        {'concept': '(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda $0)',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (length $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (max $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (reverse $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (sort (lambda $0) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (unique $0))',
-         'adjust': lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) <= 0.75 if len(i) > 0 else 1) for i, o in xs)),
-        },
-        {'concept': '(lambda (singleton (sum $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (product $0)))',
-         'adjust': lambda xs: (1.0 if sum(o == [0] for i, o in xs) <= 1 else 0.0) + sum(x > 1 for i,o in xs for x in i)/sum(len(i) for i,o in xs),
-        },
-        {'concept': '(lambda (repeat (first $0) (second $0)))',
-         'adjust': lambda xs: 1.0 if any(len(o) == 0 for i, o in xs) else 0.0,
-        },
-        {'concept': '(lambda (repeat (max $0) (min $0)))',
-         'adjust': lambda xs: 1.0 if any(len(o) == 0 for i, o in xs) else 0.0,
-        },
-        {'concept': '(lambda (range 1 1 (first $0)))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 1 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (range (last $0) -2 0))',
-         'adjust': lambda xs: 1.0 if abs(sum(1 if i[-1] % 2 == 0 else -1 for i, o in xs)) <= 2 else 0.0,
-        },
-        {'concept': '(lambda (cons (last $0) $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 1 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (append $0 (second $0)))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 2 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (concat (reverse (drop 1 $0)) $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 1 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (concat (drop 3 $0) (take 3 $0)))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 3 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (concat (drop (last $0) $0) (take (last $0) $0)))',
-         "adjust": lambda xs: 0 if sum(i[-1] >= len(i) for i, o in xs) > 2 else 1,
-        },
-        {'concept': '(lambda ((lambda (concat ($0 first) (concat $1 ($0 last)))) (lambda (if (== ($0 $1) 8) empty (singleton 8)))))',
-         'adjust': lambda xs: (sum(i[0] != 8 and i[-1] != 8 for i,o in xs) >= 4) + (sum(i[0] == 8 and i[-1] != 8 for i,o in xs) >= 2) + (sum(i[0] != 8 and i[-1] == 8 for i,o in xs) >= 2) + (sum(i[0] == i[-1] == 8 for i,o in xs) >= 1),
-        },
-        {'concept': '(lambda (singleton (first $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (last $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (second $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (nth (last $0) $0)))',
-         'adjust': lambda xs: sum(i[-1] <= len(i) for i, o in xs)/len(xs)
-        },
-        {'concept': '(lambda (singleton (nth (nth (first $0) $0) $0)))',
-         'adjust': lambda xs: sum(0 < len(i) and i[0] <= len(i) and i[i[0]-1] <= len(i) for i, o in xs)/len(xs)
-        },
-        {'concept': '(lambda (singleton (nth (% (first $0) (length $0)) $0)))',
-         'adjust': lambda xs: sum(i[0] <= len(i) for i, o in xs) >= 3 + sum(i[0] > len(i) for i,o in xs) >= 5
-        },
-        {'concept': '(lambda (drop 1 $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) > 0 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (droplast 1 $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) > 0 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (drop 2 $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 2 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (slice (first $0) (second $0) (drop 2 $0)))',
-         'adjust': lambda xs: 1.0 if all(i[0] < i[1] <= len(i)-2 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (take (first $0) (drop 1 $0)))',
-         'adjust': lambda xs: 1.0 if all(i[0] <= len(i)-1 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (drop (last $0) (reverse $0)))',
-         'adjust': lambda xs: 1.0 if all(i[-1] <= len(i) for i,o in xs) else 0
-        },
-        {'concept': '(lambda (cut_idx 3 $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 3 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (cut_slice 2 5 $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 5 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (cut_slice (first $0) (second $0) $0))',
-         'adjust': lambda xs: 1.0 if all(i[0] < i[1] <= len(i) for i,o in xs) else 0
-        },
-        {'concept': '(lambda (cut_val 7 $0))',
-         'adjust': lambda xs: sum(i.count(7) >= 1 for i,o in xs)/len(xs) + min(1,sum(i.count(7) > 1 for i,o in xs)/4)
-        },
-        {'concept': '(lambda (cut_val (max $0) $0))',
-         'adjust': lambda xs: sum(len(i) > 0 and i.count(max(i)) >= 1 for i,o in xs)/len(xs) + min(1,sum(len(i) > 0 and i.count(max(i)) > 1 for i,o in xs)/4)
-        },
-        {'concept': '(lambda (cut_vals 3 $0))',
-         'adjust': lambda xs: sum(i.count(3) >= 1 for i,o in xs)/len(xs) + min(1,sum(i.count(3) > 1 for i,o in xs)/4)
-        },
-        {'concept': '(lambda (cut_vals (first $0) $0))',
-         'adjust': lambda xs: sum(len(i) > 0 and i.count(i[0]) >= 1 for i,o in xs)/len(xs) + min(1,sum(len(i) > 0 and i.count(i[0]) > 1 for i,o in xs)/4)
-        },
-        {'concept': '(lambda (cut_vals (max $0) $0))',
-         'adjust': lambda xs: sum(len(i) > 0 and i.count(max(i)) >= 1 for i,o in xs)/len(xs) + min(1,sum(len(i) > 0 and i.count(max(i)) > 1 for i,o in xs)/4)
-        },
-        {'concept': '(lambda (replace 2 9 $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 2 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (replace (first $0) (second $0) (drop 2 $0)))',
-         'adjust': lambda xs: 1.0 if all(i[0] <= len(i)-2 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (replace (nth (first $0) $0) (second $0) $0))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 2 and i[0] < len(i) and i[i[0]] <= len(i) for i,o in xs) else 0
-        },
-        {'concept': '(lambda (map (lambda (if (== $0 (max $1)) (min $1) $0)) $0))',
-         'adjust': lambda xs: sum(len(i) > 0 and i.count(min(i)) >= 1 for i,o in xs)/len(xs) + min(1,sum(len(i) > 0 and i.count(min(i)) > 1 for i,o in xs)/4)
-        },
-        {'concept': '(lambda (map (lambda (if (or (== $0 (max $1)) (== $0 (min $1))) (- (max $1) (min $1)) $0)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (first $1)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))',
-         'adjust': lambda xs: 1.0 if all(len(i) > 2 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (flatten (mapi (lambda (lambda (cons $0 (singleton $1)))) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (map (range 1 1) $0)))',
-         'adjust': lambda xs: sum(x > 1 for i,o in xs for x in i)/sum(len(i) for i,o in xs)
-        },
-        {'concept': '(lambda (flatten (map (lambda (range $0 -2 1)) $0)))',
-         'adjust': lambda xs: sum(x > 1 for i,o in xs for x in i)/sum(len(i) for i,o in xs)
-        },
-        {'concept': '(lambda (flatten (map (lambda (if (> $0 (first $1)) (range (first $1) 1 $0) (singleton $0))) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (map (lambda (repeat $0 $0)) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (map (lambda (cons $0 (singleton (last $1)))) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (map (lambda (cons (first $0) (singleton (length $0)))) (group (lambda $0) $0))))',
-         'adjust': lambda xs: len({e for i, o in xs for e in o[1::2]})/10,
-        },
-        {'concept': '(lambda (map (lambda (if (is_even $0) (* 3 $0) $0)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (mapi (lambda (lambda (* $0 $1))) $0))',
-         'adjust': lambda xs: sum(x > 1 for i,o in xs for x in i)/sum(len(i) for i,o in xs)
-        },
-        {'concept': '(lambda (mapi (lambda (lambda (+ $0 $1))) (reverse $0)))',
-         'adjust': lambda xs: sum(x > 0 for i,o in xs for x in i)/sum(len(i) for i,o in xs)
-        },
-        {'concept': '(lambda (flatten (map (lambda (cons $0 (singleton (if (is_odd $0) 1 0)))) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (mapi (lambda (lambda (if (== $0 $1) 1 0))) $0))',
-         'adjust': lambda xs: 1-abs(0.5 - sum(x == idx for i,o in xs for idx, x in enumerate(i, 1))/sum(len(i) for i,o in xs))/0.5
-        },
-        {'concept': '(lambda (map (lambda (count (lambda (== $1 $0)) $1)) (range 1 1 (max $0))))',
-         'adjust': lambda xs: len({x for i,o in xs for x in o})/11
-        },
-        {'concept': '(lambda (map (lambda (+ (max $1) $0)) $0))',
-         'adjust': lambda xs: 1.0 if sum(len(i) == 0 or max(i) == 0 for i,o in xs) <= 2 else 0
-        },
-        {'concept': '(lambda (map (lambda (- (first $1) $0)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (+ 7 (* 3 $0))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (* (- $0 10) 2)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (+ (/ $0 4) 5)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filter is_even (reverse $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (sort (lambda $0) (unique $0)))',
-         'adjust': lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) <= 0.75 if len(i) > 0 else 1) for i, o in xs)),
-        },
-        {'concept': '(lambda (sort (lambda $0) (unique (filter (lambda (< 20 $0)) $0))))',
-         'adjust': lambda xs: (sum(20 in i for i,o in xs) >= 3) + (sum(21 in i for i,o in xs) >= 3) + (sum(sum(x > 20 for x in i)>sum(x > 20 for x in set(i)) for i,o in xs) >= 4),
-        },
-        {'concept': '(lambda (reverse (sort (lambda $0) (unique (filter (lambda (< 20 $0)) $0)))))',
-         'adjust': lambda xs: (sum(20 in i for i,o in xs) >= 3) + (sum(21 in i for i,o in xs) >= 3) + (sum(sum(x > 20 for x in i)>sum(x > 20 for x in set(i)) for i,o in xs) >= 4),
-        },
-        {'concept': '(lambda (singleton (max (drop 2 $0))))',
-         'adjust': lambda xs: sum(len(i) >= 3 for i,o in xs)/len(xs)
-        },
-        {'concept': '(lambda (cons (first $0) (singleton (last $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (drop 1 (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (singleton 0) $0)))',
-         'adjust': lambda xs: sum(x > 0 for i,o in xs for x in i)/sum(len(i) for i,o in xs)
-        },
-        {'concept': '(lambda (drop 1 (fold (lambda (lambda (append $1 (* (last $1) $0)))) (singleton 1) $0)))',
-         'adjust': lambda xs: sum(x > 1 for i,o in xs for x in i)/sum(len(i) for i,o in xs)
-        },
-        {'concept': '(lambda (singleton (max (append $0 (length $0)))))',
-         'adjust': lambda xs: 1-abs(0.5 - sum(len(i) == 0 or len(i) > max(i) for i,o in xs)/sum(len(i) for i,o in xs))/0.5
-        },
-        {'concept': '(lambda (take (length (unique $0)) $0))',
-         'adjust': lambda xs: min(1.0, 1.0/(len(xs)-2)*sum((len(o)/len(i) <= 0.75 if len(i) > 0 else 1) for i, o in xs)),
-        },
-        {'concept': '(lambda (fold (lambda (lambda (if (> $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))',
-         'adjust': lambda xs: 2*len({len(o) for i, o in xs})/11,
-        },
-        {'concept': '(lambda (fold (lambda (lambda (if (< $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))',
-         'adjust': lambda xs: 2*len({len(o) for i, o in xs})/11,
-        },
-        {'concept': '(lambda (flatten (zip $0 (reverse $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (fold (lambda (lambda (if (is_even (second $0)) (append $1 (first $0)) $1))) empty (zip (droplast 1 $0) (drop 1 $0))))',
-         "adjust": lambda xs: len({len(o) for i, o in xs})/10,
-        },
-        {'concept': '(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort (lambda $0) $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (sort (lambda $0) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (zip (filteri (lambda (lambda (is_odd $1))) $0) (reverse (filteri (lambda (lambda (is_even $1))) $0)))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filteri (lambda (lambda (== (% $1 3) 0))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filteri (lambda (lambda (not (== (% $1 3) 0)))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filteri (lambda (lambda (and (== (% $1 2) 0) (is_odd $0)))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filteri (lambda (lambda (or (== (% $1 2) 0) (> 20 $0)))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filter (lambda (== (% $0 5) 1)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (concat $0 (cons 0 $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (if (== (% $0 3) 0) 1 0)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (range (min $0) 1 (max $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (range (first $0) 2 (last $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (map (lambda (repeat $0 (/ $0 10))) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (if (< $0 50) (% $0 10) (/ $0 10))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (if (< (length $0) 5) $0 (drop 5 (sort (lambda $0) $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filter (lambda (is_in $1 $0)) (range (min $0) 2 (max $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (sort (lambda (% (first $0) 4)) (group (lambda (% $0 4)) $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (concat (cons 17 (cons 38 (singleton 82))) (concat $0 (cons 1 (cons 55 (singleton 27))))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filter (lambda (and (> 50 $0) (> (- $0 (min $1)) 10))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (% $0 7)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (% $0 7)) (sort (lambda $0) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (sort (lambda $0) (map (lambda (% $0 7)) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (unique (sort (lambda $0) (map (lambda (% $0 7)) $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (find is_even $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (find (lambda (and (> $0 20) (< $0 50))) $0))',
-         'adjust': lambda xs: (sum(49 in i for i,o in xs) >= 2) + (sum(50 in i for i,o in xs) >= 2) + (sum(20 in i for i,o in xs) >= 2) + (sum(21 in i for i,o in xs) >= 2),
-        },
-        {'concept': '(lambda (singleton (sum (range 1 1 (length $0)))))',
-         'adjust': lambda xs: len({len(i) for i,o in xs})/len(xs)
-        },
-        {'concept': '(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filter (lambda (< (% $0 10) 3)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map sum (zip $0 (reverse $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (- (max $0) (min $0))) (zip $0 (reverse $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (insert (+ (max $0) (min $0)) 3 (sort (lambda $0) $0)))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 3 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (insert (last $0) (first $0) (unique $0)))',
-         'adjust': lambda xs: 1.0 if all(i[0] < len(set(i)) for i,o in xs) else 0
-        },
-        {'concept': '(lambda (splice (slice 4 5 $0) (- (length $0) 2) (reverse $0)))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 5 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (splice (cons 3 (cons 91 (singleton 17))) 3 $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (cut_slice (first $0) (second $0) (drop 2 $0)))',
-         'adjust': lambda xs: 1.0 if all(i[0] < i[1] <= len(i)-2 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (cut_idx (first $0) (drop 1 $0)))',
-         'adjust': lambda xs: 1.0 if all(i[0] <= len(i)-1 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (singleton (product (slice 3 6 $0))))',
-         'adjust': lambda xs: 1.0 if all(len(i) >= 6 for i,o in xs) else 0
-        },
-        {'concept': '(lambda (flatten (reverse (sort (lambda (/ (first $0) 10)) (group (lambda (/ $0 10)) $0)))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (flatten (sort (lambda (% (first $0) 10)) (group (lambda (% $0 10)) $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (mapi (lambda (lambda (if (> $1 $0) $1 $0))) $0))',
-         'adjust': lambda xs: 1-abs(0.5-sum(idx > x for i,o in xs for idx, x in enumerate(i, 1))/sum(len(i) for i,o in xs))/0.5
-        },
-        {'concept': '(lambda (filteri (lambda (lambda (is_even (+ $1 $0)))) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (/ $0 (if (is_even (length $1)) 2 5))) $0))',
-         'adjust': lambda xs: len({len(i) for i,o in xs})/len(xs)
-        },
-        {'concept': '(lambda (singleton (max (cons (sum (filteri (lambda (lambda (is_even $1))) $0)) (singleton (sum (filteri (lambda (lambda (is_odd $1))) $0)))))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (filteri (lambda (lambda (is_odd $1))) (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0)))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (sum (filter (lambda (== (% $0 $1) 0)) $1))) (range 1 1 10)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (fold (lambda (lambda (cons $0 (reverse $1)))) empty $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (slice 2 (- (length $0) 2) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (drop (/ (first $0) 10) (droplast (/ (last $0) 10) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (unique (flatten (zip $0 (reverse $0)))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (nth (% $0 10) $1)) $0))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (foldi (lambda (lambda (lambda (append $1 ((if (is_even $2) + *) (last $1) $0))))) (take 1 $0) (drop 1 $0)))',
-         'adjust': lambda xs: 1 - sum(i.count(0) for i,o in xs)/sum(len(i) for i,o in xs)
-        },
-        {'concept': '(lambda (if (> (min $0) (- (max $0) (min $0))) (range (min $0) 2 (max $0)) (range 0 2 (min $0))))',
-         'adjust': lambda xs: 1-abs(0.5-sum(len(i) > 0 and min(i) > (max(i)-min(i)) for i,o in xs)/len(xs))/0.5
-        },
-        {'concept': '(lambda (sort (lambda $0) (map length (group (lambda $0) $0))))',
-         'adjust': lambda xs: len({x for i,o in xs for x in o})/11
-        },
-        {'concept': '(lambda (singleton (/ (sum $0) (length $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map length (group (lambda $0) $0)))',
-         'adjust': lambda xs: len({x for i,o in xs for x in o})/(2*11) + len({len(o) for i,o in xs})/11
-        },
-        {'concept': '(lambda (flatten (map (lambda (drop 1 $0)) (group (lambda $0) $0))))',
-         'adjust': lambda xs: len({len(o) for i,o in xs})/len(xs)
-        },
-        {'concept': '(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (map (lambda (/ $0 2)) (filter is_even $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (take 1 (unique $0)) (drop 1 (unique $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (sum (filter (== 1) (map length (group (lambda $0) $0))))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (sum (filter (< 1) (map length (group (lambda $0) $0))))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (count (== (length $0)) (drop 1 $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (count (== (length (unique $0))) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (count (== (last $0)) (take (first $0) $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (count is_even $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (count (lambda (== 3 $0)) $0)))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (count (lambda (== (first $1) $0)) (drop 1 $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (singleton (length (unique $0))))',
-         'adjust': lambda xs: 1.0,
-        },
-        {'concept': '(lambda (first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))))',
-         'adjust': lambda xs: 1-abs((1/3)-sum(i.count(0) for i,o in xs)/sum(len(i) for i,o in xs))/0.7
-        },
-        {'concept': '(lambda (first (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))',
-         'adjust': lambda xs: 1-abs((1/3)-sum(i.count(0) for i,o in xs)/sum(len(i) for i,o in xs))/0.7
-        },
-        {'concept': '(lambda (map first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))))',
-         'adjust': lambda xs: 1-abs((1/3)-sum(i.count(0) for i,o in xs)/sum(len(i) for i,o in xs))/0.7
-        },
-        {'concept': '(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))))',
-         'adjust': lambda xs: 1-abs((1/3)-sum(i.count(0) for i,o in xs)/sum(len(i) for i,o in xs))/0.7
+        {
+            "concept": "(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))",
+            "adjust": lambda xs: 0.0,
+        },
+        {
+            "concept": "(lambda $0)",
+            "adjust": lambda xs: - limit(xs, 1, lambda i,o: len(i) >= 7),
+        },
+        {
+            "concept": "(lambda (singleton (length $0)))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: o[0]),
+        },
+        {
+            "concept": "(lambda (singleton (max $0)))",
+            "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: o[0]) + proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (splice (drop 1 (droplast 1 $0)) 2 $0))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: 6 >= len(i) >= 3),
+        },
+        {
+            "concept": "(lambda (sort (lambda $0) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) - limit(xs, 3, lambda i,o: len(i) <= 3 or len(i) >= 7),
+        },
+        {
+            "concept": "(lambda (unique $0))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: (len(i) - len(o)) > 2) + proportion_set(xs, lambda i,o: len(i) - len(o)) + proportion_set(xs, lambda i,o: len(o)) - limit(xs, 2, lambda i,o: len(o) >= 7),
+        },
+        {
+            "concept": "(lambda (singleton (sum $0)))",
+            "adjust": lambda xs: 4 * proportion_set(xs, lambda i,o: o[0]) + 2 * proportion_set(xs, lambda i,o: len(i)) + proportion_set(xs, lambda i,o: o[0]/10),
+        },
+        {
+            "concept": "(lambda (singleton (product $0)))",
+            "adjust": lambda xs: 4 * proportion_set(xs, lambda i,o: o[0]) + 2 * proportion_set(xs, lambda i,o: len(i)) + proportion_set(xs, lambda i,o: o[0]/5),
+        },
+        {
+            "concept": "(lambda (takelast 3 (sort (lambda $0) $0)))",
+            "adjust": lambda xs: 2 * len({oe for i,o in xs for oe in o})/sum(len(o) for i,o in xs) + proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (repeat (max $0) (min $0)))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: min(i) <= 10) + proportion_set(xs, lambda i,o: max(i)) + proportion_set(xs, lambda i,o: min(i))
+        },
+        {
+            "concept": "(lambda (range 1 1 (last $0)))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) > 0 and i[-1] <= 10) + proportion_set(xs, lambda i,o: i[-1] if len(i) > 0 else 0) + proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (filter (lambda (> (first $1) (% $0 10))) $0))",
+            "adjust": lambda xs: - limit(xs, 2, lambda i,o: len(o) <= 2 or len(o) >= 7) + proportion(xs, lambda i,o: len(i) > 1 and i[0] < 10) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0)
+        },
+        {
+            "concept": "(lambda (cons (last $0) $0))",
+            "adjust": lambda xs: - limit(xs, 2, lambda i,o: len(o) <= 2 or len(o) >= 7) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: i[-1])
+        },
+        {
+            "concept": "(lambda (cons (sum (unique $0)) (append (unique $0) (sum (unique $0)))))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: len(o)) + proportion_set(xs, lambda i,o: o[0]) - limit(xs, 2, lambda i,o: len(o) <= 3 or len(o) >= 8) + 2 * proportion(xs, lambda i,o: (len(i) - len(o)) > 2) + 2 * proportion_set(xs, lambda i,o: len(i) - len(o))
+        },
+        {
+            "concept": "(lambda (concat (reverse (drop 1 $0)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) - limit(xs, 2, lambda i,o: len(o) >= 10)
+        },
+        {
+            "concept": "(lambda (concat (drop 3 $0) (take 3 $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 3) - limit(xs, 2, lambda i,o: len(o) > 7)
+        },
+        {
+            "concept": "(lambda (concat (drop (last $0) $0) (take (last $0) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) - limit(xs, 2, lambda i,o: len(o) > 7) + 4 * proportion(xs, lambda i,o: len(i) > 0 and len(i) > i[-1]) + proportion_set(xs, lambda i,o: i[-1] if len(i) else 0) + proportion_set(xs, lambda i,o: len(i) - i[-1])
+        },
+        {
+            "concept": "(lambda ((lambda (concat ($0 first) (concat $1 ($0 last)))) (lambda (if (== ($0 $1) 8) empty (singleton 8)))))",
+            "adjust": lambda xs: 2 / center(xs, lambda i,o: len(i) > 0 and i[0] == 8) + 2 / center(xs, lambda i,o: len(i) > 0 and i[-1] == 8) - limit(xs, 2, lambda i,o: len(o) >= 7) + proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (singleton (first $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: o[0])
+        },
+        {
+            "concept": "(lambda (singleton (last $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: o[0])
+        },
+        {
+            "concept": "(lambda (singleton (second (reverse $0))))",
+            "adjust": lambda xs: 2 * proportion(xs, lambda i,o: len(i) >= 2) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: o[0])
+        },
+        {
+            "concept": "(lambda (singleton (nth (last $0) $0)))",
+            "adjust": lambda xs: 2 * proportion(xs, lambda i,o: len(i) > 0) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: o[0]) - 2 * limit(xs, 1, lambda i,o: len(i) > 0 and len(i) == i[-1])
+        },
+        {
+            "concept": "(lambda (singleton (nth (nth (first $0) $0) $0)))",
+            "adjust": lambda xs: 2 * proportion(xs, lambda i,o: len(i) > 0 and i[0] < len(i) and i[i[0]] < len(i)) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: o[0])
+        },
+        {
+            "concept": "(lambda (filter (lambda (== (/ (first $1) 10) (/ $0 10))) $0))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: i[0]/10 if len(i) else 0) + proportion_set(xs, lambda i,o: len(i) - len(o)) - limit(xs, 1, lambda i,o: len(o) <= 1 or len(o) == len(i)) + proportion_set(xs, lambda i,o: len(set(o)))
+        },
+        {
+            "concept": "(lambda (drop 1 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (droplast 1 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (sort (lambda $0) (cut_idx 3 (drop 2 $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (slice (first $0) (second $0) (drop 2 $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 2 and 1 <= i[0] <= i[1] <= len(i)-2) + proportion_unique_elements(xs) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 1) - limit(xs, 0, lambda i,o: len(i) > 0 and i[0] == 0) - limit(xs, 1, lambda i,o: len(i) > 1 and i[1] == i[0]) - limit(xs, 1, lambda i,o: len(i) > 1 and i[1] == len(i)-2) - limit(xs, 0, lambda i,o: len(i) > 1 and i[1] < i[0]) - limit(xs, 0, lambda i,o: len(i) > 1 and i[1] > len(i)-2)
+        },
+        {
+            "concept": "(lambda (take (first $0) (drop 1 $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 1 and i[0] <= len(i)-1) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: len(o)) + proportion_set(xs, lambda i,o: len(i)-len(o)) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == len(i) - 1) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 0)
+        },
+        {
+            "concept": "(lambda (filter (lambda (is_even (/ $0 10))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len({ie//10 for ie in i})/max(1,len(i)) > 4) + proportion_set(xs, lambda i,o: len(i)-len(o))
+        },
+        {
+            "concept": "(lambda (cut_idx 3 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: len(i) > 3) - limit(xs, 2, lambda i,o: len(o) >= 7)
+        },
+        {
+            "concept": "(lambda (cut_slice 2 5 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: len(i) > 5) - limit(xs, 2, lambda i,o: len(o) >= 7)
+        },
+        {
+            "concept": "(lambda (cut_slice (first $0) (second $0) $0))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 2 and 1 <= i[0] <= i[1] <= len(i)) + proportion_unique_elements(xs) - limit(xs, 3, lambda i,o: len(i) > 0 and i[0] == 1) - limit(xs, 0, lambda i,o: len(i) > 0 and i[0] == 0) - limit(xs, 1, lambda i,o: len(i) > 1 and i[1] == i[0]) - limit(xs, 2, lambda i,o: len(i) > 1 and i[1] == len(i)) - limit(xs, 0, lambda i,o: len(i) > 1 and i[1] < i[0]) - limit(xs, 0, lambda i,o: len(i) > 1 and i[1] > len(i))
+        },
+        {
+            "concept": "(lambda (cut_val 7 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: 7 in i) + 1 / center(xs, lambda i,o: i.count(7) > 1, factor = 8/11) + 1 / center(xs, lambda i,o: i.count(7) > 2, factor = 4/11)
+        },
+        {
+            "concept": "(lambda (cut_val (max $0) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: len(i) > 1) + 1 / center(xs, lambda i,o: len(i) > 0 and i.count(max(i)) > 1, factor = 8/11) + 1 / center(xs, lambda i,o: len(i) > 0 and i.count(max(i)) > 2, factor = 4/11)
+        },
+        {
+            "concept": "(lambda (cut_vals 3 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: 3 in i) + 1 / center(xs, lambda i,o: i.count(3) > 1, factor = 8/11) + 1 / center(xs, lambda i,o: i.count(3) > 2, factor = 4/11)
+        },
+        {
+            "concept": "(lambda (cut_vals (first $0) $0))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) > 0) + 1 / center(xs, lambda i,o: len(i) > 1 and i.count(i[0]) == 1, factor = 2/11) + 1 / center(xs, lambda i,o: len(i) > 1 and i.count(i[0]) == 2, factor = 2/11) + 1 / center(xs, lambda i,o: len(i) > 1 and i.count(i[0]) == 3, factor = 3/11) + 1 / center(xs, lambda i,o: len(i) > 1 and i.count(i[0]) == 4, factor = 6/11),
+        },
+        {
+            "concept": "(lambda (cut_vals (max $0) (cut_vals (min $0) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 2) + 1 / center(xs, lambda i,o: len(i) > 1 and i.count(min(i)) > 1) + 1 / center(xs, lambda i,o: len(i) > 1 and i.count(max(i)) > 1)
+        },
+        {
+            "concept": "(lambda (replace 2 9 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: len(i) >= 2)
+        },
+        {
+            "concept": "(lambda (replace (first $0) (second $0) (drop 2 $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 2 and 1 <= i[0] <= len(i)-2) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: i[1] if len(i) > 1 else 0) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0) + proportion_set(xs, lambda i,o: len(i)-2-i[0] if len(i) > 0 else 0) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 1) - limit(xs, 0, lambda i,o: len(i) > 0 and i[0] == 0) - limit(xs, 1, lambda i,o: len(i) > 1 and i[1] == len(i)-2) - limit(xs, 0, lambda i,o: len(i) > 1 and i[1] > len(i)-2)
+        },
+        {
+            "concept": "(lambda (flatten (map (lambda (cons (/ $0 10) (singleton (% $0 10)))) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (map (lambda (if (== $0 (max $1)) (min $1) $0)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 1) + 1 / center(xs, lambda i,o: len(i) > 1 and i.count(max(i)) > 1, factor = 8/11) + proportion_set(xs, lambda i,o: max(0,i.count(max(i))-5) if len(i) > 0 else 0)
+        },
+        {
+            "concept": "(lambda (map (lambda (if (or (== $0 (max $1)) (== $0 (min $1))) (- (max $1) (min $1)) $0)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs),
+        },
+        {
+            "concept": "(lambda (map (lambda (first $1)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0)
+        },
+        {
+            "concept": "(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (flatten (mapi (lambda (lambda (cons $0 (singleton $1)))) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (flatten (map (range 1 1) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: all(0 < ie <= 5 for ie in i)) + proportion_set(xs, lambda i,o: len(i)) + proportion(xs, lambda i,o: len(set(i)) > 3) - limit(xs, 3, lambda i,o: len(i) < 3 or len(i) > 5)
+        },
+        {
+            "concept": "(lambda (map (lambda (* $0 (first $1))) (drop 1 $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0) + proportion(xs, lambda i,o: i[0] <= 10 if len(i) > 0 else 0) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 0)
+        },
+        {
+            "concept": "(lambda (flatten (map (lambda (if (> $0 (first $1)) (range (first $1) 1 $0) (singleton $0))) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0) + proportion(xs, lambda i,o: len(i) > 2)
+        },
+        {
+            "concept": "(lambda (flatten (map (lambda (repeat $0 $0)) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: all(ie <= 5 for ie in i)) + proportion(xs, lambda i,o: len(set(i)) > 3) + proportion(xs, lambda i,o: i.count(0) < 2) + proportion_set(xs, lambda i,o: len(i)) - limit(xs, 3, lambda i,o: len(i) < 3 or len(i) > 5)
+        },
+        {
+            "concept": "(lambda (map (lambda (* (/ $0 10) (% $0 10))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (flatten (map (lambda (append (take 1 $0) (length $0))) (group (lambda $0) $0))))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: tuple(o[1::2])) + sum(oe in [2,3,4] for i,o in xs for oe in o[1::2])/sum(len(o[1::2]) for i,o in xs)
+        },
+        {
+            "concept": "(lambda (map (lambda (if (is_even $0) (* 3 $0) $0)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (mapi (lambda (lambda (* $0 $1))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(ie <= 10 for ie in i))
+        },
+        {
+            "concept": "(lambda (mapi (lambda (lambda (+ $0 $1))) (reverse $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (flatten (map (lambda (cons $0 (singleton (% $0 2)))) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (mapi (lambda (lambda (if (== $0 $1) 1 0))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(1 <= ie <= 10 for ie in i)) + proportion(xs, lambda i,o: sum(o) > 2) - limit(xs, 1, lambda i,o: sum(o) == 0)
+        },
+        {
+            "concept": "(lambda (map (lambda (count (lambda (== $1 $0)) $1)) (range 1 1 (max $0))))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) > 8) + proportion(xs, lambda i,o: all(1 <= ie <= 10 for ie in i)) - limit(xs, 1, lambda i,o: sum(oe > 0 for oe in o) < 2) + proportion(xs, lambda i,o: sum(oe > 1 for oe in o) in [3,4])
+        },
+        {
+            "concept": "(lambda (map (lambda (- 99 $0)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (mapi (lambda (lambda (+ $0 (- (length $2) $1)))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (map (lambda (+ 7 (* 3 $0))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(0 <= ie <= 20 for ie in i))
+        },
+        {
+            "concept": "(lambda (map (lambda (- (* $0 2) 10)) $0))",
+            "adjust": lambda xs: 4 * proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: len(i) in [4,5]) - 2 * limit(xs, 2, lambda i,o: len(i) <= 3)
+        },
+        {
+            "concept": "(lambda (map (lambda (+ (/ $0 4) 5)) $0))",
+            "adjust": lambda xs: 2 * proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(10 <= ie <= 40 for ie in i))
+        },
+        {
+            "concept": "(lambda (filter is_even (reverse $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (sort (lambda (+ (% $0 10) (/ $0 10))) (unique $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (filter (lambda (== (% $0 3) 0)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (cut_val (length $0) (range 1 1 10)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: len(i)) - limit(xs, 0, lambda i,o: len(i) == 0)
+        },
+        {
+            "concept": "(lambda (singleton (max (cut_vals (max $0) $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (cons (first $0) (singleton (last $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (drop 1 (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (singleton 0) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(0 <= ie <= 20 for ie in i))
+        },
+        {
+            "concept": "(lambda (drop 1 (fold (lambda (lambda (append $1 (* (last $1) $0)))) (singleton 1) $0)))",
+            "adjust": lambda xs: 2 * proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(2 <= ie <= 9 for ie in i)) - forbid(xs, lambda i,o: 0 in i or 0 in o) - limit(xs, 1, lambda i,o: len(i) < 3)
+        },
+        {
+            "concept": "(lambda (mapi (lambda (lambda (max (take $1 $2)))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: len(set(o))/max(1,len(o)))
+        },
+        {
+            "concept": "(lambda (take (length (unique $0)) $0))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (fold (lambda (lambda (if (> $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: len(o) > 2)
+        },
+        {
+            "concept": "(lambda (map (lambda (sum $0)) (zip (droplast 1 $0) (drop 1 $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (flatten (zip $0 (reverse $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) - limit(xs, 2, lambda i,o: len(i) < 3 or len(i) > 6)
+        },
+        {
+            "concept": "(lambda (map first (filter (lambda (is_even (second $0))) (zip (droplast 1 $0) (drop 1 $0)))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort (lambda $0) $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (sort (lambda $0) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (flatten (zip (filteri (lambda (lambda (is_odd $1))) $0) (reverse (filteri (lambda (lambda (is_even $1))) $0)))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: len(i) % 2 == 0)
+        },
+        {
+            "concept": "(lambda (filteri (lambda (lambda (== (% $1 3) 0))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 9)
+        },
+        {
+            "concept": "(lambda (find (== (first $0)) (drop 1 $0)))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) > 8) + proportion(xs, lambda i,o: all(1 <= ie <= 10 for ie in i)) + proportion_set(xs, lambda i,o: len(set(i))) - 2 * limit(xs, 1, lambda i,o: len(o) <= 1) - limit(xs, 1, lambda i,o: len(o) > 5)
+        },
+        {
+            "concept": "(lambda (filteri (lambda (lambda (and (is_even $1) (is_odd $0)))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (cons (first $0) (cons (sum (drop 1 (droplast 1 $0))) (takelast 1 $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5)
+        },
+        {
+            "concept": "(lambda (filter (lambda (> $0 (first $1))) $0))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) > 8) - 2 * limit(xs, 1, lambda i,o: len(o) < 2) - limit(xs, 1, lambda i,o: len(o) > 5)
+        },
+        {
+            "concept": "(lambda (concat $0 (cons 0 $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) <= 5)
+        },
+        {
+            "concept": "(lambda (map (lambda (if (== (% $0 3) 0) 1 0)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 2 <= sum(o) <= 6)
+        },
+        {
+            "concept": "(lambda (range (min $0) 1 (max $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(o) < 8) + proportion(xs, lambda i,o: len(i) > 3) + proportion_set(xs, lambda i,o: min(i) if len(i) > 0 else 0) + proportion_set(xs, lambda i,o: max(i) if len(i) > 0 else 0) - limit(xs, 1, lambda i,o: len(o) <= 1)
+        },
+        {
+            "concept": "(lambda (range (first $0) 2 (last $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 2 < len(o) < 8) + proportion(xs, lambda i,o: len(i) > 0 and i[0] % 2 == i[-1] % 2)
+        },
+        {
+            "concept": "(lambda (flatten (map (lambda (repeat $0 (/ $0 10))) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (map (lambda (/ $0 10)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (drop 1 (droplast 1 (sort (lambda $0) $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(o) > 6)
+        },
+        {
+            "concept": "(lambda (cons (length $0) (append (reverse $0) (length $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (cons (first $0) (cons 23 (cons 68 (cons 42 (cons 99 (cons 71 (singleton (last $0)))))))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 2)
+        },
+        {
+            "concept": "(lambda (concat (cons 17 (cons 38 (singleton 82))) (concat $0 (cons 1 (cons 55 (singleton 27))))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 5 >= len(i))
+        },
+        {
+            "concept": "(lambda (map (lambda (count (== $0) $1)) $0))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: tuple(sorted(o)))
+        },
+        {
+            "concept": "(lambda (reverse (sort (lambda $0) (unique $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion_set(xs, lambda i,o: len(o)) + proportion_set(xs, lambda i,o: len(i) - len(o))
+        },
+        {
+            "concept": "(lambda (flatten (zip (range 1 1 (length $0)) (sort (lambda $0) $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (sort (lambda $0) (map (lambda (/ $0 10)) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(set(o))/max(1,len(o))) + proportion(xs, lambda i,o: len(i) >= 3)
+        },
+        {
+            "concept": "(lambda (concat (filter (lambda (< (first $1) $0)) $0) (filter (lambda (> (first $1) $0)) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: -2 < sum(ie > i[0] for ie in i)-sum(ie < i[0] for ie in i) < 2)
+        },
+        {
+            "concept": "(lambda (find is_even $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 5 >= len(o) >= 2)
+        },
+        {
+            "concept": "(lambda (mapi (lambda (lambda (* (min $2) $1))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: min(i) if len(i) > 0 else 0) - forbid(xs, lambda i,o: len(i) > 0 and min(i) == 0)
+        },
+        {
+            "concept": "(lambda (map first (filter (lambda (== (second $0) 0)) (zip (droplast 1 $0) (drop 1 $0)))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: 5 >= len(o) >= 2)
+        },
+        {
+            "concept": "(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: 5 >= sum(ie % 4 == 0 for ie in i) >= 2) - limit(xs, 1, lambda i,o: o[0] == 0) + proportion_set(xs, lambda i,o: o[0]) + proportion(xs, lambda i,o: len(i) >= 7)
+        },
+        {
+            "concept": "(lambda (filter (lambda (and (> (max (take 2 $1)) $0) (> $0 (min (take 2 $1))))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion(xs, lambda i,o: 6 >= len(o) >= 3) + proportion_set(xs, lambda i,o: min(i[:2]) if len(i) > 1 else 0) + proportion_set(xs, lambda i,o: max(i[:2]) if len(i) > 1 else 0)
+        },
+        {
+            "concept": "(lambda (map sum (zip $0 (reverse $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 6 >= len(o) >= 3)
+        },
+        {
+            "concept": "(lambda (takelast (last $0) $0))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 1 and i[-1] <= len(i)-1) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: len(o)) + proportion_set(xs, lambda i,o: len(i)-len(o)) - limit(xs, 1, lambda i,o: len(i) > 0 and i[-1] == len(i) - 1) - limit(xs, 1, lambda i,o: len(i) > 0 and i[-1] == 0)
+        },
+        {
+            "concept": "(lambda (insert (+ (max $0) (min $0)) 3 (sort (lambda $0) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 7 >= len(o) >= 4)
+        },
+        {
+            "concept": "(lambda (insert (last $0) (first $0) (unique $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 1 and i[0] <= len(set(i))-1) + proportion_set(xs, lambda i,o: len(o)) + proportion_set(xs, lambda i,o: len(i)-len(o)) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == len(set(i))) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 1) - forbid(xs, lambda i,o: len(i) > 0 and i[0] == 0),
+        },
+        {
+            "concept": "(lambda (splice (slice 4 5 $0) (- (length $0) 2) (reverse $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: i != o) + proportion(xs, lambda i,o: 8 >= len(i) > 5)
+        },
+        {
+            "concept": "(lambda (splice (cons 3 (cons 3 (singleton 3))) 3 $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 7 >= len(i) >= 3) 
+        },
+        {
+            "concept": "(lambda (take 3 (sort (lambda $0) $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 3)
+        },
+        {
+            "concept": "(lambda (cut_idx (first $0) (drop 1 $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 1 and i[0] <= len(i)-1) + proportion_set(xs, lambda i,o: len(i)-i[0] if len(i) > 0 else 0) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == len(i)-1) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 1) - forbid(xs, lambda i,o: len(i) > 0 and i[0] == 0),
+        },
+        {
+            "concept": "(lambda (replace (first $0) (length $0) (drop 1 $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 1 and i[0] <= len(i)-1) + proportion_set(xs, lambda i,o: len(i)) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == len(i)-1) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 1) - forbid(xs, lambda i,o: len(i) > 0 and i[0] == 0),
+        },
+        {
+            "concept": "(lambda (sort (lambda (/ $0 10)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 8 > len(i) > 3)
+        },
+        {
+            "concept": "(lambda (sort (lambda (% $0 10)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 8 > len(i) > 3)
+        },
+        {
+            "concept": "(lambda (filter (lambda (== $0 (first $1))) (drop 1 $0)))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) >= 8) + proportion_set(xs, lambda i,o: len(o)) - limit(xs, 2, lambda i,o: len(o) < 2),
+        },
+        {
+            "concept": "(lambda (reverse (filteri (lambda (lambda (is_odd $1))) (reverse $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7),
+        },
+        {
+            "concept": "(lambda (map (lambda (* $0 (if (is_even (length $1)) 2 3))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) - forbid(xs, lambda i,o: len(i) == 0) - limit(xs, 1, lambda i,o: len(i) == 1) + 2 / center(xs, lambda i,o: len(i) % 2 == 0)
+        },
+        {
+            "concept": "(lambda (singleton (sum (filter is_even $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7) + proportion(xs, lambda i,o: 5 >= len(o) >= 2)
+        },
+        {
+            "concept": "(lambda (map (lambda (length $1)) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (map (lambda (+ (* (% $0 10) 10) (/ $0 10))) $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 3)
+        },
+        {
+            "concept": "(lambda (fold (lambda (lambda (cons $0 (reverse $1)))) empty $0))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 4)
+        },
+        {
+            "concept": "(lambda (drop 2 (droplast 2 $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 4)
+        },
+        {
+            "concept": "(lambda (drop (first $0) (droplast (last $0) $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 1 and (i[0] + i[-1]) <= len(i)) + proportion_set(xs, lambda i,o: i[0] if len(i) > 0 else 0) + proportion_set(xs, lambda i,o: i[-1] if len(i) > 0 else 0) + proportion_set(xs, lambda i,o: len(o)) - limit(xs, 2, lambda i,o: len(i) > 0 and i[0] == 0 or i[-1] == 0)
+        },
+        {
+            "concept": "(lambda (unique (flatten (zip $0 (reverse $0)))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + 2 * proportion_set(xs, lambda i,o: len(i)-len(o)) + 2 * proportion_set(xs, lambda i,o: len(o))
+        },
+        {
+            "concept": "(lambda (mapi (lambda (lambda (count (== $0) (take $1 $2)))) $0))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: sum(oe in [2,3,4] for oe in o)/max(1,len(o)))
+        },
+        {
+            "concept": "(lambda (take (first $0) (reverse $0)))",
+            "adjust": lambda xs: 4 * proportion(xs, lambda i,o: len(i) > 1 and i[0] <= len(i)) + proportion_unique_elements(xs) + proportion_set(xs, lambda i,o: len(o)) + proportion_set(xs, lambda i,o: len(i)-len(o)) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == len(i)) - limit(xs, 1, lambda i,o: len(i) > 0 and i[0] == 0)
+        },
+        {
+            "concept": "(lambda (range (min $0) 2 (max $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 2 < len(o) < 8) + proportion_set(xs, lambda i,o: min(i) if len(i) > 0 else 0) + proportion_set(xs, lambda i,o: max(i) if len(i) > 0 else 0)
+        },
+        {
+            "concept": "(lambda (sort (lambda $0) (map length (group (lambda $0) $0))))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: tuple(sorted(o))) + proportion(xs, lambda i,o: len(i) >= 3) + proportion_set(xs, lambda i,o: len(i)-len(o)) + proportion_set(xs, lambda i,o: len(o)) - limit(xs, 1, lambda i,o: sum(o) == len(o))
+        },
+        {
+            "concept": "(lambda (singleton (/ (sum $0) (length $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: 2 < len(i) < 6) + proportion_set(xs, lambda i,o: o[0])
+        },
+        {
+            "concept": "(lambda (map length (group (lambda $0) $0)))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: tuple(sorted(o))) + proportion(xs, lambda i,o: len(i) >= 3) + proportion_set(xs, lambda i,o: len(i)-len(o)) + proportion_set(xs, lambda i,o: len(o)) - limit(xs, 1, lambda i,o: sum(o) == len(o))
+        },
+        {
+            "concept": "(lambda (flatten (map (lambda (drop 1 $0)) (group (lambda $0) $0))))",
+            "adjust": lambda xs: proportion_set(xs, lambda i,o: tuple(sorted(o))) + proportion(xs, lambda i,o: len(i) >= 3) + proportion_set(xs, lambda i,o: len(i)-len(o)) + proportion_set(xs, lambda i,o: len(o))
+        },
+        {
+            "concept": "(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) - forbid(xs, lambda i,o: len(o) <= 1) - limit(xs, 1, lambda i,o: len(i) <= 2)
+        },
+        {
+            "concept": "(lambda (map (lambda (/ $0 2)) (filter is_even $0)))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7)
+        },
+        {
+            "concept": "(lambda (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (take 1 (unique $0)) (drop 1 (unique $0))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(0 <= ie <= 20 for ie in i)) + proportion(xs, lambda i,o: 5 >= len(i)-len(set(i)) >= 2) - limit(xs, 1, lambda i,o: len(o) <= 1) + proportion_set(xs, lambda i,o: len(o))
+        },
+        {
+            "concept": "(lambda (filter (lambda (== 1 (count (== $0) $1))) $0))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) > 5) + proportion(xs, lambda i,o: all(0 <= ie <= 20 for ie in i)) + proportion_set(xs, lambda i,o: len(i)-len(set(i))) + proportion(xs, lambda i,o: 2 <= len(o) <= 5)
+        },
+        {
+            "concept": "(lambda (singleton (- (length $0) (length (unique $0)))))",
+            "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: o[0]) + proportion_unique_elements(xs)
+        },
+        {
+            "concept": "(lambda (singleton (count (lambda ((== (length $1)) $0)) $0)))",
+            "adjust": lambda xs: 3 * proportion_set(xs, lambda i,o: min(10,o[0]+5)) + proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7) - limit(xs, 2, lambda i,o: o[0] <= 1)
+        },
+        {
+            "concept": "(lambda (singleton (count is_even $0)))",
+            "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: o[0]) + proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7)
+        },
+        {
+            "concept": "(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (unique (sort (lambda $0) $0)))))",
+            "adjust": lambda xs: proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) > 5) + proportion_set(xs, lambda i,o: len(i)-len(o)) + proportion_set(xs, lambda i,o: len(o))
+        },
+        {
+            "concept": "(lambda (singleton (count is_odd $0)))",
+            "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: o[0]) + proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7)
+        },
+        {
+            "concept": "(lambda (singleton (count (lambda (== 3 $0)) $0)))",
+            "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: o[0]) + proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7)
+        },
+        {
+            "concept": "(lambda (singleton (count (lambda (== (first $1) $0)) (drop 1 $0))))",
+            "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: o[0]) + proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7)
+        },
+        {
+            "concept": "(lambda (singleton (length (unique $0))))",
+            "adjust": lambda xs: 2 * proportion_set(xs, lambda i,o: o[0]) + proportion_unique_elements(xs) + proportion(xs, lambda i,o: len(i) >= 7)
+        },
+        {
+            "concept": "(lambda (first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) >= 9) + 4 * proportion(xs, lambda i,o: 4 > len(words(i)) > 2) - limit(xs, 2, lambda i,o: [] in words(i)) + proportion_set(xs, lambda i,o: tuple(o)) + 2 * proportion(xs, lambda i,o: 1 <= len(o) <= 4)
+        },
+        {
+            "concept": "(lambda (first (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) >= 9) + 4 * proportion(xs, lambda i,o: 4 > len(words(i)) > 2) - limit(xs, 2, lambda i,o: [] in words(i)) + proportion_set(xs, lambda i,o: tuple(o)) + 2 * proportion(xs, lambda i,o: 1 <= len(o) <= 4)
+        },
+        {
+            "concept": "(lambda (map first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) >= 9) + 4 * proportion(xs, lambda i,o: 4 > len(words(i)) > 2) - limit(xs, 2, lambda i,o: [] in words(i)) + proportion_set(xs, lambda i,o: tuple(o)) + 2 * proportion(xs, lambda i,o: 3 <= len(o) <= 4)
+        },
+        {
+            "concept": "(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))))",
+            "adjust": lambda xs: proportion(xs, lambda i,o: len(i) >= 9) + 4 * proportion(xs, lambda i,o: 4 > len(words(i)) > 2) - limit(xs, 2, lambda i,o: [] in words(i)) + proportion_set(xs, lambda i,o: tuple(o)) + proportion(xs, lambda i,o: [ie for ie in i if ie != 0] != o)
         },
     ]
 
