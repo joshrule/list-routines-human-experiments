@@ -1252,7 +1252,7 @@ def make_example_set(pool, n):
     return examples
 
 def valid_output(xs, small):
-    return len(xs) == 0 or (len(xs) <= 15 and max(xs) < (10 if small else 100))
+    return len(xs) == 0 or (len(xs) <= 15 and max(xs) < (10 if small else 100) and min(xs) >= 0)
 
 def score_set(s, adjust):
     (inputs, outputs) = zip(*s)
