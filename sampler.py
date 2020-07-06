@@ -1309,11 +1309,11 @@ def order_examples(xs, n_orders, n_tries):
     return best
 
 def score_order(xs):
-    first_short = 1 - (abs(4 - len(xs[0][0])) / 6)
+    first_short = 1 - (abs(5 - len(xs[0][0])) / 6)
     first_informative = 1 if xs[0][0] != xs[0][1] else 0
     good_start = score_set(xs[:5], adjust=lambda xs: 0.0 )/5
     good_finish = score_set(xs[5:], adjust=lambda xs: 0.0 )/5
-    return 3*first_short + first_informative + good_start + good_finish
+    return 2 * first_short + first_informative + 2 * good_start + good_finish
 
 def flip(p=0.5):
     return random.random() < p
