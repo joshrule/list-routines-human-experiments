@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (mapi (lambda (lambda (if (== $0 $1) 1 0))) $0))",
+  "program": "(lambda (mapi (lambda (lambda (if (== $0 $1) 1 0))) $0))",
   "examples": [
     { "i": [1, 45, 3, 4, 23, 55], "o": [1, 0, 1, 1, 0, 0] },
     { "i": [4, 68, 3, 68, 24, 8, 7, 8], "o": [0, 0, 1, 0, 0, 0, 1, 1] },

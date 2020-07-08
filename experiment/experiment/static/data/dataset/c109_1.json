@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (insert (+ (max $0) (min $0)) 3 (sort (lambda $0) $0)))",
+  "program": "(lambda (insert (+ (max $0) (min $0)) 3 (sort (lambda $0) $0)))",
   "examples": [
     { "i": [34, 2, 3, 96, 64], "o": [2, 3, 98, 34, 64, 96] },
     { "i": [87, 76, 1, 38, 85, 83], "o": [1, 38, 88, 76, 83, 85, 87] },

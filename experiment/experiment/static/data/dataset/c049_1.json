@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (* $0 (first $1))) (drop 1 $0)))",
+  "program": "(lambda (map (lambda (* $0 (first $1))) (drop 1 $0)))",
   "examples": [
     { "i": [5, 2, 13, 6, 3], "o": [10, 65, 30, 15] },
     { "i": [3, 33], "o": [99] },

@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (/ $0 2)) (filter is_even $0)))",
+  "program": "(lambda (map (lambda (/ $0 2)) (filter is_even $0)))",
   "examples": [
     { "i": [18, 37, 3, 50, 13, 95, 9], "o": [9, 25] },
     { "i": [25, 24, 7, 5, 38, 52, 74, 94], "o": [12, 19, 26, 37, 47] },

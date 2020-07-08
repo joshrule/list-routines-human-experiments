@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (mapi (lambda (lambda (* (min $2) $1))) $0))",
+  "program": "(lambda (mapi (lambda (lambda (* (min $2) $1))) $0))",
   "examples": [
     { "i": [7, 3, 5, 2, 1], "o": [1, 2, 3, 4, 5] },
     { "i": [37, 82], "o": [37, 74] },

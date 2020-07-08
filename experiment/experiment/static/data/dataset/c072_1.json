@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (drop 1 (fold (lambda (lambda (append $1 (* (last $1) $0)))) (singleton 1) $0)))",
+  "program": "(lambda (drop 1 (fold (lambda (lambda (append $1 (* (last $1) $0)))) (singleton 1) $0)))",
   "examples": [
     { "i": [4, 2, 2, 2], "o": [4, 8, 16, 32] },
     { "i": [5, 2, 7], "o": [5, 10, 70] },

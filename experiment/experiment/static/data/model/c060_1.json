@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (swap 3 1 (replace 4 4 (cut_idx 6 (take 7 $0)))))",
+  "program": "(lambda (swap 3 1 (replace 4 4 (cut_idx 6 (take 7 $0)))))",
   "examples": [
     { "i": [7, 9, 0, 2, 6, 8, 3, 5, 1], "o": [0, 9, 7, 4, 6, 3] },
     { "i": [1, 7, 8, 2, 5, 6, 0, 4, 3, 9], "o": [8, 7, 1, 4, 5, 0] },

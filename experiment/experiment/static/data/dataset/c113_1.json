@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (take 3 (sort (lambda $0) $0)))",
+  "program": "(lambda (take 3 (sort (lambda $0) $0)))",
   "examples": [
     { "i": [16, 25, 95, 44, 39], "o": [16, 25, 39] },
     { "i": [58, 7, 48, 1, 43, 8, 3, 84, 53, 0], "o": [0, 1, 3] },

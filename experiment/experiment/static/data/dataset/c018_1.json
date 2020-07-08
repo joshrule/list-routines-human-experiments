@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (concat (drop (last $0) $0) (take (last $0) $0)))",
+  "program": "(lambda (concat (drop (last $0) $0) (take (last $0) $0)))",
   "examples": [
     { "i": [24, 8, 57, 44, 4], "o": [4, 24, 8, 57, 44] },
     { "i": [97, 28, 30, 5, 48, 7, 2, 76, 9, 1], "o": [28, 30, 5, 48, 7, 2, 76, 9, 1, 97] },

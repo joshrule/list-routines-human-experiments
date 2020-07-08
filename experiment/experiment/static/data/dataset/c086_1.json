@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filter (lambda (> $0 (first $1))) $0))",
+  "program": "(lambda (filter (lambda (> $0 (first $1))) $0))",
   "examples": [
     { "i": [6, 71, 97, 98, 0, 64, 60, 3, 0], "o": [71, 97, 98, 64, 60] },
     { "i": [79, 7, 32, 2, 8, 86, 93, 51, 95, 5], "o": [86, 93, 95] },

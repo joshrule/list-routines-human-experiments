@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (unique (flatten (zip $0 (reverse $0)))))",
+  "program": "(lambda (unique (flatten (zip $0 (reverse $0)))))",
   "examples": [
     { "i": [9, 66, 10, 0, 43, 66, 9], "o": [9, 66, 10, 43, 0] },
     { "i": [85, 39, 0, 33, 26, 27, 83, 18], "o": [85, 18, 39, 83, 0, 27, 33, 26] },

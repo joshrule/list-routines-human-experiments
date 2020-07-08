@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (reverse (filteri (lambda (lambda (is_odd $1))) (reverse $0))))",
+  "program": "(lambda (reverse (filteri (lambda (lambda (is_odd $1))) (reverse $0))))",
   "examples": [
     { "i": [42, 0, 46, 12, 8, 58, 50], "o": [42, 46, 8, 50] },
     { "i": [7, 93, 99, 86, 30, 97, 60, 62, 57, 17], "o": [93, 86, 97, 62, 17] },

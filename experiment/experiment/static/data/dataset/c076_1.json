@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map (lambda (sum $0)) (zip (droplast 1 $0) (drop 1 $0))))",
+  "program": "(lambda (map (lambda (sum $0)) (zip (droplast 1 $0) (drop 1 $0))))",
   "examples": [
     { "i": [22, 1, 6, 8, 51, 26], "o": [23, 7, 14, 59, 77] },
     { "i": [8, 2, 65, 9, 81, 16, 79, 3, 80, 5], "o": [10, 67, 74, 90, 97, 95, 82, 83, 85] },

@@ -1,7 +1,6 @@
 {
-  "id": "c082",
   "program": "(lambda (if (> 3 (length $0)) empty (singleton (third $0))))",
-  "data": [
+  "examples": [
     { "i": [10, 6, 2, 99, 0], "o": [2] },
     { "i": [15], "o": [ ] },
     { "i": [18, 79, 7, 5, 3, 7, 3, 5, 79], "o": [7] },

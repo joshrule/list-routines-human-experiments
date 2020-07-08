@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filteri (lambda (lambda (and (is_even $1) (is_odd $0)))) $0))",
+  "program": "(lambda (filteri (lambda (lambda (and (is_even $1) (is_odd $0)))) $0))",
   "examples": [
     { "i": [6, 91, 0, 77, 18, 25], "o": [91, 77, 25] },
     { "i": [19, 45, 91, 1, 70, 33, 0, 81, 47, 73], "o": [45, 1, 33, 81, 73] },

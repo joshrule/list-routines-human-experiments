@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (max (cut_vals (max $0) $0))))",
+  "program": "(lambda (singleton (max (cut_vals (max $0) $0))))",
   "examples": [
     { "i": [26, 68, 87, 84, 58, 10], "o": [84] },
     { "i": [8, 24, 51, 14, 2, 69, 9, 28, 48], "o": [51] },

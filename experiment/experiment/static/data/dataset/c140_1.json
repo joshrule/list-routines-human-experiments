@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (singleton (count (lambda ((== (length $1)) $0)) $0)))",
+  "program": "(lambda (singleton (count (lambda ((== (length $1)) $0)) $0)))",
   "examples": [
     { "i": [21, 7, 7, 7, 83, 21, 29], "o": [3] },
     { "i": [8, 65, 5, 34, 8, 59, 18, 4], "o": [2] },

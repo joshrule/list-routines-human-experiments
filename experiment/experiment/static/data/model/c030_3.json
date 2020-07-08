@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (droplast 2 $0))",
+  "program": "(lambda (droplast 2 $0))",
   "examples": [
     { "i": [6, 4, 8, 1, 0], "o": [6, 4, 8] },
     { "i": [9, 7, 4, 3, 8, 1], "o": [9, 7, 4, 3] },

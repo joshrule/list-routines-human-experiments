@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (cut_idx (if (> (first $0) (second $0)) 2 3) $0))",
+  "program": "(lambda (cut_idx (if (> (first $0) (second $0)) 2 3) $0))",
   "examples": [
     { "i": [1, 2, 0, 6], "o": [1, 2, 6] },
     { "i": [3, 2, 5, 8, 0, 9, 5], "o": [3, 5, 8, 0, 9, 5] },

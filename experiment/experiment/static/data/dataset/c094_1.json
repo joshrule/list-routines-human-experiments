@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (cons (length $0) (append (reverse $0) (length $0))))",
+  "program": "(lambda (cons (length $0) (append (reverse $0) (length $0))))",
   "examples": [
     { "i": [76, 62, 80, 54, 23], "o": [5, 23, 54, 80, 62, 76, 5] },
     { "i": [81, 43], "o": [2, 43, 81, 2] },

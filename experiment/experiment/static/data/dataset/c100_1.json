@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (sort (lambda $0) (map (lambda (/ $0 10)) $0)))",
+  "program": "(lambda (sort (lambda $0) (map (lambda (/ $0 10)) $0)))",
   "examples": [
     { "i": [49, 0, 24, 33, 92], "o": [0, 2, 3, 4, 9] },
     { "i": [5, 54, 41, 72], "o": [0, 4, 5, 7] },

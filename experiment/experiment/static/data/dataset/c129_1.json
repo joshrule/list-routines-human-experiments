@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (take (first $0) (reverse $0)))",
+  "program": "(lambda (take (first $0) (reverse $0)))",
   "examples": [
     { "i": [7, 58, 5, 9, 21, 22, 51], "o": [51, 22, 21, 9, 5, 58, 7] },
     { "i": [4, 89, 16, 33, 53, 3, 6, 1, 76], "o": [76, 1, 6, 3] },

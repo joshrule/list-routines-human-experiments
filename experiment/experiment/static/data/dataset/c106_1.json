@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filter (lambda (and (> (max (take 2 $1)) $0) (> $0 (min (take 2 $1))))) $0))",
+  "program": "(lambda (filter (lambda (and (> (max (take 2 $1)) $0) (> $0 (min (take 2 $1))))) $0))",
   "examples": [
     { "i": [43, 3, 80, 40, 29, 31], "o": [40, 29, 31] },
     { "i": [1, 63, 2, 7, 48, 9, 97, 4], "o": [2, 7, 48, 9, 4] },

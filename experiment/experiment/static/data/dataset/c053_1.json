@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (flatten (map (lambda (append (take 1 $0) (length $0))) (group (lambda $0) $0))))",
+  "program": "(lambda (flatten (map (lambda (append (take 1 $0) (length $0))) (group (lambda $0) $0))))",
   "examples": [
     { "i": [23, 23, 23, 27, 27], "o": [23, 3, 27, 2] },
     { "i": [1, 95, 95, 41, 41, 1, 35, 95, 35], "o": [1, 2, 95, 3, 41, 2, 35, 2] },

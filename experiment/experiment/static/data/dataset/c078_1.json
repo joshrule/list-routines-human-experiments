@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (map first (filter (lambda (is_even (second $0))) (zip (droplast 1 $0) (drop 1 $0)))))",
+  "program": "(lambda (map first (filter (lambda (is_even (second $0))) (zip (droplast 1 $0) (drop 1 $0)))))",
   "examples": [
     { "i": [27, 4, 9, 71, 45, 69], "o": [27] },
     { "i": [10, 68, 80, 5, 29, 23, 9, 33, 69], "o": [10, 68] },

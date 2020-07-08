@@ -1,5 +1,5 @@
 {
-  "concept": "(lambda (filter is_even (reverse $0)))",
+  "program": "(lambda (filter is_even (reverse $0)))",
   "examples": [
     { "i": [68, 9, 86, 13, 57, 14, 72, 25, 69], "o": [72, 14, 86, 68] },
     { "i": [77, 5, 56, 4, 34, 22, 65, 94, 20, 3], "o": [20, 94, 22, 34, 4, 56] },
