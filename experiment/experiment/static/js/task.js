@@ -271,7 +271,9 @@ function IOExperiment() {
                         psiTurk.recordTrialData({
                             'phase':"TEST",
                             'task':"[(i,o)]->spec",
+                            'purpose': concept.purpose,
                             'concept': concept.concept,
+                            'order': concept.order,
                             'id': concept.id,
                             'condition': condition,
                             'block': blockIdx,
@@ -328,6 +330,7 @@ function IOExperiment() {
             'task':"[(i,o)]->i->o",
             'purpose': concept.purpose,
             'concept': concept.concept,
+            'order': concept.order,
             'id': concept.id,
             'condition': condition,
             'block': blockIdx,
@@ -477,34 +480,27 @@ function IOExperiment() {
     // Randomly select n_blocks concepts, then load trials for each selected
     // concept, then randomly select n_trials trials.
     function schedule_trials() {
-        // TODO: Uncomment me for the full experiment.
-        //let ids = _.chain(n_concepts+1).range().drop(1).shuffle().take(n_blocks).value();
-        // TODO: Remove me after the pilot.
-        let initial_ids = [1, 25, 68, 85, 101, 113, 120, 134, 139, 140, 155, 161, 166, 174, 182, 190, 200, 214, 235, 246];
-        let ids = _.chain(initial_ids).shuffle().take(n_blocks).value();
+        let ids = _.chain(n_concepts+1).range().drop(1).shuffle().take(n_blocks).value();
+        // NOTE: These are the concepts from the second pilot.
+        // let initial_ids = [1, 25, 68, 85, 101, 113, 120, 134, 139, 140, 155, 161, 166, 174, 182, 190, 200, 214, 235, 246];
+        // let ids = _.chain(initial_ids).shuffle().take(n_blocks).value();
+        let orders = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 4, 1, 1, 1, 1, 3, 1, 3, 2, 3, 1, 1, 1, 1, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 2, 4, 1, 1, 2, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 3, 5, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 4, 3, 3, 4, 5, 2, 2, 5, 5, 1, 1, 1, 1, 3, 4, 1, 1, 1, 3, 1];
         let promises = _.chain(ids).map(id => {
             let purpose = id > 150 ? "model" : "dataset";
             let nice_id = "c" + `000${id > 150 ? id - 150 : id}`.slice(-3);
-            return d3.json(`/static/data/${purpose}/${nice_id}_1.json`);
+            let order = orders[id-1];
+            return d3.json(`/static/data/${purpose}/${nice_id}_${order}.json`);
         }).value();
         Promise.all(promises).then(datas => {
             blocks = _.chain(datas).zip(ids).map(data => {
                 let json = data[0], id = data[1];
-                if (id > 150) {
-                    return {
-                        concept: json.program,
-                        purpose: "model",
-                        id: "c" + `000${id - 150}`.slice(-3),
-                        trials: json.examples,
-                    };
-                } else {
-                    return {
-                        concept: json.program,
-                        purpose: "dataset",
-                        id: "c" + `000${id}`.slice(-3),
-                        trials: json.examples,
-                    };
-                }
+                return {
+                    concept: json.program,
+                    purpose: id > 150 ? "model" : "dataset",
+                    id: "c" + `000${id > 150 ? id - 150 : id}`.slice(-3),
+                    order: orders[id-1],
+                    trials: json.examples,
+                };
             }).value();
             total = _.chain(blocks).pluck("trials").flatten().value().length;
             next();
