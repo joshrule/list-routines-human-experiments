@@ -23,7 +23,10 @@
                             <a class="nav-link" data-toggle="tab" id="page5-tab" href="#page5" role="tab" aria-controls="page5" aria-selected="false">5</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" id="page5-tab" href="#page6" role="tab" aria-controls="page6" aria-selected="false">6</a>
+                            <a class="nav-link" data-toggle="tab" id="page6-tab" href="#page6" role="tab" aria-controls="page6" aria-selected="false">6</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" id="page7-tab" href="#page7" role="tab" aria-controls="page7" aria-selected="false">7</a>
                         </li>
                     </ul>
                 </div>
@@ -181,7 +184,13 @@
                                 like this:
                             </p>
                             <div class="linguistic last col-12 mt-5 mb-3 text-center"><h5>You answered the last question. What do you think the computer's rule was?</h5></div>
-                            <div class="linguistic last col-12 input-group" novalidate><input type="text" class="form-control" placeholder="What's the rule (e.g. &quot;count the number of sevens&quot;)? " aria-label="output list" disabled><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" disabled>Submit</button></div></div>
+                            <div class="linguistic col-12 mb-5 input-group" novalidate><input type="text" class="form-control" placeholder="What's the rule (e.g. &quot;count the number of sevens&quot;)? " aria-label="output list" disabled><div class="input-group-append"><button class="btn btn-outline-secondary" type="button" disabled>Submit</button></div></div>
+                            <p class="last">
+                                The rule is never random or deceptive. Please
+                                <strong>tell us as much as you can about the rule</strong>,
+                                even if you don't think you've figured out the
+                                entire rule.
+                            </p>
                         </div>
                         <div class="tab-pane fade" id="page6" role="tabpanel" aria-labelledby="page6-tab">
                             <p class="last">
@@ -205,7 +214,7 @@
                             <p class="last">
                                 Here are a few tips:
                             </p>
-                            <ul class="last">
+                            <ul>
                                 <li>
                                     The computer's rule is <span class="font-weight-bold">never random, rigged, or deceptive</span>.
                                 </li>
@@ -221,17 +230,40 @@
                                 <li>
                                     <span class="font-weight-bold">Each correct response increases your bonus by $0.01</span>. The maximum possible bonus is $1.10. The task is challenging, but if you make an effort to answer correctly, you will probably earn a significant portion of the bonus.
                                 </li>
-                                <li class="last">
-                                    We don't expect you to get every item
-                                    right&mdash;you will be fully compensated as
-                                    long as you answer each item as best you
-                                    can. <span class="font-weight-bold">Please
-                                    don't just enter blank guesses or the same
-                                    guess for each item</span>. You will incur
-                                    delays due to errors, and <span class="font-weight-bold">your
-                                    HIT will be disqualified</span>.
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="page7" role="tabpanel" aria-labelledby="page7-tab">
+                            <p>
+                                We don't expect you to get every item
+                                right&mdash;you will be fully compensated as
+                                long as you make a reasonable good faith effort
+                                to answer each item.
+                            </p>
+                            <p>
+                                <span class="font-weight-bold">If we see significant evidence that you did not make a reasonable good faith effort, your HIT will be disqualified</span>.
+                            </p>
+                            <p class="last">Here are some examples of not making a reasonable good faith effort:
+                            </p>
+                            <ul>
+                                <li>
+                                    repeatedly giving the same response for unrelated problems
+                                </li>
+                                <li>
+                                    arbitrarily copying subsets of the input list
+                                </li>
+                                <li>
+                                    entering blank lists rather than a reasonable guess
+                                </li>
+                                <li>
+                                    entering lists clearly unrelated to the problem at hand
+                                </li>
+                                <li>
+                                    giving a verbal description at the end of each round which does not describe a rule for transforming an input list into an output list.
                                 </li>
                             </ul>
+                            <p>
+                                At the same time, please don't spend extended periods of time on each question. We're interested in what comes to mind after a small amount of thinking and expect that you'll be able to complete the entire experiment in approximately 45 minutes. This means spending 15&ndash;20 seconds on each question, treating it as a puzzle.
+                            </p>
                             <div class="row instructionsnav justify-content-end mt-3">
                                 <!-- no previous button on first screen -->
                                 <div class="col-auto">
