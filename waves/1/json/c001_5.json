@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))",
-  "examples": [
+  "id": "c001",
+  "program": "(lambda (cons 11 (cons 19 (cons 24 (cons 33 (cons 42 (cons 5 (cons 82 (cons 0 (cons 64 (cons 9 empty)))))))))))",
+  "data": [
     { "i": [37, 47, 3, 74, 20, 20, 3], "o": [11, 19, 24, 33, 42, 5, 82, 0, 64, 9] },
     { "i": [36, 86, 78, 66, 6, 1, 70, 72], "o": [11, 19, 24, 33, 42, 5, 82, 0, 64, 9] },
     { "i": [73, 52, 34, 41], "o": [11, 19, 24, 33, 42, 5, 82, 0, 64, 9] },

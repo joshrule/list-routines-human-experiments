@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (count is_odd $0)))",
-  "examples": [
+  "id": "c143",
+  "program": "(lambda (singleton (count is_odd $0)))",
+  "data": [
     { "i": [85, 9, 5, 95, 33, 75, 67], "o": [7] },
     { "i": [24, 21, 15, 94, 32, 47, 2, 3], "o": [4] },
     { "i": [7, 83, 35, 33, 3, 9, 67, 69, 45, 79], "o": [10] },

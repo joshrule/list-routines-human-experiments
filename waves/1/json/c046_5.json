@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))",
-  "examples": [
+  "id": "c046",
+  "program": "(lambda (map (lambda (- (max $0) (min $0))) (zip (droplast 1 $0) (drop 1 $0))))",
+  "data": [
     { "i": [1, 60, 75, 94, 46, 39, 76], "o": [59, 15, 19, 48, 7, 37] },
     { "i": [87, 67, 47, 9, 44], "o": [20, 20, 38, 35] },
     { "i": [88, 7, 36, 5, 53, 67, 86, 3], "o": [81, 29, 31, 48, 14, 19, 83] },

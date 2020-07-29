@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (flatten (map (lambda (repeat $0 (/ $0 10))) $0)))",
-  "examples": [
+  "id": "c091",
+  "program": "(lambda (flatten (map (lambda (repeat $0 (/ $0 10))) $0)))",
+  "data": [
     { "i": [0, 8, 5, 73, 4, 2], "o": [73, 73, 73, 73, 73, 73, 73] },
     { "i": [8, 14], "o": [14] },
     { "i": [3, 4, 2], "o": [ ] },

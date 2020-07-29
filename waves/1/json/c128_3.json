@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (mapi (lambda (lambda (count (== $0) (take $1 $2)))) $0))",
-  "examples": [
+  "id": "c128",
+  "program": "(lambda (mapi (lambda (lambda (count (== $0) (take $1 $2)))) $0))",
+  "data": [
     { "i": [20, 20, 20, 20], "o": [1, 2, 3, 4] },
     { "i": [84, 84, 84], "o": [1, 2, 3] },
     { "i": [11, 11, 6, 11, 11, 6, 6, 6], "o": [1, 2, 1, 3, 4, 2, 3, 4] },

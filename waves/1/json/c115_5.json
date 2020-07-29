@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (replace (first $0) (length $0) (drop 1 $0)))",
-  "examples": [
+  "id": "c115",
+  "program": "(lambda (replace (first $0) (length $0) (drop 1 $0)))",
+  "data": [
     { "i": [1, 49, 32], "o": [3, 32] },
     { "i": [5, 74, 35, 35, 36, 78, 36, 35], "o": [74, 35, 35, 36, 8, 36, 35] },
     { "i": [3, 59, 55, 17, 3], "o": [59, 55, 5, 3] },

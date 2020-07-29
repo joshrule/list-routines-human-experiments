@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (count (lambda (== (first $1) $0)) (drop 1 $0))))",
-  "examples": [
+  "id": "c145",
+  "program": "(lambda (singleton (count (lambda (== (first $1) $0)) (drop 1 $0))))",
+  "data": [
     { "i": [34, 34, 5, 34, 54, 34, 34, 34, 34], "o": [6] },
     { "i": [28, 28, 28, 0, 8, 28, 2, 28, 6, 57], "o": [4] },
     { "i": [45, 45, 45, 45, 45, 45, 45, 45], "o": [7] },

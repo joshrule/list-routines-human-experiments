@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (cons (first $0) (cons (sum (drop 1 (droplast 1 $0))) (takelast 1 $0))))",
-  "examples": [
+  "id": "c085",
+  "program": "(lambda (cons (first $0) (cons (sum (drop 1 (droplast 1 $0))) (takelast 1 $0))))",
+  "data": [
     { "i": [53, 3, 1, 4, 26, 41, 35], "o": [53, 75, 35] },
     { "i": [81, 29, 31, 15, 7, 9, 4, 47], "o": [81, 95, 47] },
     { "i": [77, 1, 6, 2, 5, 48, 0, 54], "o": [77, 62, 54] },

@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (sort (lambda $0) (map length (group (lambda $0) $0))))",
-  "examples": [
+  "id": "c131",
+  "program": "(lambda (sort (lambda $0) (map length (group (lambda $0) $0))))",
+  "data": [
     { "i": [38, 38, 38, 38, 38, 38, 38, 38, 38], "o": [9] },
     { "i": [68, 86, 86, 41, 82, 2, 75, 5, 41], "o": [1, 1, 1, 1, 1, 2, 2] },
     { "i": [9, 6, 26, 4, 82, 17, 55, 0, 8, 3], "o": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },

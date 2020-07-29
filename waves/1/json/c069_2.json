@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (max (cut_vals (max $0) $0))))",
-  "examples": [
+  "id": "c069",
+  "program": "(lambda (singleton (max (cut_vals (max $0) $0))))",
+  "data": [
     { "i": [71, 27, 37, 54, 23, 56], "o": [56] },
     { "i": [89, 30, 61, 24, 85, 57, 66, 2, 42, 4], "o": [85] },
     { "i": [75, 97, 64, 70, 5, 36, 1], "o": [75] },

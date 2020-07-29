@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (cons (length $0) (append (reverse $0) (length $0))))",
-  "examples": [
+  "id": "c094",
+  "program": "(lambda (cons (length $0) (append (reverse $0) (length $0))))",
+  "data": [
     { "i": [40, 6, 70, 56, 25, 99], "o": [6, 99, 25, 56, 70, 6, 40, 6] },
     { "i": [86, 95, 15, 5, 77, 85, 46, 11], "o": [8, 11, 46, 85, 77, 5, 15, 95, 86, 8] },
     { "i": [81, 43], "o": [2, 43, 81, 2] },

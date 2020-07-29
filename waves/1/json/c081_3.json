@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (flatten (zip (filteri (lambda (lambda (is_odd $1))) $0) (reverse (filteri (lambda (lambda (is_even $1))) $0)))))",
-  "examples": [
+  "id": "c081",
+  "program": "(lambda (flatten (zip (filteri (lambda (lambda (is_odd $1))) $0) (reverse (filteri (lambda (lambda (is_even $1))) $0)))))",
+  "data": [
     { "i": [5, 27, 80, 31, 7, 47], "o": [5, 47, 80, 31, 7, 27] },
     { "i": [24, 99, 36, 61, 55, 6], "o": [24, 6, 36, 61, 55, 99] },
     { "i": [1, 73, 38, 33, 87, 56, 95, 57], "o": [1, 57, 38, 56, 87, 33, 95, 73] },

@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (count (lambda (== 3 $0)) $0)))",
-  "examples": [
+  "id": "c144",
+  "program": "(lambda (singleton (count (lambda (== 3 $0)) $0)))",
+  "data": [
     { "i": [3, 43, 3, 3, 27, 3, 7, 69], "o": [4] },
     { "i": [52, 3, 3, 3, 3, 3, 52], "o": [5] },
     { "i": [3, 1, 79, 68, 15, 6, 74, 3, 4, 0], "o": [2] },

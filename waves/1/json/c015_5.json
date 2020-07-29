@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (cons (sum (unique $0)) (append (unique $0) (sum (unique $0)))))",
-  "examples": [
+  "id": "c015",
+  "program": "(lambda (cons (sum (unique $0)) (append (unique $0) (sum (unique $0)))))",
+  "data": [
     { "i": [4, 4, 31, 38, 38, 31, 38, 38], "o": [73, 4, 31, 38, 73] },
     { "i": [26, 26, 2, 50, 2, 50, 26, 26, 50], "o": [78, 26, 2, 50, 78] },
     { "i": [7, 17, 45, 17, 12], "o": [81, 7, 17, 45, 12, 81] },

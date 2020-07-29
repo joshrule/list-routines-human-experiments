@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (first $0)))",
-  "examples": [
+  "id": "c020",
+  "program": "(lambda (singleton (first $0)))",
+  "data": [
     { "i": [46, 7, 84, 59, 89, 6, 2], "o": [46] },
     { "i": [79, 38, 77, 8], "o": [79] },
     { "i": [74, 1, 93, 44, 5], "o": [74] },

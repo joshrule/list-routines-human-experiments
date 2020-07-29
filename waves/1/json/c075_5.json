@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (fold (lambda (lambda (if (> $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))",
-  "examples": [
+  "id": "c075",
+  "program": "(lambda (fold (lambda (lambda (if (> $0 (last $1)) (append $1 $0) $1))) (take 1 $0) (drop 1 $0)))",
+  "data": [
     { "i": [2, 25, 39, 51, 16, 5, 66, 7], "o": [2, 25, 39, 51, 66] },
     { "i": [2, 44, 50, 62, 65, 9, 3, 8, 88, 91], "o": [2, 44, 50, 62, 65, 88, 91] },
     { "i": [29, 53, 0, 31, 84, 54, 6, 4, 80], "o": [29, 53, 84] },

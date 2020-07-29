@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (concat (filter (lambda (< (first $1) $0)) $0) (filter (lambda (> (first $1) $0)) $0)))",
-  "examples": [
+  "id": "c101",
+  "program": "(lambda (concat (filter (lambda (< (first $1) $0)) $0) (filter (lambda (> (first $1) $0)) $0)))",
+  "data": [
     { "i": [43, 41, 22, 48, 77, 82, 18], "o": [48, 77, 82, 41, 22, 18] },
     { "i": [9, 71, 7, 5], "o": [71, 7, 5] },
     { "i": [32, 21, 0, 86, 65, 43, 1, 63, 19], "o": [86, 65, 43, 63, 21, 0, 1, 19] },

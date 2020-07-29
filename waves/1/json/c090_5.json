@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (range (first $0) 2 (last $0)))",
-  "examples": [
+  "id": "c090",
+  "program": "(lambda (range (first $0) 2 (last $0)))",
+  "data": [
     { "i": [8, 92, 0, 2, 94, 41, 14], "o": [8, 10, 12, 14] },
     { "i": [8, 70, 4, 12], "o": [8, 10, 12] },
     { "i": [5, 13], "o": [5, 7, 9, 11, 13] },

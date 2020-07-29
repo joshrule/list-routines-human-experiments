@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (unique (flatten (zip $0 (reverse $0)))))",
-  "examples": [
+  "id": "c127",
+  "program": "(lambda (unique (flatten (zip $0 (reverse $0)))))",
+  "data": [
     { "i": [57, 36, 36, 57, 36, 0, 57, 0, 57], "o": [57, 36, 0] },
     { "i": [ ], "o": [ ] },
     { "i": [9, 66, 10, 0, 43, 66, 9], "o": [9, 66, 10, 43, 0] },

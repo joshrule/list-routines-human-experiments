@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (concat (cons 17 (cons 38 (singleton 82))) (concat $0 (cons 1 (cons 55 (singleton 27))))))",
-  "examples": [
+  "id": "c096",
+  "program": "(lambda (concat (cons 17 (cons 38 (singleton 82))) (concat $0 (cons 1 (cons 55 (singleton 27))))))",
+  "data": [
     { "i": [51, 52, 91, 9], "o": [17, 38, 82, 51, 52, 91, 9, 1, 55, 27] },
     { "i": [ ], "o": [17, 38, 82, 1, 55, 27] },
     { "i": [15], "o": [17, 38, 82, 15, 1, 55, 27] },

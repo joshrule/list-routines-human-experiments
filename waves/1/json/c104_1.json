@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (map first (filter (lambda (== (second $0) 0)) (zip (droplast 1 $0) (drop 1 $0)))))",
-  "examples": [
+  "id": "c104",
+  "program": "(lambda (map first (filter (lambda (== (second $0) 0)) (zip (droplast 1 $0) (drop 1 $0)))))",
+  "data": [
     { "i": [9, 34, 0, 0, 96], "o": [34, 0] },
     { "i": [4, 0, 29, 3, 0, 5, 6, 51], "o": [4, 3] },
     { "i": [29, 28, 0, 2, 0, 64], "o": [28, 2] },

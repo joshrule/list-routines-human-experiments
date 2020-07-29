@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (splice (cons 3 (cons 3 (singleton 3))) 3 $0))",
-  "examples": [
+  "id": "c112",
+  "program": "(lambda (splice (cons 3 (cons 3 (singleton 3))) 3 $0))",
+  "data": [
     { "i": [6, 54, 74, 26, 8, 95], "o": [6, 54, 3, 3, 3, 74, 26, 8, 95] },
     { "i": [72, 15, 39], "o": [72, 15, 3, 3, 3, 39] },
     { "i": [31, 0, 32, 43, 58], "o": [31, 0, 3, 3, 3, 32, 43, 58] },

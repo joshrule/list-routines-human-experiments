@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (find is_even $0))",
-  "examples": [
+  "id": "c102",
+  "program": "(lambda (find is_even $0))",
+  "data": [
     { "i": [11, 9, 83, 86, 76, 1, 38], "o": [4, 5, 7] },
     { "i": [56, 40], "o": [1, 2] },
     { "i": [31, 98, 55, 14, 50], "o": [2, 4, 5] },

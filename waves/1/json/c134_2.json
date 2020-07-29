@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (flatten (map (lambda (drop 1 $0)) (group (lambda $0) $0))))",
-  "examples": [
+  "id": "c134",
+  "program": "(lambda (flatten (map (lambda (drop 1 $0)) (group (lambda $0) $0))))",
+  "data": [
     { "i": [4, 0, 64, 9, 40, 7, 64, 45], "o": [64] },
     { "i": [3, 22, 5, 24, 1, 22, 21, 19, 5, 2], "o": [22, 5] },
     { "i": [52, 7, 71, 71, 52, 52, 7, 71, 7], "o": [52, 52, 7, 7, 71, 71] },

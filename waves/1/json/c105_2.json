@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0))))",
-  "examples": [
+  "id": "c105",
+  "program": "(lambda (singleton (product (filter (lambda (== (% $0 4) 0)) $0))))",
+  "data": [
     { "i": [37, 42, 5, 63, 8, 8, 43], "o": [64] },
     { "i": [30, 35, 12, 58, 42, 3, 8, 7], "o": [96] },
     { "i": [15, 73, 98, 8, 53, 1, 95, 9, 4], "o": [32] },

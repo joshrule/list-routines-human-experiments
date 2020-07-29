@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (flatten (map (lambda (cons (/ $0 10) (singleton (% $0 10)))) $0)))",
-  "examples": [
+  "id": "c042",
+  "program": "(lambda (flatten (map (lambda (cons (/ $0 10) (singleton (% $0 10)))) $0)))",
+  "data": [
     { "i": [77, 63, 83, 97, 58], "o": [7, 7, 6, 3, 8, 3, 9, 7, 5, 8] },
     { "i": [47, 54], "o": [4, 7, 5, 4] },
     { "i": [95, 60, 15, 52], "o": [9, 5, 6, 0, 1, 5, 5, 2] },

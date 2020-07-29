@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (map (lambda (* $0 (if (is_even (length $1)) 2 3))) $0))",
-  "examples": [
+  "id": "c120",
+  "program": "(lambda (map (lambda (* $0 (if (is_even (length $1)) 2 3))) $0))",
+  "data": [
     { "i": [4, 37, 6, 3, 0, 32], "o": [8, 74, 12, 6, 0, 64] },
     { "i": [43, 23, 11, 5, 8, 30, 41, 2], "o": [86, 46, 22, 10, 16, 60, 82, 4] },
     { "i": [19], "o": [57] },

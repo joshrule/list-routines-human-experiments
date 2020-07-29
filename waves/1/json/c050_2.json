@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (flatten (map (lambda (if (> $0 (first $1)) (range (first $1) 1 $0) (singleton $0))) $0)))",
-  "examples": [
+  "id": "c050",
+  "program": "(lambda (flatten (map (lambda (if (> $0 (first $1)) (range (first $1) 1 $0) (singleton $0))) $0)))",
+  "data": [
     { "i": [77, 41, 18, 4, 84], "o": [77, 41, 18, 4, 77, 78, 79, 80, 81, 82, 83, 84] },
     { "i": [23, 7, 6, 28, 18, 4, 8], "o": [23, 7, 6, 23, 24, 25, 26, 27, 28, 18, 4, 8] },
     { "i": [13, 1, 18], "o": [13, 1, 13, 14, 15, 16, 17, 18] },

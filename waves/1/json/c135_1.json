@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0)))",
-  "examples": [
+  "id": "c135",
+  "program": "(lambda (fold (lambda (lambda (concat $1 (drop 1 (range (last $1) (if (> $0 (last $1)) 1 -1) $0))))) (take 1 $0) (drop 1 $0)))",
+  "data": [
     { "i": [8, 7, 5, 6, 15], "o": [8, 7, 6, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
     { "i": [46, 43, 42], "o": [46, 45, 44, 43, 42] },
     { "i": [0, 4, 7, 6], "o": [0, 1, 2, 3, 4, 5, 6, 7, 6] },

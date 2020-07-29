@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (filter (lambda (and (> (max (take 2 $1)) $0) (> $0 (min (take 2 $1))))) $0))",
-  "examples": [
+  "id": "c106",
+  "program": "(lambda (filter (lambda (and (> (max (take 2 $1)) $0) (> $0 (min (take 2 $1))))) $0))",
+  "data": [
     { "i": [43, 3, 80, 40, 29, 31], "o": [40, 29, 31] },
     { "i": [1, 63, 2, 7, 48, 9, 97, 4], "o": [2, 7, 48, 9, 4] },
     { "i": [39, 80, 95, 9, 44, 77, 2, 33, 75, 6], "o": [44, 77, 75] },

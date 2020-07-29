@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (count is_even $0)))",
-  "examples": [
+  "id": "c141",
+  "program": "(lambda (singleton (count is_even $0)))",
+  "data": [
     { "i": [0, 45, 84, 90, 72, 8, 68, 72, 30], "o": [8] },
     { "i": [3, 44, 36, 82, 4, 6, 2, 14, 32, 32], "o": [9] },
     { "i": [2, 29, 33, 4, 0, 9, 85, 5], "o": [3] },

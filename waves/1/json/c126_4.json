@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (drop (first $0) (droplast (last $0) $0)))",
-  "examples": [
+  "id": "c126",
+  "program": "(lambda (drop (first $0) (droplast (last $0) $0)))",
+  "data": [
     { "i": [1, 14, 61, 49, 2, 12, 98, 4, 4], "o": [14, 61, 49, 2] },
     { "i": [2, 2, 12, 3, 7, 7, 2, 12, 12, 7], "o": [12] },
     { "i": [5, 64, 64, 5, 83, 83, 83, 83, 8, 5], "o": [ ] },

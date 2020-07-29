@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda ((lambda (concat ($0 first) (concat $1 ($0 last)))) (lambda (if (== ($0 $1) 8) empty (singleton 8)))))",
-  "examples": [
+  "id": "c019",
+  "program": "(lambda ((lambda (concat ($0 first) (concat $1 ($0 last)))) (lambda (if (== ($0 $1) 8) empty (singleton 8)))))",
+  "data": [
     { "i": [47, 68, 84, 8], "o": [8, 47, 68, 84, 8] },
     { "i": [12, 71, 59, 1, 6, 55, 8], "o": [8, 12, 71, 59, 1, 6, 55, 8] },
     { "i": [8, 32], "o": [8, 32, 8] },

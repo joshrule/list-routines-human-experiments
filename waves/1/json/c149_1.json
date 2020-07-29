@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (map first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))))",
-  "examples": [
+  "id": "c149",
+  "program": "(lambda (map first (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0))))",
+  "data": [
     { "i": [64, 0, 50, 1, 50, 1, 0, 1, 64], "o": [64, 50, 1] },
     { "i": [8, 0, 4, 68, 68, 78, 0, 68, 25, 68], "o": [8, 4, 68] },
     { "i": [94, 9, 3, 5, 5, 0, 5, 0, 95], "o": [94, 5, 95] },

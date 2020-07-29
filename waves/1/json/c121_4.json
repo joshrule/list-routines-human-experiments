@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (sum (filter is_even $0))))",
-  "examples": [
+  "id": "c121",
+  "program": "(lambda (singleton (sum (filter is_even $0))))",
+  "data": [
     { "i": [6, 13, 7, 10, 47, 75, 80, 93], "o": [96] },
     { "i": [35, 33, 18, 52, 7, 25, 4, 83, 2], "o": [76] },
     { "i": [55, 26, 34, 95, 19, 6, 0, 79, 8, 53], "o": [74] },

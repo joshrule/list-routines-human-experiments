@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (cons (first $0) (cons 23 (cons 68 (cons 42 (cons 99 (cons 71 (singleton (last $0)))))))))",
-  "examples": [
+  "id": "c095",
+  "program": "(lambda (cons (first $0) (cons 23 (cons 68 (cons 42 (cons 99 (cons 71 (singleton (last $0)))))))))",
+  "data": [
     { "i": [74, 76, 66], "o": [74, 23, 68, 42, 99, 71, 66] },
     { "i": [12, 9, 31, 97, 37, 7, 48, 77], "o": [12, 23, 68, 42, 99, 71, 77] },
     { "i": [16, 29, 44, 39, 0, 84, 62], "o": [16, 23, 68, 42, 99, 71, 62] },

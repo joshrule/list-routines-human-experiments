@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (drop 1 (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (singleton 0) $0)))",
-  "examples": [
+  "id": "c071",
+  "program": "(lambda (drop 1 (fold (lambda (lambda (append $1 (+ (last $1) $0)))) (singleton 0) $0)))",
+  "data": [
     { "i": [2, 9, 17, 9, 17, 4], "o": [2, 11, 28, 37, 54, 58] },
     { "i": [7, 7, 8, 3, 4, 4, 5, 0], "o": [7, 14, 22, 25, 29, 33, 38, 38] },
     { "i": [5, 7, 2, 6, 1, 0, 9], "o": [5, 12, 14, 20, 21, 21, 30] },

@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))))",
-  "examples": [
+  "id": "c150",
+  "program": "(lambda (flatten (map reverse (reverse (fold (lambda (lambda (if (== $0 0) (cons empty $1) (cons (append (first $1) $0) (drop 1 $1))))) (singleton empty) $0)))))",
+  "data": [
     { "i": [5, 8, 0, 73, 1, 12, 0, 40, 73], "o": [8, 5, 12, 1, 73, 73, 40] },
     { "i": [30, 7, 90, 0, 90, 0, 90, 2, 83, 4], "o": [90, 7, 30, 90, 4, 83, 2, 90] },
     { "i": [2, 0, 62, 80, 54, 49, 0, 6, 4], "o": [2, 49, 54, 80, 62, 4, 6] },

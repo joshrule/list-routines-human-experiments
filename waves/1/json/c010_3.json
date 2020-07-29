@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (takelast 3 (sort (lambda $0) $0)))",
-  "examples": [
+  "id": "c010",
+  "program": "(lambda (takelast 3 (sort (lambda $0) $0)))",
+  "data": [
     { "i": [34, 16, 0, 3], "o": [3, 16, 34] },
     { "i": [57, 15, 51, 31, 33, 61, 6], "o": [51, 57, 61] },
     { "i": [1, 9, 88, 8, 64, 30, 6, 87], "o": [64, 87, 88] },

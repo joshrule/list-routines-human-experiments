@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (singleton (nth (last $0) $0)))",
-  "examples": [
+  "id": "c023",
+  "program": "(lambda (singleton (nth (last $0) $0)))",
+  "data": [
     { "i": [22, 9, 14, 87, 71, 3], "o": [14] },
     { "i": [28, 48, 57, 36, 4], "o": [36] },
     { "i": [38, 79, 65, 26, 0, 96, 4], "o": [26] },

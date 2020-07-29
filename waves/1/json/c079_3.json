@@ -1,6 +1,7 @@
 {
-  "concept": "(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort (lambda $0) $0))))",
-  "examples": [
+  "id": "c079",
+  "program": "(lambda (fold (lambda (lambda (append (reverse $1) $0))) empty (reverse (sort (lambda $0) $0))))",
+  "data": [
     { "i": [69, 56, 3, 91, 90, 34], "o": [34, 69, 91, 90, 56, 3] },
     { "i": [57, 99, 54, 0, 80, 76, 20], "o": [20, 57, 80, 99, 76, 54, 0] },
     { "i": [54, 8, 67, 72, 79, 24, 33, 1], "o": [8, 33, 67, 79, 72, 54, 24, 1] },
