@@ -1254,18 +1254,9 @@ def model_comparison_wave_3():
         },
     ]
 
-def sample_examples_greedy(p,adjust,n=10,n_restarts=10000,n_tries=100,small=False):
-    best_score = 0.0
-    best_s = None
-    for i_restart in range(n_restarts):
-        s, score = greedy_set(p,adjust,n,n_tries,small)
-        if score > best_score:
-            best_s = s
-            best_score = score
-            print(f"{i_restart}. {best_score}")
-            for i,o in s:
-                print(f"  {i} = {o}")
-    return best_s
+def sample_examples_greedy(p,adjust,n=10,n_restarts=1000,n_tries=1000,small=False):
+    bests = Parallel(n_jobs=72)(delayed(greedy_set)(p,adjust,n,n_tries,small) for _ in range(n_restarts))
+    return max(bests, key=lambda x: x[1])[0]
 
 def greedy_set(p,adjust,n,n_tries,small):
     s = initialize_set(p,n,small)
