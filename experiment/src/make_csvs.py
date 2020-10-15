@@ -171,10 +171,11 @@ def stimuli_records(stimuli_dirs):
             order = basefilename[5:6]
             with open(filename) as fd:
                 data = json.load(fd)
-                for record in data['examples']:
+                for trial, record in enumerate(data['examples'], 1):
                     yield {
                         'purpose': purpose,
                         'order': order,
+                        'trial': trial,
                         'id': fid,
                         'program': data['program'],
                         'input': record['i'],
