@@ -13,8 +13,8 @@ browser_exclude_rule = MSIE, mobile, tablet, bot
 allow_repeats = false
 
 [Database Parameters]
-database_url = mysql://ubuntu:yx#Ff@#PQodKkGX4DJ2Sy#iar@M9Nh57@127.0.0.1:3306/list_routines
-table_name = turkdata
+database_url = sqlite:///participants.db
+table_name = turkdemo
 
 [Server Parameters]
 host = 0.0.0.0
